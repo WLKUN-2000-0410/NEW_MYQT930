@@ -1,0 +1,119 @@
+<style>
+    div#recycleBin {
+        width: 360px;
+        height: 500px;
+        overflow-x: auto;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    div#recycle-button {
+        width: 360px;
+        text-align: center;
+        margin-top: 5px;
+    }
+
+    div#recycle-button > button {
+        width: 40%;
+    }
+
+    div#recycleBin > div {
+        position: relative;
+        display: inline-block;
+        line-height: 34px;
+        width: 100%;
+        height: 34px;
+    }
+
+    div#recycleBin > div > span {
+        position: absolute;
+        left: 0;
+    }
+
+    div#recycleBin > div > button {
+        position: absolute;
+        right: 0;
+    }
+</style>
+<div id="recycleBin">
+</div>
+<div id="recycle-button" class="je-align-center">
+    <button class="je-btn btn-recycle-bin">全部恢复</button>
+    <button class="je-btn btn-clear">清理</button>
+</div>
+<script>
+    let strJson = [];
+
+    function recycleBinLineData() {
+        websocket.send(funcCode.RestoreLineDataParams,
+            {lineName: strJson, unit: $('span.showUnit').html()});
+//				main.setCallbacks(funcCode.RestoreLineDataParams,rev=>{
+//					if(rev.getBstatus()){
+//						//添加曲线到主控件
+//						let xList = rev.getXpdList();
+//						let yList = rev.getYpdList();
+//                      //let name = file.name.substring(0, file.name.indexOf('.')) + '_' + i;
+//                      let line = main.chart.add_series(strJson[ind], 0);
+//                      line.add_array(xList, yList);
+//	                    main.legend.addLegend(line)
+//					}
+//		        })
+    }
+
+    function recycleBinLineDataByFileName(fileName) {
+        websocket.send(funcCode.RestoreLineDataParams,
+            {lineName: [fileName], unit: $('span.showUnit').html()});
+        main.setCallbacks(funcCode.RestoreLineDataParams, rev => {
+            if (rev.getBstatus()) {
+                //添加曲线到主控件
+                let xList = rev.getXpdList();
+                let yList = rev.getYpdList();
+                //let name = file.name.substring(0, file.name.indexOf('.')) + '_' + i;
+                let line = main.chart.add_series(fileName, 0);
+                line.add_array(xList, yList);
+
+                main.legend.addLegend(line)
+            }
+        })
+    }
+
+    function updateFileName(fileNames) {
+        for (let i = 0; i < fileNames.length; i++) {
+            let itemHtml = '<div><span class=\'je-gd je-f20\'>' +
+                fileNames[i] + '</span><button class=\'je-btn\' index=\'' + i + '\'>' +
+                '<i class=\'je-icon\'>&#xe655;</i></button></div>';
+            $('div#recycleBin').append(itemHtml);
+            strJson.push(fileNames[i]);
+        }
+        $('div#recycleBin>div button').click(function (event) {
+            let fileName = $(this).siblings('span').html();
+            //请求数据恢复
+            recycleBinLineDataByFileName(fileName);
+            let index = parseInt($(this).index('div#recycleBin>div button'));
+            strJson.splice(index, 1);
+            $(this).parent().detach();
+            event.stopPropagation();
+        });
+    }
+
+    //获取全部数据
+    websocket.send(funcCode.GetDeleteLineDatasParams, {})
+    main.setCallbacks(funcCode.GetDeleteLineDatasParams, rev => {
+        let fileNames = rev.getFilenamsList();
+        updateFileName(fileNames);
+    })
+    $('div#recycle-button>button.btn-recycle-bin').click(function (event) {
+        if (strJson.length == 0) return;
+        recycleBinLineData();
+        $('div#recycleBin').empty();
+        event.stopPropagation();
+    });
+    $('div#recycle-button>button.btn-clear').click(function (event) {
+        if (strJson.length == 0) return;
+        websocket.send(funcCode.ClearDeleteLineDatasParams, {type: 1});
+        main.setCallbacks(funcCode.ClearDeleteLineDatasParams, rev => {
+            $('div#recycleBin').empty();
+        })
+        event.stopPropagation();
+    });
+</script>

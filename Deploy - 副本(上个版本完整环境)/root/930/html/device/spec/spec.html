@@ -1,0 +1,197 @@
+<style>
+    #specSet {
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    #specSet div {
+        display: inline-flex;
+        width: 100%;
+        height: 88.5%;
+    }
+
+    #specSet div button {
+        margin-left: 10px;
+    }
+
+    #specSetOption input[type=radio] {
+        width: 20px;
+        height: 20px;
+    }
+
+    #specSetOption input[type=radio]:disabled {
+        cursor: not-allowed;
+    }
+
+    #specSetOption p {
+        display: inline-flex;
+        font-size: 16px;
+        margin-top: 10px;
+        align-items: center;
+        padding-left: 50px;
+    }
+
+    #specSetOption p span {
+        margin-left: 10px;
+    }
+
+    #specSetOption div {
+        width: 30%;
+        height: 100%;
+        flex-direction: column;
+    }
+
+    #specSetOption b {
+        font-size: 18px;
+        margin-top: 10px;
+        text-align: left;
+        margin-left: 10px;
+    }
+
+    #specOption {
+        height: 11.5% !important;
+        /*border-top: 3px ridge #555555;*/
+        align-items: center;
+        justify-content: center;
+    }
+    #specOption b{
+        font-size: 18px;
+        margin-right: 10px;
+    }
+
+    #specImg {
+        position: relative;
+        left: 31.5%;
+        top: 17%;
+        height: 65%;
+        width: 79%;
+    }
+
+    #specEN1 {
+        position: absolute;
+        top: 318px;
+        left: 160px;
+    }
+
+    #specEN2 {
+        position: absolute;
+        top: 210px;
+        left: 36px;
+    }
+
+    #specDET1 {
+        position: absolute;
+        left: 155px;
+        top: 57px;
+    }
+
+    #specDET2 {
+        position: absolute;
+        top: 100px;
+        left: 28px;
+    }
+
+    #det1Slit {
+        position: absolute;
+        top: 58px;
+        left: 245px;
+    }
+
+    #det2Slit {
+        position: absolute;
+        top: 160px;
+        left: 15px;
+    }
+
+    #en2Slit {
+        position: absolute;
+        top: 265px;
+        left: 15px;
+    }
+
+    #en1Slit {
+        position: absolute;
+        top: 319px;
+        left: 240px;
+    }
+</style>
+<div id="specSet">
+    <div style="border: 3px ridge #555555;background-color: #fff">
+        <button type="button" class="btn btn-secondary btn-sm " id="specEN1" data-locale="popup-device-spec-enPort" onclick="specBaseSet.setMirror(1)">入口
+        </button>
+        <!--        <button type="button" class="btn btn-secondary btn-sm " id="specEN2" onclick="specBaseSet.setMirror(1,false)">入口2</button>-->
+        <!--        <button type="button" class="btn btn-secondary btn-sm " id="specDET1" onclick="specBaseSet.setMirror(0,true)">探测器1</button>-->
+        <button type="button" class="btn btn-secondary btn-sm " id="specDET2" data-locale="popup-device-spec-exPort" onclick="specBaseSet.setMirror(0)">出口
+        </button>
+        <!--        <div id="det1Slit" style="width: auto;height: auto">-->
+        <!--            <input type="text" style="width: 75px" placeholder="狭缝" id="slit3Width">&nbsp;um-->
+        <!--            <button type="button" class="btn btn-secondary btn-sm">设置</button>-->
+        <!--        </div>-->
+        <!--        <div id="det2Slit" style="width: auto;height: auto">-->
+        <!--            <input type="text" style="width: 75px" placeholder="狭缝" id="slit0Width">&nbsp;um-->
+        <!--            <button type="button" class="btn btn-secondary btn-sm">设置</button>-->
+        <!--        </div>-->
+        <!--        <div id="en2Slit" style="width: auto;height: auto">-->
+        <!--            <input type="text" style="width: 75px" placeholder="狭缝" id="slit1width">&nbsp;um-->
+        <!--            <button type="button" class="btn btn-secondary btn-sm">设置</button>-->
+        <!--        </div>-->
+        <!--        <div id="en1Slit" style="width: auto;height: auto">-->
+        <!--            <input type="text" style="width: 75px" placeholder="狭缝" id="slit2Width">&nbsp;um-->
+        <!--            <button type="button" class="btn btn-secondary btn-sm">设置</button>-->
+        <!--        </div>-->
+        <div id="specImg" style="height: 65%;width: 68%;">
+            <img src="source/image/spec/spec4.jpg" style="width: 100%;">
+        </div>
+    </div>
+    <!--    <div id="specSetOption" style="height: 26%">-->
+    <!--        <div style="border-right: 3px ridge #555555">-->
+    <!--            <b>快门</b>-->
+    <!--            <input type="checkbox" class="custom-checkbox"  id="shutterOpen" onclick="specBaseSet.setShutter(0,true)">-->
+
+    <!--            &lt;!&ndash;            <p>&ndash;&gt;-->
+    <!--&lt;!&ndash;                <input type="radio" class="custom-radio" name="shutter" id="shutterOpen" onclick="specBaseSet.setShutter(0,true)">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <span>开</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </p>&ndash;&gt;-->
+    <!--&lt;!&ndash;            <p>&ndash;&gt;-->
+    <!--&lt;!&ndash;                <input type="radio" class="custom-radio" name="shutter" id="shutterClose" onclick="specBaseSet.setShutter(0,false)"  checked >&ndash;&gt;-->
+    <!--&lt;!&ndash;                <span>关</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </p>&ndash;&gt;-->
+
+    <!--        </div>-->
+    <!--&lt;!&ndash;        <div style="width: 70%">&ndash;&gt;-->
+    <!--&lt;!&ndash;            <b>单位</b>&ndash;&gt;-->
+    <!--&lt;!&ndash;            <p style="flex-direction: row;width: 100%">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <input type="radio" class="custom-radio" name="specUnit">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <span>波长</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;                <input style="margin-left: 10px" class="custom-radio" type="radio" name="specUnit" checked>&ndash;&gt;-->
+    <!--&lt;!&ndash;                <span>波数</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </p>&ndash;&gt;-->
+    <!--&lt;!&ndash;            <p style="flex-direction: row;width: 100%">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <input id="specLWL" type="text" style="width: 120px" disabled="disabled">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <span>nm</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;                <button type="button" class="btn btn-secondary btn-sm" onclick="specBaseSet.switchUnits()" >设置</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </p>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;        </div>&ndash;&gt;-->
+    <!--    </div>-->
+<!--    style="height: 10%;border-top: 3px ridge #555555;align-items: center;justify-content: center"-->
+    <div id="specOption" >
+        <b data-locale="popup-device-spec-shutter">快门</b>
+        <input type="checkbox" class="custom-checkbox" id="shutterOpen" onclick="specBaseSet.setShutter(0)">
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-spec-ccd" onclick="specBaseSet.waveCorrect()">ccd波长系数校正</button>
+        <input type="file" style="display: none" accept=".bck" id="waveCorrect" multiple>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-spec-scParam" onclick="specBaseSet.openCCDParam()">光谱扫描参数</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="" onclick="main.ask_password(()=>specBaseSet.showSpecAdv())">高级设置</button>
+    </div>
+</div>
+<script>
+    $.getScript('js/control/spec/specBaseSet.js', () => {
+        $('input[name=\'specUnit\']').click(function () {
+            specBaseSet.checkedIndex = $(this).index('input[name=\'specUnit\']');
+        });
+        specBaseSet.initSpecBase()
+
+    })
+</script>

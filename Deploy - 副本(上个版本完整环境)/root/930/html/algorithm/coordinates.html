@@ -1,0 +1,64 @@
+<style>
+    #coordinates{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction:column ;
+    }
+    #childTop{
+        width: 100%;
+        height: 70%;
+        display: inline-flex;
+    }
+    #childTop div:nth-child(1){
+        width: 18%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #childTop div:nth-child(1) input{
+        width: 120px;
+    }
+    #childTop div:nth-child(2){
+        width: 82%;
+        height: 100%;
+        border: 3px ridge #555555;
+    }
+    #childBottom{
+        width: 100%;
+        height: 30%;
+        flex-direction: column;
+        margin-top: 10px;
+        display: inline-flex;
+        align-items: center;
+    }
+    #childBottom div:nth-child(1) input{
+        width: 120px;
+        margin-left: 10px;
+    }
+    #childBottom button{
+        width: 60%;
+        margin-top: 10px;
+    }
+</style>
+<div id="coordinates">
+    <div id="childTop">
+        <div>
+            <span>Y轴最大值</span>
+            <input type="text">
+            <span>Y轴最小值</span>
+            <input type="text">
+        </div>
+        <div></div>
+    </div>
+    <div id="childBottom">
+        <div>
+            <span>X轴最小值</span>
+            <input type="text">
+            <span style="margin-left:10px ">X轴最大值</span>
+            <input type="text">
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm">设置</button>
+        <button type="button" class="btn btn-secondary btn-sm">取消</button>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<style>
+    #delChecked{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #delChecked div{
+        margin-top: 10px;
+        font-size: 16px;
+    }
+</style>
+<div id="delChecked">
+    <div data-locale="popup-edit-removeMsg">您确定要删除勾选曲线吗？</div>
+    <div>
+        <button type="button" class="btn btn-primary btn-sm" data-locale="popup-confirm" onclick="delChecked()">确定</button>
+        <button type="button" class="btn btn-light btn-sm" data-locale="popup-cancel" onclick="cancel()">取消</button>
+    </div>
+</div>
+<script>
+    function delChecked() {
+        let index = $("#delChecked").parents('.jeBox-wrap').attr("id")
+        let lines = main.chart.active_series()
+        let lineNames = new Array();
+        for (let i = 0; i < lines.length; i++) {
+            let name = lines[i].name()
+            lineNames.push(name)
+            main.chart.remove_line(name)
+            main.legend.names.delete(name)
+            $(".legendItem1[lineName="+name+"]").remove()
+        }
+        lineProcess.DeleteLineDataParams(lineNames);
+        $("#"+index+" .jeBox-close").click()
+    }
+    function cancel() {
+        let index = $("#delChecked").parents('.jeBox-wrap').attr("id")
+        $("#"+index+" .jeBox-close").click()
+    }
+
+</script>

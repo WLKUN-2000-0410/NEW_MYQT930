@@ -1,0 +1,87 @@
+[
+{
+	"classType":"D1",
+	"en":"Narcotics",
+	"zh":"毒品及易制毒"
+},
+{
+	"classType":"D2",
+	"en":"Explosive",
+	"zh":"爆炸物"
+},
+{
+	"classType":"D3",
+	"en":"Carcinogenic",
+	"zh":"致癌化学品"
+},
+{
+	"classType":"D4",
+	"en":"Dangerous chemicals",
+	"zh":"危险化学品"
+},
+{
+	"classType":"D5",
+	"en":"Unknown dangerous goods",
+	"zh":"未知危险品"
+},
+{
+	"classType":"R1",
+	"en":"Mineral",
+	"zh":"矿物质"
+},
+{
+	"classType":"M1",
+	"en":"Drugs",
+	"zh":"药品"
+},
+{
+	"classType":"M2",
+	"en":"Pesticides and veterinary drugs",
+	"zh":"农、兽药"
+},
+{
+	"classType":"C1",
+	"en":"Chemicals",
+	"zh":"化学品"
+},
+{
+	"classType":"C2",
+	"en":"Corrosive",
+	"zh":"腐蚀性化学品"
+},
+{
+	"classType":"L1",
+	"en":"Household articles",
+	"zh":"生活民用品"
+},
+{
+	"classType":"P1",
+	"en":"Non degradable plastics",
+	"zh":"不可降解塑料"
+},
+{
+	"classType":"P2",
+	"en":"Degradable plastics",
+	"zh":"可降解塑料"
+},
+{
+	"classType":"F1",
+	"en":"Food additives",
+	"zh":"食品添加剂"
+},
+{
+	"classType":"N1",
+	"en":"Unknown",
+	"zh":"未知分类"
+},
+{
+	"classType":"R2",
+	"en":"Geology",
+	"zh":"地质物"
+},
+{
+	"classType":"Z1",
+	"en":"Zolix",
+	"zh":"Zolix"
+}
+]

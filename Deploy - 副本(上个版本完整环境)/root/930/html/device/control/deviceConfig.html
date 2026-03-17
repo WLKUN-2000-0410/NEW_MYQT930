@@ -1,0 +1,61 @@
+<style>
+    #deviceConfig{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #deviceConfig div{
+        font-size: 16px;
+        display: inline-flex;
+        padding-left: 10px;
+        margin-top: 10px;
+    }
+    #deviceConfig div span{
+        margin-left: 10px;
+    }
+</style>
+<div id="deviceConfig">
+    <div>
+        <input type="checkbox" class="custom-checkbox" deviceType = "0">
+        <span data-locale="popup-device-option-laser">激光器</span>
+    </div>
+    <div>
+        <input type="checkbox" class="custom-checkbox" deviceType = "1">
+        <span data-locale="popup-device-option-ocm">光路电机</span>
+    </div>
+    <div>
+        <input type="checkbox" class="custom-checkbox" deviceType = "2">
+        <span data-locale="popup-device-option-dt">位移台</span>
+    </div>
+    <div>
+        <input type="checkbox" class="custom-checkbox" deviceType = "3">
+        <span data-locale="popup-device-option-camera">相机</span>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#deviceConfig input[deviceType="+0+"]").prop("checked",fConfig.deviceChoose.chooseLaser)
+        $("#deviceConfig input[deviceType="+1+"]").prop("checked",fConfig.deviceChoose.chooseMotor)
+        $("#deviceConfig input[deviceType="+2+"]").prop("checked",fConfig.deviceChoose.chooseTango)
+        $("#deviceConfig input[deviceType="+3+"]").prop("checked",fConfig.deviceChoose.chooseCamera)
+    })
+    $("#deviceConfig input[type=checkbox]").click(function () {
+            let t = Number($(this).attr("deviceType"))
+            let ck = $(this).prop("checked")
+            switch (t) {
+                case 0:{
+                    device.laser.isChecked = ck;
+                }break
+                case 1:{
+                    device.rTOT.isChecked = ck;
+                }break
+                case 2:{
+                    device.dT.isChecked = ck
+                }break
+                case 3:{
+                    device.camera.isChecked = ck;
+                }break
+            }
+    })
+</script>

@@ -1,0 +1,359 @@
+html {
+    width: 100%;
+    height: 100%
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    display: inline-flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: #2b2b2b;
+    font-family: 'microsoft yahei';
+    color: #fff;
+}
+.mainLight{
+    display: inline-flex;
+    width: 110px;
+    align-items: center;
+    margin-left: 10px;
+}
+.mainLight span{
+    font-size: 16px;
+    margin-left: 5px;
+}
+.lightBorder{
+    width: 28px;
+    height: 28px;
+    border-radius: 15px;
+    border: 3px solid #555555;
+    box-shadow: 0 0 5px 0 #555555;
+}
+.breath_light {
+    width: 18px;                                    /* 宽度 */
+    height: 18px;                                    /* 高度 */
+    opacity: 0.1;                                   /* 不透明度 */
+    overflow: hidden;                               /* 溢出隐藏 */
+    background: #dc3545;                            /* 背景色 */
+    border-radius: 15px;
+    margin: 2px;                               /* 外边距 */
+     /*IE10、Firefox and Opera，IE9以及更早的版本不支持 */
+    animation-name: breath;                         /* 动画名称 */
+    animation-duration: 3s;                         /* 动画时长3秒 */
+    animation-timing-function: ease-in-out;         /* 动画速度曲线：以低速开始和结束 */
+    animation-iteration-count: infinite;            /* 播放次数：无限 */
+
+    /* Safari and Chrome */
+    -webkit-animation-name: breath;                 /* 动画名称 */
+    -webkit-animation-duration: 3s;                 /* 动画时长3秒 */
+    -webkit-animation-timing-function: ease-in-out; /* 动画速度曲线：以低速开始和结束 */
+    -webkit-animation-iteration-count: infinite;    /* 播放次数：无限 */
+}
+
+@keyframes breath {
+    from { opacity: 0.1; }                          /* 动画开始时的不透明度 */
+    50%  { opacity:   1; }                          /* 动画50% 时的不透明度 */
+    to   { opacity: 0.1; }                          /* 动画结束时的不透明度 */
+}
+
+@-webkit-keyframes breath {
+    from { opacity: 0.1; }                          /* 动画开始时的不透明度 */
+    50%  { opacity:   1; }                          /* 动画50% 时的不透明度 */
+    to   { opacity: 0.1; }                          /* 动画结束时的不透明度 */
+}
+
+
+/*滚动条*/
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #555555;/*#2b2b2b;*/
+}
+
+::-webkit-scrollbar-track {
+    background-color:#2b2b2b; /*#555555;*/
+}
+
+select{
+    background-color: #2b2b2b;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    height: 28px;
+    text-align: center;
+}
+select:disabled{
+    cursor: not-allowed;
+}
+select > option {
+    background-color: #383838;
+}
+input{
+    border: 1px solid #555555;
+    background-color: #2b2b2b;
+    height: 28px;
+    border-radius: 4px;
+    text-align: center;
+}
+input:disabled{
+    cursor: not-allowed !important;
+}
+
+/*input[type='checkbox'] {*/
+/*    width: 20px;*/
+/*    height: 20px;*/
+/*}*/
+
+#mainHead {
+    width: 99.6%;
+    height: 15%;
+    display: inline-flex;
+    flex-direction: column;
+    margin: 0 0.2%;
+    background-color: #2b2b2b;
+}
+
+#mainBody {
+    width: 99.6%;
+    height: 80%;
+    margin: 0 0.2%;
+    display: inline-flex;
+    background-color: #2b2b2b;
+}
+
+#mainFoot {
+    width: 99.6%;
+    height: 5%;
+    margin: 0 0.2%;
+    display: inline-flex;
+    border: 3px ridge #555555;
+    background-color: #2b2b2b;
+}
+
+#mainTitle {
+    width: 100%;
+    height: 35%;
+    display: inline-flex;
+}
+
+#mainMenu {
+    width: 100%;
+    height: 33%;
+    border-top: 3px ridge #555555;
+    display: inline-flex;
+    align-items: center;
+}
+
+#mainTools {
+    width: 100%;
+    height: 32%;
+    border-top: 3px ridge #555555;
+    border-bottom: 3px ridge #555555;
+}
+#mainTools ul{
+    display: inline-flex;
+    width: 96%;
+    height: 100%;
+    float: left;
+}
+#mainTools button {
+    border: 0;
+}
+#mainTools button:disabled{
+    cursor: not-allowed;
+}
+
+#mainTools button img {
+    width: 28px;
+    height: 28px;
+}
+
+#logo {
+    width: 11%;
+    height: 100%;
+}
+
+#tittle {
+    width: 80%;
+    font-size: 2.7rem;
+    font-weight: 500;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#mainBodyLeft {
+    width: 20%;
+    height: 99.4%;
+    border: 3px ridge #555555;
+    margin-top: 0.15%;
+}
+
+#mainBodyRight {
+    width: 80%;
+    height: 100%;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+#mainChart {
+    width: 100%;
+    height: 70%;
+    display: inline-flex;
+    align-items: center;
+}
+
+#chart {
+    width: 74%;
+    height: 98%;
+    border-top: 3px ridge #555555;
+    border-left: 3px ridge #555555;
+    border-right: 3px ridge #555555;
+    border-bottom: 3px ridge #555555;
+    margin-left: 0.2%;
+}
+
+#legend {
+    width: 25%;
+    height: 99%;
+    border-top: 3px ridge #555555;
+    border-left: 3px ridge #555555;
+    border-right: 3px ridge #555555;
+    border-bottom: 3px ridge #555555;
+    margin-left: 0.5%;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+#mainPolarChart{
+	width: 100%;
+	height: 70%;
+    display: inline-flex;
+    align-items: center;
+}
+
+#polarChart{
+	width: 48%;
+    height: 98%;
+    border: 3px ridge #555555;
+    margin-left: 0.2%;
+}
+
+#polarLineChart{
+	width: 50%;
+    height: 98%;
+    border: 3px ridge #555555;
+    margin-left: 0.5%;
+    display: inline-flex;
+}
+
+
+.legendBtn {
+    width: 100%;
+    height: 10%;
+    margin-top: 1%;
+    border-bottom: 3px ridge #555555;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.legendBtn button {
+    margin-left: 5%;
+}
+
+#legendItem {
+    width: 98%;
+    height: 90%;
+    margin-left: 1%;
+    overflow-y: auto;
+    text-align: left;
+    padding-left: 5%;
+    color: #fff;
+}
+
+.legendItemBtn {
+    display: inline-flex;
+    align-items: center;
+}
+
+.legendItemBtn div {
+    width: 30px;
+    height: 5px;
+    margin-left: 10px;
+    background-color: red;
+}
+
+.legendItemBtn button {
+    border: 0;
+    color: #fff;
+    margin-left: 10px;
+    height: 30px;
+    width: 255px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#mainMsg {
+    width: 99.8%;
+    height: 29.4%;
+    border: 3px ridge #555555;
+    margin-left: 0.2%;
+    margin-top: 0.2%;
+}
+
+#mainMsg button {
+    height: 36px;
+    color: #fff;
+}
+
+#mainMsg div {
+    width: 100%;
+    height: 82%;
+    background-color: #383838;
+    overflow-y: auto;
+    display: inline-flex;
+    flex-direction: column;
+    text-align: left;
+    padding-left: 15px;
+    font-size: 15px;
+}
+
+#mainDS {
+    width: 87%;
+    height: 100%;
+    display: inline-flex;
+}
+
+#mainPA {
+    width: 8%;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    border-left: 3px ridge #555555;
+    border-right: 3px ridge #555555;
+    justify-content: space-around;
+}
+
+#mainHW {
+    width: 8%;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    border-right: 3px ridge #555555;
+    justify-content: space-around;
+}
+
+#mainTemp {
+    width: 5%;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-around;
+}

@@ -1,0 +1,2166 @@
+﻿<?xml version="1.0" encoding="UTF-8"?><!--SendFlag为0时,除执行失败,不发送消息,为1时,不管成功失败都发送-->
+<root name="命令配置文件"> <!-- DoneIndex的值和DoneValue值  是否 匹配 时才执行，否则不执行   依据上一个sdk的执行结果-->
+	<FunNum BussiNumber ="18"   Name="刷新获取仪器序列号">
+		<Step orderIndex ="1"  orderStrName="获取设备数目">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="10"  FunName="获取设备数目">
+				<parameter  paravalue="GlobalShare::g_vecDevSns"  paratype="2"  paraIndex="4001000"  paraCNname="数目">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="19"   Name="设备连接-谱仪">
+		<Step orderIndex ="1"  orderStrName="设备连接-谱仪">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="11"  FunName="设备连接-谱仪">
+				<parameter  paravalue="specDevSN"  paratype="1"  paraIndex="3001101"  paraCNname="序列号">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="2"  DevType="3"  DevName="谱仪"  FunNum="21"  FunName="侧入是否有快门">
+				<parameter  paravalue="0"  paratype="0"  paraIndex="300501"  paraCNname="索引"><!--侧入-->
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300502"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="3"  DevType="3"  DevName="谱仪"  FunNum="21"  FunName="直入是否有快门">
+				<parameter  paravalue="1"  paratype="0"  paraIndex="300501"  paraCNname="索引"><!--直入-->
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300502"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="4"  DevType="3"  DevName="谱仪"  FunNum="21"  FunName="侧出是否有快门">
+				<parameter  paravalue="2"  paratype="0"  paraIndex="300501"  paraCNname="索引"><!--侧出-->
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300502"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="5"  DevType="3"  DevName="谱仪"  FunNum="21"  FunName="直出是否有快门">
+				<parameter  paravalue="3"  paratype="0"  paraIndex="300501"  paraCNname="索引"><!--直出-->
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300502"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="6"  DevType="3"  DevName="谱仪"  FunNum="14"  FunName="确定快门状态是开是关">
+				<parameter  paravalue="3"  paratype="0"  paraIndex="300501"  paraCNname="索引"><!--是开是关-->
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300502"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="7"  DevType="3"  DevName="谱仪"  FunNum="2"  FunName="出口是否有摆镜">
+				<parameter  paravalue="0"  paratype="0"  paraIndex="300201"  paraCNname="索引"><!--出口-->
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300202"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="8"  DevType="3"  DevName="谱仪"  FunNum="2"  FunName="入口是否有摆镜">
+				<parameter  paravalue="1"  paratype="0"  paraIndex="300201"  paraCNname="索引"><!--入口-->
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300202"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="9"  DevType="3"  DevName="谱仪"  FunNum="3"  FunName="确定摆镜直侧">
+				<parameter  paravalue=""     paratype="2"  paraIndex="300301"  paraCNname="标志">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="10"  DevType="3"  DevName="谱仪"  FunNum="17"  FunName="设置光栅模式"> 
+				<parameter  paravalue="1"  paratype="0"  paraIndex="3001701"  paraCNname="序列号"><!--默认true为搭配ccd使用模式-->
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="11"  DevType="3"  DevName="谱仪"  FunNum="18"  FunName="读取光栅参数详情"> 
+				<parameter  paravalue=""  paratype=""  paraIndex="3001801"  paraCNname=""><!--占位  比如返回三个光栅详情-->
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="12"  DevType="3"  DevName="谱仪"  FunNum="19"  FunName="读取当前光栅"> 
+				<parameter  paravalue=""  paratype=""  paraIndex="3001901"  paraCNname=""><!--占位  比如返回当前光栅是哪一个-->
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="13"  DevType="3"  DevName="谱仪"  FunNum="9"  FunName="读取光栅的最大扫描范围">
+				<parameter  paravalue="gratingvalue"  paratype="1"  paraIndex="300901"  paraCNname="光栅索引">
+				</parameter>
+				<parameter  paravalue=""  paratype="2"  paraIndex="300902"  paraCNname="最大扫描范围">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="14"  DevType="3"  DevName="谱仪"  FunNum="1"  FunName="单色仪绝对移动">
+				<parameter  paravalue="centerwave"  paratype="1"  paraIndex="300101"  paraCNname="中心波长">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="15"  DevType="3"  DevName="谱仪"  FunNum="5"  FunName="侧入是否有狭缝">
+				<parameter  paravalue="0"  paratype="0"  paraIndex="300501"  paraCNname="索引"><!--侧入-->
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300502"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="16"  DevType="3"  DevName="谱仪"  FunNum="5"  FunName="侧出是否有狭缝">
+				<parameter  paravalue="1"  paratype="0"  paraIndex="300501"  paraCNname="侧出索引"><!--侧出-->
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300502"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="17"  DevType="3"  DevName="谱仪"  FunNum="5"  FunName="直出是否有狭缝">
+				<parameter  paravalue="2"  paratype="0"  paraIndex="300501"  paraCNname="索引"><!--直出-->
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300502"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="18"  DevType="3"  DevName="谱仪"  FunNum="5"  FunName="直入是否有狭缝">
+				<parameter  paravalue="3"  paratype="0"  paraIndex="300501"  paraCNname="索引"><!--直入-->
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300502"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="19"  DevType="3"  DevName="谱仪"  FunNum="20"  FunName="读取自动狭缝型号">
+				<parameter  paravalue=""  paratype=""  paraIndex="3002001"  paraCNname="索引"><!--占位 -->
+				</parameter>
+				<parameter  paravalue=""     paratype=""  paraIndex="3002002"  paraCNname="型号"><!--占位 -->
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="20"  DevType="3"  DevName="谱仪"  FunNum="6"  FunName="设置自动狭缝宽度">
+				<parameter  paravalue=""  paratype=""  paraIndex="300601"  paraCNname="索引"><!--占位 -->
+				</parameter>
+				<parameter  paravalue="slitwidth"  paratype="1"  paraIndex="300602"  paraCNname="宽度">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="20"   Name="设备断开-谱仪">
+		<Step orderIndex ="1"  orderStrName="设备断开-谱仪">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="12"  FunName="设备断开-谱仪">
+				<parameter  paravalue=""  paratype="1"  paraIndex="3001201"  paraCNname="句柄">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="1501"   Name="稳定性测试-采集初始化部分">
+		<Step orderIndex ="1"  orderStrName="稳定性测试">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="1"  FunName="单色仪绝对移动">
+				<parameter  paravalue="centerwave"  paratype="1"  paraIndex="300101"  paraCNname="中心波长"><!---->
+				</parameter>
+			</Dev>
+		</Step>
+		<Step orderIndex ="2"  orderStrName="获取X轴">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="1"  FunName="获取一个像素点尺寸">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400101"  paraCNname="像元宽度"/>
+			</Dev>
+			<Dev sdkIndex = "2"  DevType="4"  DevName="CCD"  FunNum="2"  FunName="获取相机X轴Y轴大小">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400201"  paraCNname="相机X轴大小"/>
+				<parameter  paravalue=""  paratype="2"  paraIndex="400202"  paraCNname="相机Y轴大小"/>
+			</Dev>
+			<Dev sdkIndex = "3"  DevType="3"  DevName="谱仪"  FunNum="4"  FunName="像素转波长">
+				<parameter  paravalue="400101"  paratype="3"  paraIndex="300401"  paraCNname="像元宽度"/>
+				<parameter  paravalue="centerwave"  paratype="1"  paraIndex="300402"  paraCNname="中心波长"/>
+				<parameter  paravalue="400201"  paratype="3"  paraIndex="300403"  paraCNname="像元数"/>
+				<parameter  paravalue=""  paratype="2"  paraIndex="300404"  paraCNname="将像素转换得到的波长值"/>
+			</Dev>
+		</Step>
+		<Step orderIndex ="3"  orderStrName="设置小一点的积分时间">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="ccd"  FunNum="16"  FunName="设置相机积分时间">
+				<parameter  paravalue="0.2"  paratype="0"  paraIndex="4001601"  paraCNname="积分时间">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="2"  DevType="4"  DevName="ccd"  FunNum="13"  FunName="读取谱线数据-清缓存">
+				<parameter  paravalue="400201"  paratype="3"  paraIndex="400801"  paraCNname="相机X轴长度">
+				</parameter>
+				<parameter  paravalue=""  paratype="2"  paraIndex="400802"  paraCNname="采集数据">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="3"  DevType="4"  DevName="ccd"  FunNum="3"  FunName="设置相机积分时间">
+				<parameter  paravalue="ExpTime"  paratype="1"  paraIndex="400301"  paraCNname="积分时间">
+				</parameter>
+			</Dev>  		
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="1502"   Name="稳定性测试-循环部分">
+		<Step orderIndex ="1"  orderStrName="稳定性测试">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="ccd"  FunNum="15"  FunName="读取谱线数据">
+				<parameter  paravalue="400201"  paratype="3"  paraIndex="400801"  paraCNname="相机X轴长度">
+				</parameter>
+				<parameter  paravalue=""  paratype="2"  paraIndex="400802"  paraCNname="采集数据">
+				</parameter>
+			</Dev> 
+		</Step>
+		<Step orderIndex ="2" orderStrName="计算">
+			<Dev sdkIndex = "1"  DevType="8"  DevName="计算"  FunNum="6"  FunName="峰面积">
+				<parameter paravalue=""  paratype="1"  paraIndex="800601"  paraCNname="数组大小"/>
+				<parameter paravalue=""  paratype="1"  paraIndex="800602"  paraCNname="数组"/>
+			</Dev>
+		</Step>
+		<Step orderIndex ="3" orderStrName="计算">
+			<Dev sdkIndex = "1"  DevType="8"  DevName="计算"  FunNum="7"  FunName="半高宽">
+				<parameter paravalue=""  paratype="1"  paraIndex="800701"  paraCNname="数组大小"/>
+				<parameter paravalue=""  paratype="1"  paraIndex="800702"  paraCNname="数组"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="1503"   Name="稳定性测试-停止">
+		<Step orderIndex ="1"  orderStrName="停止稳定性测试">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="ccd"  FunNum="27"  FunName="停止稳定性测试">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname=""><!--占位-->
+				</parameter>
+			</Dev> 
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="1511"   Name="接谱性测试-采集初始化部分">
+		<Step orderIndex ="1"  orderStrName="确定中心波长范围">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="22"  FunName="中心波长范围单位转换">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+			<Dev sdkIndex ="2"  DevType="3"  DevName="谱仪"  FunNum="23"  FunName="获取谱仪焦距和光栅刻线">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+			<Dev sdkIndex ="3"  DevType="3"  DevName="谱仪"  FunNum="24"  FunName="获取光栅刻线">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+		</Step>
+		<Step orderIndex ="2"  orderStrName="获取中心波长">
+			<Dev sdkIndex = "1"  DevType="3"  DevName="谱仪"  FunNum="25"  FunName="获取中心波长">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="1512"   Name="接谱性测试-循环部分">
+		<Step orderIndex ="1"  orderStrName="切换到指定中心波长">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="26"  FunName="切换到指定中心波长">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+		</Step>
+		<Step orderIndex ="2"  orderStrName="获取X轴">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="1"  FunName="获取一个像素点尺寸">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400101"  paraCNname="像元宽度"/>
+			</Dev>
+			<Dev sdkIndex = "2"  DevType="4"  DevName="CCD"  FunNum="2"  FunName="获取相机X轴Y轴大小">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400201"  paraCNname="相机X轴大小"/>
+				<parameter  paravalue=""  paratype="2"  paraIndex="400202"  paraCNname="相机Y轴大小"/>
+			</Dev>
+			<Dev sdkIndex = "3"  DevType="3"  DevName="谱仪"  FunNum="4"  FunName="像素转波长">
+				<parameter  paravalue="400101"  paratype="3"  paraIndex="300401"  paraCNname="像元宽度"/>
+				<parameter  paravalue="centerwave"  paratype="1"  paraIndex="300402"  paraCNname="中心波长"/>
+				<parameter  paravalue="400201"  paratype="3"  paraIndex="300403"  paraCNname="像元数"/>
+				<parameter  paravalue=""  paratype="2"  paraIndex="300404"  paraCNname="将像素转换得到的波长值"/>
+			</Dev>
+		</Step>
+		<Step orderIndex ="3"  orderStrName="获取X轴数据">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="27"  FunName="获取X轴数据">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+		</Step>
+		<Step orderIndex ="4"  orderStrName="设置小一点的积分时间">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="ccd"  FunNum="16"  FunName="设置相机积分时间">
+				<parameter  paravalue="0.2"  paratype="0"  paraIndex="4001601"  paraCNname="积分时间">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="2"  DevType="4"  DevName="ccd"  FunNum="13"  FunName="读取谱线数据-清缓存">
+				<parameter  paravalue="400201"  paratype="3"  paraIndex="400801"  paraCNname="相机X轴长度">
+				</parameter>
+				<parameter  paravalue=""  paratype="2"  paraIndex="400802"  paraCNname="采集数据">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="3"  DevType="4"  DevName="ccd"  FunNum="3"  FunName="设置相机积分时间">
+				<parameter  paravalue="ExpTime"  paratype="1"  paraIndex="400301"  paraCNname="积分时间">
+				</parameter>
+			</Dev>   
+		</Step>
+		<Step orderIndex ="5"  orderStrName="接谱数据衔接">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="ccd"  FunNum="17"  FunName="累计CCD数据">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+			<Dev sdkIndex ="2"  DevType="3"  DevName="谱仪"  FunNum="28"  FunName="衔接数据">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="1520"   Name="图谱采集-初始化部分">
+		<Step orderIndex ="1"  orderStrName="图谱采集-初始化部分">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="2"  FunName="获取相机X轴Y轴大小">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400201"  paraCNname="相机X轴大小"/>
+				<parameter  paravalue=""  paratype="2"  paraIndex="400202"  paraCNname="相机Y轴大小"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="1521"   Name="图谱采集-循环部分">
+		<Step orderIndex ="1"  orderStrName="图谱采集-循环部分">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="20"  FunName="图谱采集">
+				<parameter  paravalue="ExpTime"  paratype="1"  paraIndex="4002001"  paraCNname="积分时间"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="56"   Name="保存图谱原始数据">
+		<Step orderIndex ="1"  orderStrName="保存图谱原始数据">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="21"  FunName="保存图谱原始数据">
+				<parameter  paravalue="ccdFilePath"  paratype="1"  paraIndex="4002101"  paraCNname="文件绝对路径"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="57"   Name="获取CCD增益列表">
+		<Step orderIndex ="1"  orderStrName="获取CCD增益列表">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="22"  FunName="获取CCD增益列表">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="58"   Name="CCD处理坏点">
+		<Step orderIndex ="1"  orderStrName="CCD处理坏点">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="23"  FunName="处理坏点">
+				<parameter  paravalue="ccd_badpoints"  paratype="1"  paraIndex="4002301"  paraCNname="坏点"/>
+				<parameter  paravalue="bHMirror"  paratype="1"  paraIndex="4002302"  paraCNname="正向反向"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="63"   Name="CCD获取镜像方向和坏点">
+		<Step orderIndex ="1"  orderStrName="CCD获取镜像方向和坏点">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="28"  FunName="获取镜像和坏点">
+				<parameter  paravalue="0"  paratype="0"  paraIndex="0"  paraCNname="占位"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="1703"   Name="Mapping测试-停止采集">
+		<Step orderIndex ="1"  orderStrName="停止采集">
+			<Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="16"  FunName="停止采集">
+				<parameter  paravalue="0"  paratype="0"  paraIndex="0"  paraCNname="占位"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="1701"   Name="Mapping测试-采集初始化部分">
+		<Step orderIndex ="1"  orderStrName="稳定性测试">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="1"  FunName="单色仪绝对移动">
+				<parameter  paravalue="centerwave"  paratype="1"  paraIndex="300101"  paraCNname="中心波长"><!---->
+				</parameter>
+			</Dev>
+		</Step>
+		<Step orderIndex ="2"  orderStrName="获取X轴">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="1"  FunName="获取一个像素点尺寸">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400101"  paraCNname="像元宽度"/>
+			</Dev>
+			<Dev sdkIndex = "2"  DevType="4"  DevName="CCD"  FunNum="2"  FunName="获取相机X轴Y轴大小">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400201"  paraCNname="相机X轴大小"/>
+				<parameter  paravalue=""  paratype="2"  paraIndex="400202"  paraCNname="相机Y轴大小"/>
+			</Dev>
+			<Dev sdkIndex = "3"  DevType="3"  DevName="谱仪"  FunNum="4"  FunName="像素转波长">
+				<parameter  paravalue="400101"  paratype="3"  paraIndex="300401"  paraCNname="像元宽度"/>
+				<parameter  paravalue="centerwave"  paratype="1"  paraIndex="300402"  paraCNname="中心波长"/>
+				<parameter  paravalue="400201"  paratype="3"  paraIndex="300403"  paraCNname="像元数"/>
+				<parameter  paravalue=""  paratype="2"  paraIndex="300404"  paraCNname="将像素转换得到的波长值"/>
+			</Dev>
+		</Step>
+		<Step orderIndex ="3"  orderStrName="mapping其它设置">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="ccd"  FunNum="3"  FunName="设置相机积分时间">
+				<parameter  paravalue="ExpTime"  paratype="1"  paraIndex="400301"  paraCNname="积分时间">
+				</parameter>
+			</Dev>   
+			<Dev sdkIndex ="2"  DevType="3"  DevName="谱仪"  FunNum="6"  FunName="设置自动狭缝宽度">
+				<parameter  paravalue=""  paratype=""  paraIndex="300601"  paraCNname="索引"><!--占位 -->
+				</parameter>
+				<parameter  paravalue="slitwidth"  paratype="1"  paraIndex="300602"  paraCNname="宽度">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="3"  DevType="7"  DevName="mapping"  FunNum="1"  FunName="单波长强度积分亮度等setShowMode设置">
+				<parameter  paravalue="strMode"  paratype="1"  paraIndex="700101"  paraCNname="nMode"><!--占位 -->
+				</parameter>
+				<parameter  paravalue="dWave0"  paratype="1"  paraIndex="700102"  paraCNname="dWave[0]"><!--占位 -->
+				</parameter>
+				<parameter  paravalue="dWave1"  paratype="1"  paraIndex="700103"  paraCNname="dWave[1]"><!--占位 -->
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="4"  DevType="7"  DevName="mapping"  FunNum="28"  FunName="扫描时设置光栅数据">
+				<parameter  paravalue="times"       paratype="1"  paraIndex="7002801"  paraCNname="累计次数">
+				</parameter>
+				<parameter  paravalue="ExpTime"     paratype="1"  paraIndex="7002802"  paraCNname="积分时间">
+				</parameter>
+				<parameter  paravalue="400201"      paratype="3"  paraIndex="7002803"  paraCNname="ccd像素个数">
+				</parameter>
+				<parameter  paravalue="ScanMode"    paratype="1"  paraIndex="7002804"  paraCNname="0-常规扫描 1-弓字型扫描 2-快速扫描">
+				</parameter>
+				<parameter  paravalue="XCenterPos"  paratype="1"  paraIndex="7002805"  paraCNname="输入X中心位置">
+				</parameter>
+				<parameter  paravalue="YCenterPos"  paratype="1"  paraIndex="7002806"  paraCNname="输入Y中心位置">
+				</parameter>
+        <parameter  paravalue="ZCenterPos"  paratype="1"  paraIndex="7002807"  paraCNname="输入Z中心位置">
+        </parameter>
+				<parameter  paravalue="XLength"     paratype="1"  paraIndex="7002808"  paraCNname="X长度">
+				</parameter>
+				<parameter  paravalue="YLength"     paratype="1"  paraIndex="7002809"  paraCNname="Y长度">
+				</parameter>
+        <parameter  paravalue="ZLength"     paratype="1"  paraIndex="7002810"  paraCNname="Z长度">
+        </parameter>
+				<parameter  paravalue="mapStep"     paratype="1"  paraIndex="7002811"  paraCNname="步长">
+				</parameter>
+				<parameter  paravalue="PointNumX"   paratype="1"  paraIndex="7002812"  paraCNname="输入点数">
+				</parameter>
+				<parameter  paravalue="PointNumY"   paratype="1"  paraIndex="7002813"  paraCNname="根据Y算出">
+				</parameter>
+        <parameter  paravalue="PointNumZ"   paratype="1"  paraIndex="7002814"  paraCNname="根据Z算出">
+        </parameter>
+				<parameter  paravalue="SetpMode"    paratype="1"  paraIndex="7002815"  paraCNname="计算时步距还是点数">
+				</parameter>
+				<parameter  paravalue="nNMCN"       paratype="1"  paraIndex="7002816"  paraCNname="扫描0-波长 1-波数">
+				</parameter>
+				<parameter  paravalue="fLaserWave"  paratype="1"  paraIndex="7002817"  paraCNname="fLaserWave实际波长">
+				</parameter>
+			</Dev> 
+			<Dev sdkIndex ="5"  DevType="7"  DevName="mapping"  FunNum="2"  FunName="写入X轴数据及长度">
+				<parameter  paravalue="400201"  paratype="3"  paraIndex="700201"  paraCNname="X轴大小">
+				</parameter>
+			</Dev> 
+      <Dev sdkIndex ="6" DevType="7"  DevName="mapping"  FunNum="29"  FunName="开始采集">
+        <parameter  paravalue="XCenterPos"  paratype="1"  paraIndex="7002901"  paraCNname="输入X中心位置">
+        </parameter>
+        <parameter  paravalue="YCenterPos"  paratype="1"  paraIndex="7002902"  paraCNname="输入Y中心位置">
+        </parameter>
+        <parameter  paravalue="ZCenterPos"  paratype="1"  paraIndex="7002903"  paraCNname="输入Z中心位置">
+        </parameter>
+        <parameter  paravalue="XLength"     paratype="1"  paraIndex="7002904"  paraCNname="X长度">
+        </parameter>
+        <parameter  paravalue="YLength"     paratype="1"  paraIndex="7002905"  paraCNname="Y长度">
+        </parameter>
+        <parameter  paravalue="ZLength"     paratype="1"  paraIndex="7002906"  paraCNname="Z长度">
+        </parameter>
+        <parameter  paravalue="mapStep"     paratype="1"  paraIndex="7002907"  paraCNname="步长">
+        </parameter>
+        <parameter  paravalue="400201"      paratype="3"  paraIndex="7002908"  paraCNname="ccd像素个数">
+        </parameter>
+        <parameter  paravalue="7002801"     paratype="1"  paraIndex="7002909"  paraCNname="累计次数">
+        </parameter>
+        <parameter  paravalue="xStep"       paratype="1"  paraIndex="7002910"  paraCNname="步长">
+        </parameter>
+        <parameter  paravalue="yStep"       paratype="1"  paraIndex="7002911"  paraCNname="步长">
+        </parameter>
+        <parameter  paravalue="zStep"       paratype="1"  paraIndex="7002912"  paraCNname="步长">
+        </parameter>
+      </Dev>
+		</Step>
+	</FunNum>
+  <FunNum BussiNumber ="2701"   Name="Mapping3D测试-采集初始化部分">
+    <Step orderIndex ="1"  orderStrName="稳定性测试">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="1"  FunName="单色仪绝对移动">
+        <parameter  paravalue="centerwave"  paratype="1"  paraIndex="300101"  paraCNname="中心波长">
+          <!---->
+        </parameter>
+      </Dev>
+    </Step>
+    <Step orderIndex ="2"  orderStrName="获取X轴">
+      <Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="1"  FunName="获取一个像素点尺寸">
+        <parameter  paravalue=""  paratype="2"  paraIndex="400101"  paraCNname="像元宽度"/>
+      </Dev>
+      <Dev sdkIndex = "2"  DevType="4"  DevName="CCD"  FunNum="2"  FunName="获取相机X轴Y轴大小">
+        <parameter  paravalue=""  paratype="2"  paraIndex="400201"  paraCNname="相机X轴大小"/>
+        <parameter  paravalue=""  paratype="2"  paraIndex="400202"  paraCNname="相机Y轴大小"/>
+      </Dev>
+      <Dev sdkIndex = "3"  DevType="3"  DevName="谱仪"  FunNum="4"  FunName="像素转波长">
+        <parameter  paravalue="400101"  paratype="3"  paraIndex="300401"  paraCNname="像元宽度"/>
+        <parameter  paravalue="centerwave"  paratype="1"  paraIndex="300402"  paraCNname="中心波长"/>
+        <parameter  paravalue="400201"  paratype="3"  paraIndex="300403"  paraCNname="像元数"/>
+        <parameter  paravalue=""  paratype="2"  paraIndex="300404"  paraCNname="将像素转换得到的波长值"/>
+      </Dev>
+    </Step>
+    <Step orderIndex ="3"  orderStrName="mapping其它设置">
+      <Dev sdkIndex ="1"  DevType="4"  DevName="ccd"  FunNum="3"  FunName="设置相机积分时间">
+        <parameter  paravalue="ExpTime"  paratype="1"  paraIndex="400301"  paraCNname="积分时间">
+        </parameter>
+      </Dev>
+      <Dev sdkIndex ="2"  DevType="3"  DevName="谱仪"  FunNum="6"  FunName="设置自动狭缝宽度">
+        <parameter  paravalue=""  paratype=""  paraIndex="300601"  paraCNname="索引">
+          <!--占位 -->
+        </parameter>
+        <parameter  paravalue="slitwidth"  paratype="1"  paraIndex="300602"  paraCNname="宽度">
+        </parameter>
+      </Dev>
+      <Dev sdkIndex ="3"  DevType="7"  DevName="mapping"  FunNum="1"  FunName="单波长强度积分亮度等setShowMode设置">
+        <parameter  paravalue="strMode"  paratype="1"  paraIndex="700101"  paraCNname="nMode">
+          <!--占位 -->
+        </parameter>
+        <parameter  paravalue="dWave0"  paratype="1"  paraIndex="700102"  paraCNname="dWave[0]">
+          <!--占位 -->
+        </parameter>
+        <parameter  paravalue="dWave1"  paratype="1"  paraIndex="700103"  paraCNname="dWave[1]">
+          <!--占位 -->
+        </parameter>
+      </Dev>
+      <Dev sdkIndex ="4"  DevType="7"  DevName="mapping"  FunNum="3"  FunName="扫描时设置光栅数据">
+        <parameter  paravalue="times"  paratype="1"  paraIndex="700301"  paraCNname="累计次数">
+        </parameter>
+        <parameter  paravalue="ExpTime"  paratype="1"  paraIndex="700302"  paraCNname="积分时间">
+        </parameter>
+        <parameter  paravalue="400201"  paratype="3"  paraIndex="700303"  paraCNname="ccd像素个数">
+        </parameter>
+        <parameter  paravalue="ScanMode"  paratype="1"  paraIndex="700304"  paraCNname="0-常规扫描 1-弓字型扫描 2-快速扫描">
+        </parameter>
+        <parameter  paravalue="XCenterPos"  paratype="1"  paraIndex="700305"  paraCNname="输入X中心位置">
+        </parameter>
+        <parameter  paravalue="YCenterPos"  paratype="1"  paraIndex="700306"  paraCNname="输入Y中心位置">
+        </parameter>
+        <parameter  paravalue="XLength"  paratype="1"  paraIndex="700307"  paraCNname="X长度">
+        </parameter>
+        <parameter  paravalue="YLength"  paratype="1"  paraIndex="700308"  paraCNname="Y长度">
+        </parameter>
+        <parameter  paravalue="mapStep"  paratype="1"  paraIndex="700309"  paraCNname="步长">
+        </parameter>
+
+        <parameter  paravalue="PointNumX"  paratype="1"  paraIndex="7003010"  paraCNname="输入点数">
+        </parameter>
+        <parameter  paravalue="PointNumY"  paratype="1"  paraIndex="7003011"  paraCNname="根据Y算出">
+        </parameter>
+        <parameter  paravalue="SetpMode"  paratype="1"  paraIndex="7003012"  paraCNname="计算时步距还是点数">
+        </parameter>
+        <parameter  paravalue="nNMCN"  paratype="1"  paraIndex="7003013"  paraCNname="扫描0-波长 1-波数">
+        </parameter>
+        <parameter  paravalue="fLaserWave"  paratype="1"  paraIndex="7003014"  paraCNname="fLaserWave实际波长">
+        </parameter>
+      </Dev>
+      <Dev sdkIndex ="5"  DevType="7"  DevName="mapping"  FunNum="2"  FunName="写入X轴数据及长度">
+        <parameter  paravalue="400201"  paratype="3"  paraIndex="700201"  paraCNname="X轴大小">
+        </parameter>
+      </Dev>
+      <Dev sdkIndex ="6" DevType="7"  DevName="mapping"  FunNum="17"  FunName="开始采集">
+        <parameter  paravalue="XCenterPos"  paratype="1"  paraIndex="7001701"  paraCNname="输入X中心位置">
+        </parameter>
+        <parameter  paravalue="YCenterPos"  paratype="1"  paraIndex="7001702"  paraCNname="输入Y中心位置">
+        </parameter>
+        <parameter  paravalue="ZCenterPos"  paratype="1"  paraIndex="7001703"  paraCNname="输入Z中心位置">
+        </parameter>
+        <parameter  paravalue="XLength"     paratype="1"  paraIndex="7001704"  paraCNname="X长度">
+        </parameter>
+        <parameter  paravalue="YLength"     paratype="1"  paraIndex="7001705"  paraCNname="Y长度">
+        </parameter>
+        <parameter  paravalue="ZLength"     paratype="1"  paraIndex="7001706"  paraCNname="Z长度">
+        </parameter>
+        <parameter  paravalue="mapStep"     paratype="1"  paraIndex="7001707"  paraCNname="步长">
+        </parameter>
+        <parameter  paravalue="400201"      paratype="3"  paraIndex="7001708"  paraCNname="ccd像素个数">
+        </parameter>
+        <parameter paravalue="saveFilePath" paratype="1"  paraIndex="7001709"  paraCNname="保存文件路径">
+        </parameter>
+        <parameter  paravalue="700301"  paratype="1"  paraIndex="7001710"  paraCNname="累计次数">
+        </parameter>
+        <parameter  paravalue="xStep"       paratype="1"  paraIndex="7001711"  paraCNname="步长">
+        </parameter>
+        <parameter  paravalue="yStep"       paratype="1"  paraIndex="7001712"  paraCNname="步长">
+        </parameter>
+        <parameter  paravalue="zStep"       paratype="1"  paraIndex="7001713"  paraCNname="步长">
+        </parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+	<FunNum BussiNumber ="1710"   Name="Mapping图双击">
+		<Step orderIndex ="1"  orderStrName="传递xy">
+			<Dev sdkIndex ="1"  DevType="7"  DevName="mapping"  FunNum="9"  FunName="传递xy">
+				<parameter  paravalue="mapxpos"  paratype="1"  paraIndex="700901"  paraCNname="x值">
+				</parameter>
+				<parameter  paravalue="mapypos"  paratype="1"  paraIndex="700902"  paraCNname="y值">
+				</parameter>
+			</Dev>
+		</Step>	
+	</FunNum>
+	<FunNum BussiNumber ="62"   Name="谱仪设置界面参数">
+		<Step orderIndex ="1"  orderStrName="谱仪设置界面参数">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="30"  FunName="谱仪设置界面参数">
+				<parameter  paravalue="FOCLEN"  paratype="1"  paraIndex="3003001"  paraCNname="谱仪焦距"/>
+				<parameter  paravalue="ANGDEV"  paratype="1"  paraIndex="3003002"  paraCNname="谱仪内置角"/>
+				<parameter  paravalue="FOCTLT"  paratype="1"  paraIndex="3003003"  paraCNname="焦面倾斜角"/>
+				<parameter  paravalue="POLY1"  paratype="1"  paraIndex="3003004"  paraCNname="光栅矫正系数1"/>
+				<parameter  paravalue="POLY2"  paratype="1"  paraIndex="3003005"  paraCNname="光栅矫正系数2"/>
+				<parameter  paravalue="POLY3"  paratype="1"  paraIndex="3003006"  paraCNname="光栅矫正系数3"/>
+				<parameter  paravalue="POLY4"  paratype="1"  paraIndex="3003007"  paraCNname="光栅矫正系数4"/>
+				<parameter  paravalue="POLY5"  paratype="1"  paraIndex="3003008"  paraCNname="光栅矫正系数5"/>
+				<parameter  paravalue="SINAMPLITUDE"  paratype="1"  paraIndex="3003009"  paraCNname="振幅"/>
+				<parameter  paravalue="SINPHASE"  paratype="1"  paraIndex="3003010"  paraCNname="相位"/>
+				<parameter  paravalue="SINFREQUENCY"  paratype="1"  paraIndex="3003011"  paraCNname="频率"/>
+				<parameter  paravalue="GRATSTART"  paratype="1"  paraIndex="3003012"  paraCNname="光栅起始电机步数"/>
+				<parameter  paravalue="GRATOFFSET"  paratype="1"  paraIndex="3003013"  paraCNname="光栅偏置电机步数"/>
+				<parameter  paravalue="GRATLINES"  paratype="1"  paraIndex="3003014"  paraCNname="光栅刻线"/>
+				<parameter  paravalue="GRATBLAZE"  paratype="1"  paraIndex="3003015"  paraCNname="光栅闪耀波长"/>
+				<parameter  paravalue="DETECTOROFFSET1"  paratype="1"  paraIndex="3003016"  paraCNname="直出偏置"/>
+				<parameter  paravalue="DETECTOROFFSET2"  paratype="1"  paraIndex="3003017"  paraCNname="侧出偏置"/>
+				<parameter  paravalue="gratingIndex"  paratype="1"  paraIndex="3003018"  paraCNname="光栅下标"/>
+			</Dev>
+		</Step>	
+	</FunNum>
+	<FunNum BussiNumber ="61"   Name="谱仪获取界面参数">
+		<Step orderIndex ="1"  orderStrName="谱仪获取界面参数">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="29"  FunName="谱仪获取界面参数">
+				<parameter  paravalue="gratingIndex"  paratype="1"  paraIndex="3002901"  paraCNname="占位"/>
+			</Dev>
+		</Step>	
+	</FunNum>
+	<FunNum BussiNumber ="71"   Name="谱仪获取版本信息">
+		<Step orderIndex ="1"  orderStrName="谱仪获取版本信息">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="32"  FunName="谱仪获取界面参数">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+		</Step>	
+	</FunNum>
+	<FunNum BussiNumber ="70"   Name="CCD波长系数校正">
+		<Step orderIndex ="1"  orderStrName="CCD波长系数校正">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="31"  FunName="CCD波长系数校正">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+		</Step>
+		<Step orderIndex ="2"  orderStrName="谱仪设置界面参数">
+		  <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="33"  FunName="谱仪设置界面参数">
+			<parameter  paravalue="FOCLEN"  paratype="1"  paraIndex="3003001"  paraCNname="谱仪焦距"/>
+			<parameter  paravalue="ANGDEV"  paratype="1"  paraIndex="3003002"  paraCNname="谱仪内置角"/>
+			<parameter  paravalue="FOCTLT"  paratype="1"  paraIndex="3003003"  paraCNname="焦面倾斜角"/>
+			<parameter  paravalue="POLY1"  paratype="1"  paraIndex="3003004"  paraCNname="光栅矫正系数1"/>
+			<parameter  paravalue="POLY2"  paratype="1"  paraIndex="3003005"  paraCNname="光栅矫正系数2"/>
+			<parameter  paravalue="POLY3"  paratype="1"  paraIndex="3003006"  paraCNname="光栅矫正系数3"/>
+			<parameter  paravalue="POLY4"  paratype="1"  paraIndex="3003007"  paraCNname="光栅矫正系数4"/>
+			<parameter  paravalue="POLY5"  paratype="1"  paraIndex="3003008"  paraCNname="光栅矫正系数5"/>
+			<parameter  paravalue="SINAMPLITUDE"  paratype="1"  paraIndex="3003009"  paraCNname="振幅"/>
+			<parameter  paravalue="SINPHASE"  paratype="1"  paraIndex="3003010"  paraCNname="相位"/>
+			<parameter  paravalue="SINFREQUENCY"  paratype="1"  paraIndex="3003011"  paraCNname="频率"/>
+			<parameter  paravalue="GRATSTART"  paratype="1"  paraIndex="3003012"  paraCNname="光栅起始电机步数"/>
+			<parameter  paravalue="GRATOFFSET"  paratype="1"  paraIndex="3003013"  paraCNname="光栅偏置电机步数"/>
+			<parameter  paravalue="GRATLINES"  paratype="1"  paraIndex="3003014"  paraCNname="光栅刻线"/>
+			<parameter  paravalue="GRATBLAZE"  paratype="1"  paraIndex="3003015"  paraCNname="光栅闪耀波长"/>
+			<parameter  paravalue="DETECTOROFFSET1"  paratype="1"  paraIndex="3003016"  paraCNname="直出偏置"/>
+			<parameter  paravalue="DETECTOROFFSET2"  paratype="1"  paraIndex="3003017"  paraCNname="侧出偏置"/>
+			<parameter  paravalue="gratingIndex"  paratype="1"  paraIndex="3003018"  paraCNname="光栅下标"/>
+		  </Dev>
+		</Step>		
+	</FunNum>
+	<FunNum BussiNumber ="72"   Name="获取光栅最大扫描范围">
+		<Step orderIndex ="1"  orderStrName="获取当前光栅的最大波长">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="9"  FunName="读取光栅的最大扫描范围">
+				<parameter  paravalue="gratingvalue"  paratype="1"  paraIndex="300901"  paraCNname="光栅索引">
+				</parameter>
+				<parameter  paravalue=""  paratype="2"  paraIndex="300902"  paraCNname="最大扫描范围">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="66"   Name="获取显示模式数据">
+		<Step orderIndex ="1"  orderStrName="获取显示模式数据">
+			<Dev sdkIndex ="1"  DevType="7"  DevName="mapping"  FunNum="11"  FunName="设置路径">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+			<Dev sdkIndex ="2"  DevType="7"  DevName="mapping"  FunNum="10"  FunName="获取显示模式数据">
+				<parameter  paravalue="mapnMode"  paratype="1"  paraIndex="7001001"  paraCNname="模式"/>
+				<parameter  paravalue="mapdWave0"  paratype="1"  paraIndex="7001002"  paraCNname="dWave0"/>
+				<parameter  paravalue="mapdWave1"  paratype="1"  paraIndex="7001003"  paraCNname="dWave1"/>
+				<parameter  paravalue="mapfSize"  paratype="1"  paraIndex="7001004"  paraCNname="数据大小"/>
+			</Dev>
+		</Step>	
+	</FunNum>
+	<FunNum BussiNumber ="21"   Name="设备连接-数采">
+		<Step orderIndex ="1"  orderStrName="设备连接-数采">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="数采"  FunNum="4"  FunName="设备连接-数采">
+				<parameter  paravalue="ccdDevSN"  paratype="1"  paraIndex="400401"  paraCNname="序列号">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="22"   Name="设备断开-数采">
+		<Step orderIndex ="1"  orderStrName="设备断开-数采">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="数采"  FunNum="5"  FunName="设备断开-数采">
+				<parameter  paravalue=""  paratype="1"  paraIndex="300501"  paraCNname="句柄">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="23"   Name="设备连接-光路电机">
+		<Step orderIndex ="1"  orderStrName="设备连接-光路电机">
+			<Dev sdkIndex ="1"  DevType="2"  DevName="光路电机"  FunNum="4"  FunName="设备连接-光路电机">
+				<parameter  paravalue="motorDevSN"  paratype="1"  paraIndex="200401"  paraCNname="序列号">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex = "2" DevType="2"  DevName="光路电机"  FunNum="2"  FunName="控制激光器切换">
+				<parameter  paravalue="0"  paratype="0" paraIndex="200201"  paraCNname="激光器型号">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex = "3" DevType="2"  DevName="光路电机"  FunNum="7"  FunName="设置反射镜角度">
+				<parameter  paravalue="1"  paratype="0" paraIndex="200701"  paraCNname="档位">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="24"   Name="设备断开-光路电机">
+		<Step orderIndex ="1"  orderStrName="设备断开-光路电机">
+			<Dev sdkIndex ="1"  DevType="2"  DevName="光路电机"  FunNum="5"  FunName="设备断开-光路电机">
+				<parameter  paravalue=""  paratype="1"  paraIndex="200501"  paraCNname="句柄">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="25"   Name="设备连接-位移台">
+		<Step orderIndex ="1"  orderStrName="设备连接-位移台">
+			<Dev sdkIndex ="1"  DevType="5"  DevName="位移台"  FunNum="1"  FunName="设备连接-位移台">
+				<parameter  paravalue="tangoDevSN"  paratype="1"  paraIndex="500101"  paraCNname="序列号">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="2"  DevType="5"  DevName="位移台"  FunNum="15"  FunName="获取速度和加速度">
+				<parameter  paravalue="0"  paratype="1"  paraIndex="5001015"  paraCNname="获取速度和加速度">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="26"   Name="设备断开-位移台">
+		<Step orderIndex ="1"  orderStrName="设备断开-位移台">
+			<Dev sdkIndex ="1"  DevType="5"  DevName="位移台"  FunNum="2"  FunName="设备断开-位移台">
+				<parameter  paravalue=""  paratype="1"  paraIndex="500201"  paraCNname="句柄">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="27"   Name="设备连接-激光器">
+		<Step orderIndex ="1"  orderStrName="设备连接-激光器">
+			<Dev sdkIndex ="1"  DevType="1"  DevName="激光器"  FunNum="4"  FunName="设备连接-激光器">
+				<parameter  paravalue="laserDevSN"  paratype="1"  paraIndex="100401"  paraCNname="序列号">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="2"  DevType="1"  DevName="激光器"  FunNum="7"  FunName="激光器归零">
+				<parameter  paravalue=""  paratype=""  paraIndex="100701"  paraCNname="占位">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="28"   Name="设备断开-激光器">
+		<Step orderIndex ="1"  orderStrName="设备断开-激光器">
+			<Dev sdkIndex ="1"  DevType="1"  DevName="激光器"  FunNum="5"  FunName="设备断开-激光器">
+				<parameter  paravalue=""  paratype="1"  paraIndex="100201"  paraCNname="句柄">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="29"   Name="设备连接-相机">
+		<Step orderIndex ="1"  orderStrName="设备连接-相机">
+			<Dev sdkIndex ="1"  DevType="6"  DevName="相机"  FunNum="1"  FunName="设备连接-相机">
+				<parameter  paravalue="cameraDevSN"  paratype="1"  paraIndex="600101"  paraCNname="序列号">
+				</parameter>
+			</Dev>
+		</Step>
+    <Step orderIndex ="2" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="7"  FunName="设置相机水平镜像">
+        <parameter paravalue="0"	 paratype="0"  paraIndex="600701"  paraCNname="方向"/>
+        <parameter paravalue="1"  paratype="0"  paraIndex="600702"  paraCNname="镜像翻转"/>
+      </Dev>
+    </Step>
+	</FunNum>
+	<FunNum BussiNumber ="300"   Name="获取X轴业务">
+		<Step orderIndex ="1"  orderStrName="读取当前波长">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="8"  FunName="询问单色仪当前位置">
+				<parameter  paravalue=""  paratype="2"  paraIndex="300801"  paraCNname="波长">
+				</parameter>
+			</Dev>
+		</Step>
+		<Step orderIndex ="2"  orderStrName="获取X轴">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="1"  FunName="获取一个像素点尺寸">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400101"  paraCNname="像元宽度"/>
+			</Dev>
+			<Dev sdkIndex = "2"  DevType="4"  DevName="CCD"  FunNum="2"  FunName="获取相机X轴Y轴大小">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400201"  paraCNname="相机X轴大小"/>
+				<parameter  paravalue=""  paratype="2"  paraIndex="400202"  paraCNname="相机Y轴大小"/>
+			</Dev>
+			<Dev sdkIndex = "3"  DevType="3"  DevName="谱仪"  FunNum="4"  FunName="像素转波长">
+				<parameter  paravalue="400101"  paratype="3"  paraIndex="300401"  paraCNname="像元宽度"/>
+				<parameter  paravalue="300801"  paratype="3"  paraIndex="300402"  paraCNname="中心波长"/>
+				<parameter  paravalue="400201"  paratype="3"  paraIndex="300403"  paraCNname="像元数"/>
+				<parameter  paravalue=""  paratype="2"  paraIndex="300404"  paraCNname="计算结果"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="30"   Name="设备断开-相机">
+		<Step orderIndex ="1"  orderStrName="设备断开-相机">
+			<Dev sdkIndex ="1"  DevType="6"  DevName="相机"  FunNum="2"  FunName="设备断开-相机">
+				<parameter  paravalue=""  paratype="1"  paraIndex="600201"  paraCNname="句柄">
+				</parameter>
+			</Dev>
+		</Step>
+    
+	</FunNum>
+	<FunNum BussiNumber ="17"   Name="中心波长设置">
+		<Step orderIndex ="1"  orderStrName="单色仪绝对移动">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="1"  FunName="单色仪绝对移动">
+				<parameter  paravalue="centerwave"  paratype="1"  paraIndex="300101"  paraCNname="中心波长"><!---->
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="13"   Name="针孔尺寸设置">
+		<Step orderIndex ="1"  orderStrName="针孔尺寸设置">
+			<Dev sdkIndex ="1"  DevType="2"  DevName="光路电机"  FunNum="3"  FunName="控制针孔共聚焦">
+				<parameter  paravalue="pinholenum"  paratype="1"  paraIndex="200301"  paraCNname="索引从1开始0归零">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="14"   Name="光栅切换">
+		<Step orderIndex ="1"  orderStrName="光栅设置">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="7"  FunName="设置光栅">
+				<parameter  paravalue="gratingvalue"  paratype="1"  paraIndex="300701"  paraCNname="光栅索引从1开始0归零">
+				</parameter>
+			</Dev>
+		</Step>
+    <Step orderIndex ="2"  orderStrName="谱仪设置界面参数">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="30"  FunName="谱仪设置界面参数">
+        <parameter  paravalue="FOCLEN"  paratype="1"  paraIndex="3003001"  paraCNname="谱仪焦距"/>
+        <parameter  paravalue="ANGDEV"  paratype="1"  paraIndex="3003002"  paraCNname="谱仪内置角"/>
+        <parameter  paravalue="FOCTLT"  paratype="1"  paraIndex="3003003"  paraCNname="焦面倾斜角"/>
+        <parameter  paravalue="POLY1"  paratype="1"  paraIndex="3003004"  paraCNname="光栅矫正系数1"/>
+        <parameter  paravalue="POLY2"  paratype="1"  paraIndex="3003005"  paraCNname="光栅矫正系数2"/>
+        <parameter  paravalue="POLY3"  paratype="1"  paraIndex="3003006"  paraCNname="光栅矫正系数3"/>
+        <parameter  paravalue="POLY4"  paratype="1"  paraIndex="3003007"  paraCNname="光栅矫正系数4"/>
+        <parameter  paravalue="POLY5"  paratype="1"  paraIndex="3003008"  paraCNname="光栅矫正系数5"/>
+        <parameter  paravalue="SINAMPLITUDE"  paratype="1"  paraIndex="3003009"  paraCNname="振幅"/>
+        <parameter  paravalue="SINPHASE"  paratype="1"  paraIndex="3003010"  paraCNname="相位"/>
+        <parameter  paravalue="SINFREQUENCY"  paratype="1"  paraIndex="3003011"  paraCNname="频率"/>
+        <parameter  paravalue="GRATSTART"  paratype="1"  paraIndex="3003012"  paraCNname="光栅起始电机步数"/>
+        <parameter  paravalue="GRATOFFSET"  paratype="1"  paraIndex="3003013"  paraCNname="光栅偏置电机步数"/>
+        <parameter  paravalue="GRATLINES"  paratype="1"  paraIndex="3003014"  paraCNname="光栅刻线"/>
+        <parameter  paravalue="GRATBLAZE"  paratype="1"  paraIndex="3003015"  paraCNname="光栅闪耀波长"/>
+        <parameter  paravalue="DETECTOROFFSET1"  paratype="1"  paraIndex="3003016"  paraCNname="直出偏置"/>
+        <parameter  paravalue="DETECTOROFFSET2"  paratype="1"  paraIndex="3003017"  paraCNname="侧出偏置"/>
+        <parameter  paravalue="gratingIndex"  paratype="1"  paraIndex="3003018"  paraCNname="光栅下标"/>
+      </Dev>
+    </Step>
+		<Step orderIndex ="3"  orderStrName="获取当前光栅的最大波长">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="9"  FunName="读取光栅的最大扫描范围">
+				<parameter  paravalue="gratingvalue"  paratype="1"  paraIndex="300901"  paraCNname="光栅索引">
+				</parameter>
+				<parameter  paravalue=""  paratype="2"  paraIndex="300902"  paraCNname="最大扫描范围">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="12"   Name="功率切换">
+		<Step orderIndex ="1"  orderStrName="光路电机功率切换">
+			<Dev  sdkIndex = "1"  DevType="2"  DevName="光路电机"  FunNum="1"  FunName="控制衰减片轮旋转">
+				<parameter  paravalue="mode"  paratype="1" paraIndex="200101"  paraCNname="激光器型号">
+				</parameter>
+				<parameter  paravalue="powerindex"  paratype="1" paraIndex="200102"  paraCNname="挡位">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex = "2"  DevType="1"  DevName="激光器"  FunNum="8"  FunName="设置激光功率">
+				<parameter  paravalue="lasernewvalue"  paratype="1" paraIndex="100801"  paraCNname="激光器型号">
+				</parameter>
+				<parameter  paravalue="powerindex"  paratype="1" paraIndex="100802"  paraCNname="挡位">  <!--归零-->
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="10"   Name="设备断开-谱仪">
+		<Step orderIndex ="1"  orderStrName="设备断开-谱仪">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="12"  FunName="设备断开-谱仪">
+				<parameter  paravalue="SerialNm"  paratype="1"  paraIndex="3001101"  paraCNname="序列号">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="102"  Name="变空-关闭原有档位">
+		<Step orderIndex ="1"  orderStrName="原有档位:关">
+			<Dev sdkIndex = "1"  DevType="1"  DevName="激光器"  FunNum="1"  FunName="控制激光开关:关">
+				<parameter  paravalue="laseroldvalue"  paratype="1" paraIndex="100101"  paraCNname="激光器型号">
+				</parameter>
+				<parameter  paravalue="0"  paratype="0" paraIndex="100102"  paraCNname="开关">      <!--关闭-->
+				</parameter>
+			</Dev>
+			<Dev sdkIndex = "2"  DevType="1"  DevName="激光器"  FunNum="8"  FunName="设置激光功率">
+				<parameter  paravalue="100101"  paratype="3" paraIndex="100801"  paraCNname="激光器型号">
+				</parameter>
+				<parameter  paravalue="0"  paratype="0" paraIndex="100802"  paraCNname="挡位">  <!--归零-->
+				</parameter>
+			</Dev>
+			<Dev  sdkIndex = "3"  DevType="2"  DevName="光路电机"  FunNum="1"  FunName="控制衰减片轮旋转">
+				<parameter  paravalue="motoroldvalue"  paratype="1" paraIndex="200101"  paraCNname="激光器型号">
+				</parameter>
+				<parameter  paravalue="0"  paratype="0" paraIndex="200102"  paraCNname="挡位">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex = "4" DevType="2"  DevName="光路电机"  FunNum="2"  FunName="控制激光器切换">
+				<parameter  paravalue="0"  paratype="0" paraIndex="200201"  paraCNname="激光器型号">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="100"  Name="关闭原有档位">
+		<Step orderIndex ="1"  orderStrName="原有档位:关">
+			<Dev sdkIndex = "1"  DevType="1"  DevName="激光器"  FunNum="1"  FunName="控制激光开关:关">
+				<parameter  paravalue="laseroldvalue"  paratype="1" paraIndex="100101"  paraCNname="激光器型号">
+				</parameter>
+				<parameter  paravalue="0"  paratype="0" paraIndex="100102"  paraCNname="开关">      <!--关闭-->
+				</parameter>
+			</Dev>
+			<Dev sdkIndex = "2"  DevType="1"  DevName="激光器"  FunNum="8"  FunName="设置激光功率">
+				<parameter  paravalue="100101"  paratype="3" paraIndex="100801"  paraCNname="激光器型号">
+				</parameter>
+				<parameter  paravalue="0"  paratype="0" paraIndex="100802"  paraCNname="挡位">  <!--归零-->
+				</parameter>
+			</Dev>
+			<Dev  sdkIndex = "3"  DevType="2"  DevName="光路电机"  FunNum="1"  FunName="控制衰减片轮旋转">
+				<parameter  paravalue="motoroldvalue"  paratype="1" paraIndex="200101"  paraCNname="激光器型号">
+				</parameter>
+				<parameter  paravalue="0"  paratype="0" paraIndex="200102"  paraCNname="挡位">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="111"   Name="打开现有档位">
+		<Step orderIndex ="1"  orderStrName="现有档位:开">
+			<Dev sdkIndex = "1" DevType="2"  DevName="光路电机"  FunNum="2"  FunName="控制激光器切换">
+				<parameter  paravalue="motornewvalue"  paratype="1" paraIndex="200201"  paraCNname="激光器型号">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex = "2"  DevType="1"  DevName="激光器"  FunNum="1"  FunName="控制激光开关:开">
+				<parameter  paravalue="lasernewvalue"  paratype="1" paraIndex="100101"  paraCNname="激光器型号">
+				</parameter>
+				<parameter  paravalue="1"  paratype="0" paraIndex="100102"  paraCNname="开关">      <!--关闭-->
+				</parameter>
+			</Dev>
+			<Dev sdkIndex = "3"  DevType="1"  DevName="激光器"  FunNum="8"  FunName="设置激光功率">
+				<parameter  paravalue="100101"  paratype="3" paraIndex="100801"  paraCNname="激光器型号">
+				</parameter>
+				<parameter  paravalue="0"  paratype="0" paraIndex="100802"  paraCNname="挡位">  <!--归零-->
+				</parameter>
+			</Dev>
+			<Dev  sdkIndex = "4"  DevType="2"  DevName="光路电机"  FunNum="1"  FunName="控制衰减片轮旋转">
+				<parameter  paravalue="motoroldvalue"  paratype="1" paraIndex="200101"  paraCNname="激光器型号">
+				</parameter>
+				<parameter  paravalue="0"  paratype="0" paraIndex="200102"  paraCNname="挡位">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>	
+	<FunNum BussiNumber ="16"  Name="设置积分时间">
+		<Step orderIndex ="1"  orderStrName="积分时间">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="ccd"  FunNum="3"  FunName="设置相机积分时间">
+				<parameter  paravalue="ExpTime"  paratype="1"  paraIndex="400301"  paraCNname="积分时间">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="31"  Name="设置快门开关">
+		<Step orderIndex ="1"  orderStrName="设置快门">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="13"  FunName="设置快门">
+				<parameter  paravalue="shutternum"  paratype="1"  paraIndex="3001301"  paraCNname="索引">
+				</parameter>
+				<parameter  paravalue="shutterflag"  paratype="1"  paraIndex="3001302"  paraCNname="开关">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="32"  Name="询问开关">
+		<Step orderIndex ="1"  orderStrName="询问开关">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="14"  FunName="询问开关">
+				<parameter  paravalue="shutternum"  paratype="1"  paraIndex="3001401"  paraCNname="索引">
+				</parameter>
+				<parameter  paravalue=""  paratype="2"  paraIndex="3001402"  paraCNname="开关">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="33"  Name="询问摆镜位置">
+		<Step orderIndex ="1"  orderStrName="是否有摆镜">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="2"  FunName="是否有摆镜">
+				<parameter  paravalue="EntranceExit"  paratype="1"  paraIndex="300201"  paraCNname="出入口">
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300202"  paraCNname="标志">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="34"  Name="询问是否有狭缝"> 
+		<Step orderIndex ="1"  orderStrName="是否有狭缝">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="5"  FunName="是否有狭缝">
+				<parameter  paravalue="slitindex"  paratype="1"  paraIndex="300501"  paraCNname="索引">
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300502"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="35"  Name="询问狭缝宽度"> 
+		<Step orderIndex ="1"  orderStrName="询问狭缝宽度">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="15"  FunName="获取狭缝宽度">
+				<parameter  paravalue="slitindex"  paratype="1"  paraIndex="3001501"  paraCNname="索引">
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="3001502"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="36"  Name="设置摆镜位置"> 
+		<Step orderIndex ="1"  orderStrName="设置摆镜">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="16"  FunName="设置摆镜">
+				<parameter  paravalue="EntranceExit"  paratype="1"  paraIndex="3001601"  paraCNname="索引">
+				</parameter>
+				<parameter  paravalue="mirrorflag"     paratype="1"  paraIndex="3001602"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="37"  Name="读取ccd尺寸"> 
+		<Step orderIndex ="1"  orderStrName="读取ccd尺寸">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="2"  FunName="获取相机X轴Y轴大小">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400201"  paraCNname="相机X轴大小">
+				</parameter> 
+				<parameter  paravalue=""  paratype="2"  paraIndex="400202"  paraCNname="相机Y轴大小">
+				</parameter> 
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="38"  Name="读取积分时间"> 
+		<Step orderIndex ="1"  orderStrName="读取ccd积分时间">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="6"  FunName="读取ccd积分时间">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400601"  paraCNname="读取ccd积分时间">
+				</parameter> 
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="39"  Name="设置增益"> 
+		<Step orderIndex ="1"  orderStrName="设置增益">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="7"  FunName="设置增益">
+				<parameter  paravalue="gainindex"  paratype="1"  paraIndex="400701"  paraCNname="索引">
+				</parameter> 
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="41"  Name="停止读取ccd影像"> 
+		<Step orderIndex ="1"  orderStrName="强行中断采集针对长积分时间">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="9"  FunName="中断采集">
+				<parameter  paravalue=""  paratype="1"  paraIndex="400901"  paraCNname="无参">
+				</parameter> 
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="42"  Name="设置ccd显示方向"> 
+		<Step orderIndex ="1"  orderStrName="设置采集图像翻转">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="10"  FunName="设置采集图像翻转">
+				<parameter  paravalue="bHMirror"  paratype="1"  paraIndex="4001001"  paraCNname="正向反向">
+				</parameter> 
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="43"  Name="读取位移台位置"> 
+		<Step orderIndex ="1"  orderStrName="读取位移台位置">
+			<Dev sdkIndex = "1"  DevType="5"  DevName="位移台"  FunNum="3"  FunName="读取位移台位置">
+				<parameter  paravalue="iAxis"  paratype="1"  paraIndex="500301"  paraCNname="读取位移台位置">
+				</parameter> 
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="44"  Name="位移台归零"> 
+		<Step orderIndex ="1"  orderStrName="位移台归零">
+			<Dev sdkIndex = "1"  DevType="5"  DevName="位移台"  FunNum="4"  FunName="位移台归零">
+				<parameter  paravalue="iAxis"  paratype="1"  paraIndex="500401"  paraCNname="iAxis轴">
+				</parameter> 
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="45"  Name="位移台相对位移"> 
+		<Step orderIndex ="1"  orderStrName="相对位移">
+			<Dev sdkIndex = "1"  DevType="5"  DevName="位移台"  FunNum="5"  FunName="相对位移">
+				<parameter  paravalue="iAxis"  paratype="1"  paraIndex="500501"  paraCNname="iAxis轴">
+				</parameter> 
+				<parameter  paravalue="AxisdValue"  paratype="1"  paraIndex="500502"  paraCNname="数据">
+				</parameter> 
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="46"  Name="位移台绝对位移"> 
+		<Step orderIndex ="1"  orderStrName="绝对位移">
+			<Dev sdkIndex = "1"  DevType="5"  DevName="位移台"  FunNum="6"  FunName="绝对位移">
+				<parameter  paravalue="iAxis"  paratype="1"  paraIndex="500601"  paraCNname="iAxis轴">
+				</parameter> 
+				<parameter  paravalue="AxisdValue"  paratype="1"  paraIndex="500602"  paraCNname="数据">
+				</parameter> 
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="47"  Name="位移台设置速度"> 
+		<Step orderIndex ="1"  orderStrName="设置速度">
+			<Dev sdkIndex = "1"  DevType="5"  DevName="位移台"  FunNum="7"  FunName="设置速度">
+				<parameter  paravalue="speedvalue"  paratype="1"  paraIndex="500701"  paraCNname="速度值">
+				</parameter> 
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="48"  Name="位移台设置加速度"> 
+		<Step orderIndex ="1"  orderStrName="设置加速度">
+			<Dev sdkIndex = "1"  DevType="5"  DevName="位移台"  FunNum="8"  FunName="设置加速度">
+				<parameter  paravalue="accvalue"  paratype="1"  paraIndex="500801"  paraCNname="加速度值">
+				</parameter> 
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="49"  Name="设置虚拟控制杆使用">
+    <Step orderIndex ="1"  orderStrName="设置虚拟控制杆">
+      <Dev sdkIndex = "1"  DevType="5"  DevName="位移台"  FunNum="9"  FunName="设置虚拟控制杆">
+        <parameter  paravalue="enable"  paratype="1"  paraIndex="500901"  paraCNname="使能值">
+        </parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+	<FunNum BussiNumber ="50"   Name="设备停止-位移台">
+		<Step orderIndex ="1"  orderStrName="设备停止-位移台">
+			<Dev sdkIndex ="1"  DevType="5"  DevName="位移台"  FunNum="10"  FunName="设备停止-位移台">
+				<parameter  paravalue=""  paratype="1"  paraIndex="5001001"  paraCNname="句柄">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="51"   Name="设备位置初始化-位移台">
+		<Step orderIndex ="1"  orderStrName="设备位置初始化-位移台">
+			<Dev sdkIndex ="1"  DevType="5"  DevName="位移台"  FunNum="11"  FunName="XY轴归零">
+				<parameter  paravalue=""  paratype="1"  paraIndex="5001101"  paraCNname="句柄">
+				</parameter>
+			</Dev>
+			<Dev sdkIndex ="2"  DevType="5"  DevName="位移台"  FunNum="12"  FunName="XY轴回到最大值">
+				<parameter  paravalue=""  paratype="1"  paraIndex="5001201"  paraCNname="句柄">
+				</parameter>
+			</Dev>
+      <Dev sdkIndex ="3"  DevType="5"  DevName="位移台"  FunNum="14"  FunName="Y轴移至中心位置">
+        <parameter  paravalue=""  paratype="1"  paraIndex="5001401"  paraCNname="句柄">
+        </parameter>
+      </Dev>
+			<Dev sdkIndex ="4"  DevType="5"  DevName="位移台"  FunNum="13"  FunName="X轴移至中心位置">
+				<parameter  paravalue=""  paratype="1"  paraIndex="5001301"  paraCNname="句柄">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="40"  Name="读取ccd影像"> 
+		<Step orderIndex ="1"  orderStrName="读取谱线数据">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="8"  FunName="读取谱线数据">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400801"  paraCNname="返回采集数据数组，数组长度XPixSize">
+				</parameter> 
+				<parameter  paravalue="XPixSize"  paratype="1"  paraIndex="400802"  paraCNname="相机X轴长度">
+				</parameter> 
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="15"  Name="设置狭缝">
+		<Step orderIndex ="1"  orderStrName="设置狭缝">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="6"  FunName="设置自动狭缝宽度">
+				<parameter  paravalue=""  paratype=""  paraIndex="300601"  paraCNname="索引"><!--占位 -->
+				</parameter>
+				<parameter  paravalue="slitwidth"  paratype="1"  paraIndex="300602"  paraCNname="宽度">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="1950"   Name="有摆镜位置,获取摆镜位置">
+		<Step orderIndex ="1"  orderStrName="获取摆镜位置">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="3"  FunName="是否有摆镜">
+				<parameter  paravalue=""     paratype="2"  paraIndex="300301"  paraCNname="标志">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="51"  Name="是否有狭缝"> 
+		<Step orderIndex ="1"  orderStrName="是否有狭缝">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="5"  FunName="是否有狭缝">
+				<parameter  paravalue=""  paratype="4"  paraIndex="300501"  paraCNname="索引">
+					<ValRange   value="0"   paraCNname="侧入">     			   <!--都匹配了，取value值，赋300501值-->
+						<ItemInfo ItemKey="300301" ItemValue="1"  Text="侧"/>  <!--ItemKey去匹配值，然后看是否和ItemValue相等-->
+						<ItemInfo ItemKey="300201" ItemValue="1"  Text="入"/>  <!--ItemKey去匹配值，然后看是否和ItemValue相等-->
+					</ValRange>
+					<ValRange   value="1"   paraCNname="侧出">
+						<ItemInfo ItemKey="300301" ItemValue="1"  Text="侧"/>
+						<ItemInfo ItemKey="300201" ItemValue="0"  Text="出"/>
+					</ValRange>
+					<ValRange   value="2"   paraCNname="直出">
+						<ItemInfo  ItemKey="300301" ItemValue="0" Text="直"/>
+						<ItemInfo  ItemKey="300201" ItemValue="0" Text="出"/>
+					</ValRange>
+					<ValRange   value="3"   paraCNname="直入">
+						<ItemInfo  ItemKey="300301"  ItemValue="0" Text="直"/>
+						<ItemInfo  ItemKey="300201"  ItemValue="1" Text="入"/>
+					</ValRange>
+				</parameter>
+				<parameter  paravalue=""     paratype="2"  paraIndex="300502"  paraCNname="标志">
+				</parameter>
+			</Dev> 
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="52"   Name="有,设置狭缝">
+		<Step orderIndex ="1"  orderStrName="有,设置狭缝">
+			<Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="6"  FunName="设置自动狭缝宽度">
+				<parameter  paravalue="300501"  paratype="3"  paraIndex="300601"  paraCNname="索引"/>
+				<parameter  paravalue="in1"  paratype="1"  paraIndex="300602"  paraCNname="宽度"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="53"   Name="CCD设置采集模式">
+		<Step orderIndex ="1"  orderStrName="设置采集模式">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="CCD"  FunNum="18"  FunName="设置采集模式">
+				<parameter  paravalue="ccd_scanmode"  paratype="1"  paraIndex="4001801"  paraCNname="模式"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="54"   Name="设置当前相机Bin模式范围">
+		<Step orderIndex ="1"  orderStrName="设置当前相机Bin模式范围">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="CCD"  FunNum="19"  FunName="Bin模式范围">
+				<parameter  paravalue="ccd_binmin"  paratype="1"  paraIndex="4001901"  paraCNname="最小值"/>
+				<parameter  paravalue="ccd_binmax"  paratype="1"  paraIndex="4001902"  paraCNname="最大值"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="67"   Name="数采获取速率和像素转移速率">
+		<Step orderIndex ="1"  orderStrName="数采获取速率和像素转移速率">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="CCD"  FunNum="29"  FunName="数采获取速率和像素转移速率">
+				<parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="68"   Name="数采设置速率和像素">
+		<Step orderIndex ="1"  orderStrName="数采设置速率和像素">
+			<Dev sdkIndex ="1"  DevType="4"  DevName="CCD"  FunNum="30"  FunName="数采设置速率和像素">
+				<parameter  paravalue="ccd_ratemode"  paratype="1"  paraIndex="4003001"  paraCNname="速率模式"/>
+				<parameter  paravalue="ccd_rateindex"  paratype="1"  paraIndex="4003002"  paraCNname="速率档位"/>
+				<parameter  paravalue="ccd_rate"  paratype="1"  paraIndex="4003003"  paraCNname="速率值"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="77"  Name="mapping">
+		<Step orderIndex ="1"  orderStrName="转中心波长">
+			<Dev DevType="3"  DevName="谱仪"  FunNum="1"  FunName="单色仪绝对移动">
+				<parameter  paravalue="in1"  paratype="1"  paraIndex="300101"  paraCNname="中心波长"/>
+			</Dev>
+		</Step>
+		<Step orderIndex ="2"  orderStrName="获取X轴">
+			<Dev sdkIndex = "1"  DevType="4"  DevName="CCD"  FunNum="1"  FunName="获取一个像素点尺寸">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400101"  paraCNname="像元宽度"/>
+			</Dev>
+			<Dev sdkIndex = "2"  DevType="4"  DevName="CCD"  FunNum="2"  FunName="获取相机X轴Y轴大小">
+				<parameter  paravalue=""  paratype="2"  paraIndex="400201"  paraCNname="相机X轴大小"/>
+				<parameter  paravalue=""  paratype="2"  paraIndex="400202"  paraCNname="相机Y轴大小"/>
+			</Dev>
+			<Dev sdkIndex = "3"  DevType="3"  DevName="谱仪"  FunNum="4"  FunName="像素转波长">
+				<parameter  paravalue="400101"  paratype="3"  paraIndex="300401"  paraCNname="像元宽度"/>
+				<parameter  paravalue="in1"  paratype="1"  paraIndex="300402"  paraCNname="中心波长"/>
+				<parameter  paravalue="400201"  paratype="3"  paraIndex="300403"  paraCNname="像元数"/>
+			</Dev>
+		</Step>
+		<Step orderIndex ="3"  orderStrName="设置曝光时间">
+			<Dev DevType="4"  DevName="CCD"  FunNum="3"  FunName="设置曝光时间">
+				<parameter  paravalue="in1"  paratype="1"  paraIndex="400301"  paraCNname="曝光时间"/>
+			</Dev>
+		</Step>
+	</FunNum>
+	<FunNum BussiNumber ="60"  Name="mapping设置显示方法">
+		<Step orderIndex ="1"  orderStrName="设置显示方法">
+			<Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="1"  FunName="设置显示方法">
+				<parameter  paravalue="in1"  paratype="1"  paraIndex="700101"  paraCNname="显示模式">
+				</parameter>
+				<parameter  paravalue="700101"  paratype="5"  paraIndex="700102"  paraCNname="定长数组dwave[0]">
+					<ValRange   selectIndex="0"   paraCNname="单波长强度">            <!--selectIndex = 根据700101 选择的值-->
+						<ItemInfo numtype="0"  Value="0"    Text="value1"/>  <!--dwave[0]numtype=0 直接取值Value-->
+					</ValRange>
+					<ValRange   selectIndex="1"   paraCNname="积分高亮">
+						<ItemInfo numtype="1"  Value="in1"    Text="value1"/>  <!--dwave[0]numtype=1 从协议里面取值-->
+					</ValRange>
+					<ValRange   selectIndex="2"   paraCNname="峰值波长">
+						<ItemInfo numtype="0"  Value="0"    Text="value1"/>  <!--dwave[0]numtype=0 直接取值Value-->
+					</ValRange>
+					<ValRange   selectIndex="3"   paraCNname="半高宽">
+						<ItemInfo numtype="1"  Value="in1"    Text="value1"/>  <!--dwave[0]numtype=1 从协议里面取值-->			
+					</ValRange>
+				</parameter>
+				<parameter  paravalue="700101"  paratype="5"  paraIndex="700103"  paraCNname="定长数组dwave[1]">
+					<ValRange   selectIndex="0"   paraCNname="单波长强度">            <!--selectIndex = 根据700101 选择的值-->
+						<ItemInfo numtype="1"  Value="in1"  Text="value2"/>  <!--dwave[1] numtype=1 从协议里面取值 -->
+					</ValRange>
+					<ValRange   selectIndex="1"   paraCNname="积分高亮">
+						<ItemInfo numtype="1"  Value="in2"  Text="value2"/>    <!--dwave[1] numtype=1 从协议里面取值 -->
+					</ValRange>
+					<ValRange   selectIndex="2"   paraCNname="峰值波长">
+						<ItemInfo numtype="0"  Value="0"  Text="value2"/>    <!--dwave[1] numtype=0 直接取值Value -->
+					</ValRange>
+					<ValRange   selectIndex="3"   paraCNname="半高宽">
+						<ItemInfo numtype="1"  Value="in2"  Text="value2"/>    <!--dwave[1] numtype=1 从协议里面取值 -->				
+					</ValRange>			
+				</parameter>
+			</Dev>
+		</Step>
+		<Step orderIndex ="2"  orderStrName="设置X轴">
+			<Dev  sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="2"  FunName="设置X轴">
+				<parameter  paravalue="400201"  paratype="3"  paraIndex="700201"  paraCNname="显示模式">
+				</parameter>
+			</Dev>
+		</Step>
+	</FunNum>
+  <FunNum BussiNumber ="120"  Name="打开白光图像">
+    <Step orderIndex ="1" orderStrName="光路电机">
+      <Dev sdkIndex = "1"  DevType="2"  DevName="光路电机"  FunNum="6"  FunName="控制相机电机">
+        <parameter paravalue="1" paratype="0"  paraIndex="200601"  paraCNname="位置信号"/>
+      </Dev>
+    </Step>
+    <Step orderIndex ="2" orderStrName="激光器">
+      <Dev sdkIndex = "1"  DevType="1"  DevName="激光器"  FunNum="6"  FunName="切换光源">
+        <parameter paravalue="1" paratype="0"  paraIndex="100601"  paraCNname="位置信号"/>
+      </Dev>
+    </Step>
+    <Step orderIndex ="3" orderStrName="激光器">
+      <Dev sdkIndex = "1"  DevType="1"  DevName="激光器"  FunNum="8"  FunName="关闭光源">
+        <parameter  paravalue="lasernewvalue"  paratype="1" paraIndex="100801"  paraCNname="激光器型号">
+        </parameter>
+        <parameter paravalue="0" paratype="0"  paraIndex="100802"  paraCNname="归零"/>
+      </Dev>
+    </Step>
+    <Step orderIndex ="4" orderStrName="光路电机">
+      <Dev sdkIndex = "1"  DevType="2"  DevName="光路电机"  FunNum="1"  FunName="控制衰减片轮">
+        <parameter  paravalue="1"  paratype="0" paraIndex="200101"  paraCNname="激光器型号">
+        </parameter>
+        <parameter  paravalue="0"  paratype="0" paraIndex="200102"  paraCNname="归零"/>
+      </Dev>
+    </Step>
+    <Step orderIndex ="5" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="3"  FunName="获取图像">
+		  <parameter paravalue=""  paratype="1"  paraIndex="600301"  paraCNname="占位"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="121"  Name="关闭白光图像">
+	  <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="16"  FunName="停止获取图像">
+		    <parameter paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+      </Dev>
+    </Step>
+    <Step orderIndex ="2" orderStrName="光路电机">
+      <Dev sdkIndex = "1"  DevType="2"  DevName="光路电机"  FunNum="1"  FunName="控制衰减片轮">
+        <parameter  paravalue="mode"  paratype="1" paraIndex="200101"  paraCNname="激光器型号">
+        </parameter>
+        <parameter paravalue="powerindex" paratype="1"  paraIndex="200102"  paraCNname="归零"/>
+      </Dev>
+    </Step>
+    <Step orderIndex ="3" orderStrName="激光器">
+      <Dev sdkIndex = "1"  DevType="1"  DevName="激光器"  FunNum="6"  FunName="切换光源">
+      </Dev>
+    </Step>
+    <Step orderIndex ="4" orderStrName="激光器">
+      <Dev sdkIndex = "1"  DevType="1"  DevName="激光器"  FunNum="8"  FunName="关闭光源">
+        <parameter  paravalue="lasernewvalue"  paratype="1" paraIndex="100801"  paraCNname="激光器型号">
+        </parameter>
+        <parameter paravalue="powerindex" paratype="1"  paraIndex="100802"  paraCNname="归零"/>
+      </Dev>
+    </Step>
+    <Step orderIndex ="5" orderStrName="光路电机">
+      <Dev sdkIndex = "1"  DevType="2"  DevName="光路电机"  FunNum="6"  FunName="控制相机电机">
+        <parameter paravalue="0" paratype="0"  paraIndex="200601"  paraCNname="位置信号"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="122"  Name="相机">
+    <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="4"  FunName="设置相机伽马">
+        <parameter paravalue="nGamama"	paratype="1"  paraIndex="600401"  paraCNname="伽马"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="123"  Name="相机">
+    <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="5"  FunName="设置相机对比度">
+        <parameter paravalue="nContrast"  paratype="1"  paraIndex="600501"  paraCNname="对比度"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="124"  Name="相机">
+    <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="6"  FunName="设置相机色彩增强">
+        <parameter paravalue="enable"	 paratype="1"  paraIndex="600601"  paraCNname="色彩增强"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="125"  Name="相机">
+    <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="7"  FunName="设置相机水平镜像">
+        <parameter paravalue=""	 paratype="1"  paraIndex="600701"  paraCNname="方向"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="600702"  paraCNname="镜像翻转"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="126"  Name="相机">
+    <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="8"  FunName="设置相机色彩饱和度">
+        <parameter paravalue="nSaturation"	 paratype="1"  paraIndex="600801"  paraCNname="色彩饱和度"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="127"  Name="相机">
+    <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="9"  FunName="设置相机自动曝光">
+        <parameter paravalue="bAeState"  paratype="1"  paraIndex="600901"  paraCNname="自动曝光"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="128"  Name="相机">
+    <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="10"  FunName="设置相机增益">
+        <parameter paravalue="nAnalogGain"	paratype="1"  paraIndex="601001"  paraCNname="相机增益"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="129"  Name="相机">
+    <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="11"  FunName="设置相机手动白平衡">
+        <parameter paravalue="nR"  paratype="1"  paraIndex="601101"  paraCNname="激光器型号"/>
+        <parameter paravalue="nG"  paratype="1"  paraIndex="601102"  paraCNname="激光器型号"/>
+        <parameter paravalue="nB"  paratype="1"  paraIndex="601103"  paraCNname="激光器型号"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="130"  Name="相机">
+    <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="12"  FunName="设置相机自动白平衡">
+        <parameter paravalue="bAWBState"  paratype="1"  paraIndex="601201"  paraCNname="自动白平衡"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="131"  Name="相机">
+    <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="13"  FunName="设置相机曝光时间">
+        <parameter paravalue="nTime"  paratype="1"  paraIndex="601301"  paraCNname="相机曝光时间"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="132"  Name="相机">
+    <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="14"  FunName="获取相机参数">
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="133"  Name="相机">
+    <Step orderIndex ="1" orderStrName="相机">
+      <Dev sdkIndex = "1"  DevType="6"  DevName="相机"  FunNum="15"  FunName="设置相机参数">
+        <parameter paravalue="sParam"  paratype="1"  paraIndex="601501"  paraCNname="相机参数"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1601"   Name="自动对焦采集信号">
+    <Step orderIndex ="1"  orderStrName="稳定性测试">
+      <Dev sdkIndex = "1"  DevType="5"  DevName="位移台"  FunNum="6"  FunName="绝对位移">
+        <parameter  paravalue="2"  paratype="0"  paraIndex="500601"  paraCNname="iAxis轴">
+        </parameter>
+        <parameter  paravalue="AxisdValue"  paratype="4"  paraIndex="500602"  paraCNname="数据">
+        </parameter>
+      </Dev>
+      <Dev sdkIndex = "2"  DevType="4"  DevName="CCD"  FunNum="2"  FunName="获取相机X轴Y轴大小">
+        <parameter  paravalue=""  paratype="2"  paraIndex="400201"  paraCNname="相机X轴大小">
+        </parameter>
+        <parameter  paravalue=""  paratype="2"  paraIndex="400202"  paraCNname="相机Y轴大小">
+        </parameter>
+      </Dev>
+      <Dev sdkIndex ="3"  DevType="4"  DevName="ccd"  FunNum="24"  FunName="读取谱线数据">
+        <parameter  paravalue="400201"  paratype="3"  paraIndex="402401"  paraCNname="像元数"/>
+        <parameter  paravalue="accNum"  paratype="1"  paraIndex="402402"  paraCNname="叠加次数">
+        </parameter>
+        <parameter  paravalue=""  paratype="2"  paraIndex="402403"  paraCNname="采集数据">
+        </parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1400"  Name="计算">
+    <Step orderIndex ="1" orderStrName="计算">
+      <Dev sdkIndex = "1"  DevType="8"  DevName="计算"  FunNum="1"  FunName="基线扣除">
+        <parameter paravalue=""  paratype="1"  paraIndex="800101"  paraCNname="控制参数"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800102"  paraCNname="数组大小"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800103"  paraCNname="数组"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1401"  Name="计算">
+    <Step orderIndex ="1" orderStrName="计算">
+      <Dev sdkIndex = "1"  DevType="8"  DevName="计算"  FunNum="2"  FunName="平滑">
+        <parameter paravalue=""  paratype="1"  paraIndex="800201"  paraCNname="平滑方式"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800202"  paraCNname="控制参数"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800203"  paraCNname="数组大小"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800204"  paraCNname="数组"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1402"  Name="计算">
+    <Step orderIndex ="1" orderStrName="计算">
+      <Dev sdkIndex = "1"  DevType="8"  DevName="计算"  FunNum="3"  FunName="归一化">
+        <parameter paravalue=""  paratype="1"  paraIndex="800301"  paraCNname="数组大小"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800302"  paraCNname="数组"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1403"  Name="计算">
+    <Step orderIndex ="1" orderStrName="计算">
+      <Dev sdkIndex = "1"  DevType="8"  DevName="计算"  FunNum="4"  FunName="归一化">
+        <parameter paravalue=""  paratype="1"  paraIndex="800401"  paraCNname="数组大小"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800402"  paraCNname="数组"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1404"  Name="计算">
+    <Step orderIndex ="1" orderStrName="计算">
+      <Dev sdkIndex = "1"  DevType="8"  DevName="计算"  FunNum="5"  FunName="自动寻峰参数">
+        <parameter paravalue=""  paratype="1"  paraIndex="800501"  paraCNname="nSlopeThresholdIndex"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800502"  paraCNname="nAmpThresholdIndex"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800503"  paraCNname="nPeakwidthIndex"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800504"  paraCNname="nSmoothwidthIndex"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800505"  paraCNname="nSmoothTypeIndex"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800506"  paraCNname="nPeakgroupIndex"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800507"  paraCNname="nxSizeIndex"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800508"  paraCNname="nxArrayIndex"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800509"  paraCNname="nySizeIndex"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800510"  paraCNname="nyArrayIndex"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1405"  Name="计算">
+    <Step orderIndex ="1" orderStrName="计算">
+      <Dev sdkIndex = "1"  DevType="8"  DevName="计算"  FunNum="6"  FunName="峰面积">
+        <parameter paravalue=""  paratype="1"  paraIndex="800601"  paraCNname="数组大小"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800602"  paraCNname="数组"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1406"  Name="计算">
+    <Step orderIndex ="1" orderStrName="计算">
+      <Dev sdkIndex = "1"  DevType="8"  DevName="计算"  FunNum="7"  FunName="半高宽">
+        <parameter paravalue=""  paratype="1"  paraIndex="800701"  paraCNname="数组大小"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800702"  paraCNname="数组"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1407"  Name="单位转化">
+    <Step orderIndex ="1" orderStrName="单位转化">
+      <Dev sdkIndex = "1"  DevType="8"  DevName="计算"  FunNum="8"  FunName="波长转波数">
+        <parameter paravalue=""  paratype="1"  paraIndex="800801"  paraCNname="激光波长"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800802"  paraCNname="参数数组"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1408"  Name="单位转化">
+    <Step orderIndex ="1" orderStrName="单位转化">
+      <Dev sdkIndex = "1"  DevType="8"  DevName="计算"  FunNum="9"  FunName="波数转波长">
+        <parameter paravalue=""  paratype="1"  paraIndex="800901"  paraCNname="激光波长"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="800902"  paraCNname="参数数组"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1409"  Name="检测文件">
+    <Step orderIndex ="1" orderStrName="检测文件">
+      <Dev sdkIndex = "1"  DevType="8"  DevName="检测文件"  FunNum="10"  FunName="检测文件">
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1410"  Name="添加数据">
+    <Step orderIndex ="1" orderStrName="添加数据">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="文件操作"  FunNum="1"  FunName="添加数据">
+        <parameter paravalue=""  paratype="1"  paraIndex="900101"  paraCNname="曲线名称"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900102"  paraCNname="采集样式"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900103"  paraCNname="激光波长"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900104"  paraCNname="功率切换"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900105"  paraCNname="针孔尺寸"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900106"  paraCNname="光栅"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900107"  paraCNname="狭缝尺寸"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900108"  paraCNname="积分时间"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900109"  paraCNname="单位"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900110"  paraCNname="中心波长"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900111"  paraCNname="起始波长"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900112"  paraCNname="终止波长"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900113"  paraCNname="累计次数"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900114"  paraCNname="是否间隔"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900115"  paraCNname="间隔时间"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900116"  paraCNname="间隔次数"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900117"  paraCNname="x轴曲线数据数组"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900118"  paraCNname="Y轴曲线数据数组"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900119"  paraCNname="是否有头文件信息"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900120"  paraCNname="数据来源"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900121"  paraCNname="获取激光波长"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1411"  Name="修改曲线名称">
+    <Step orderIndex ="1" orderStrName="修改曲线名称">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="修改曲线名称"  FunNum="2"  FunName="修改曲线名称">
+        <parameter paravalue=""  paratype="1"  paraIndex="900201"  paraCNname="曲线名称旧"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900202"  paraCNname="曲线名称新"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1412"  Name="删除曲线数据">
+    <Step orderIndex ="1" orderStrName="删除曲线数据">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="删除曲线数据"  FunNum="3"  FunName="删除曲线数据">
+        <parameter paravalue=""  paratype="1"  paraIndex="900301"  paraCNname="曲线名称"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1413"  Name="恢复曲线数据">
+    <Step orderIndex ="1" orderStrName="恢复曲线数据">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="恢复曲线数据"  FunNum="4"  FunName="恢复曲线数据">
+        <parameter paravalue=""  paratype="1"  paraIndex="900401"  paraCNname="曲线名称"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900402"  paraCNname="单位"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1414"  Name="获取cm-1单位曲线数据">
+    <Step orderIndex ="1" orderStrName="获取cm-1单位曲线数据">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="获取cm-1单位曲线数据"  FunNum="5"  FunName="获取cm-1单位曲线数据">
+        <parameter paravalue=""  paratype="1"  paraIndex="900501"  paraCNname="曲线名称"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900502"  paraCNname="当前界面的激光器"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900503"  paraCNname="当前界面的光栅"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="900504"  paraCNname="当前界面的激光波长"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1415"  Name="获取nm单位曲线数据">
+    <Step orderIndex ="1" orderStrName="获取nm单位曲线数据">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="获取nm单位曲线数据"  FunNum="6"  FunName="获取nm单位曲线数据">
+        <parameter paravalue=""  paratype="1"  paraIndex="900601"  paraCNname="曲线名称"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1416"  Name="获取删除文件的列表">
+    <Step orderIndex ="1" orderStrName="获取删除文件的列表">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="获取删除文件的列表"  FunNum="7"  FunName="获取删除文件的列表">
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1417"  Name="获取未删除文件的列表">
+    <Step orderIndex ="1" orderStrName="获取未删除文件的列表">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="获取未删除文件的列表"  FunNum="8"  FunName="获取未删除文件的列表">
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1418"  Name="清理删除文件的列表">
+    <Step orderIndex ="1" orderStrName="清理删除文件的列表">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="清理删除文件的列表"  FunNum="9"  FunName="获取未删除文件的列表">
+        <parameter paravalue=""  paratype="1"  paraIndex="900901"  paraCNname="文件类型"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1419"  Name="更新缓存Y轴数据">
+    <Step orderIndex ="1" orderStrName="更新缓存Y轴数据">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="更新缓存Y轴数据"  FunNum="10"  FunName="获取cm-1单位曲线数据">
+        <parameter paravalue=""  paratype="1"  paraIndex="901001"  paraCNname="曲线名称"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="901002"  paraCNname="曲线Y轴数据"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1430"  Name="更新缓存X、Y轴数据">
+    <Step orderIndex ="1" orderStrName="更新缓存X、Y轴数据">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="更新缓存X、Y轴数据"  FunNum="13"  FunName="获取cm-1单位曲线数据">
+        <parameter paravalue=""  paratype="1"  paraIndex="901301"  paraCNname="曲线名称"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="901302"  paraCNname="曲线X轴数据"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="901303"  paraCNname="曲线Y轴数据"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1420"  Name="打开曲线文件数据">
+    <Step orderIndex ="1" orderStrName="打开曲线文件数据">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="打开曲线文件数据"  FunNum="11"  FunName="打开曲线文件数据">
+        <parameter paravalue=""  paratype="1"  paraIndex="901101"  paraCNname="文件路径"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1421"  Name="保存曲线文件数据">
+    <Step orderIndex ="1" orderStrName="保存曲线文件数据">
+      <Dev sdkIndex = "1"  DevType="9"  DevName="保存曲线文件数据"  FunNum="12"  FunName="保存曲线文件数据">
+        <parameter paravalue=""  paratype="1"  paraIndex="901201"  paraCNname="文件路径"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="901202"  paraCNname="文件内容"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1450"  Name="打开sysp格式文件">
+    <Step orderIndex ="1" orderStrName="打开sysp">
+      <Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="12"  FunName="打开sysp">
+        <parameter paravalue="sysppath"  paratype="1"  paraIndex="7001201"  paraCNname="文件路径"/>
+      </Dev>
+    </Step>
+  </FunNum>
+   <FunNum BussiNumber ="1451"  Name="保存sysp格式mapping文件">
+    <Step orderIndex ="1" orderStrName="保存sysp">
+      <Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="14"  FunName="保存sysp">
+        <parameter paravalue="savesysp"  paratype="1"  paraIndex="7001401"  paraCNname="文件路径"/>
+      </Dev>
+    </Step>
+  </FunNum>
+   <FunNum BussiNumber ="1460"  Name="打开hdrraw格式mapping文件">
+    <Step orderIndex ="1" orderStrName="打开hdr">
+      <Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="13"  FunName="打开hdr">
+        <parameter paravalue="hdrpath"  paratype="1"  paraIndex="7001301"  paraCNname="文件路径"/>
+      </Dev>
+    </Step>
+  </FunNum>
+   <FunNum BussiNumber ="1461"  Name="保存hdrraw格式mapping文件">
+    <Step orderIndex ="1" orderStrName="保存hdr">
+      <Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="15"  FunName="保存hdr">
+        <parameter paravalue="savehdr"  paratype="1"  paraIndex="7001501"  paraCNname="文件路径"/>
+        <parameter paravalue="unit" paratype="1" paraIndex="7001502" paraCNname ="单位"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1470"  Name="打开3DMapping文件">
+    <Step orderIndex ="1" orderStrName="打开3DMapping文件">
+      <Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="18"  FunName="打开3DMapping文件">
+        <parameter paravalue=""  paratype="1"  paraIndex="7001801"  paraCNname="文件全路径"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7001802"  paraCNname="文件全路径"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7001803"  paraCNname="文件全路径"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7001804"  paraCNname="文件全路径"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1471"  Name="保存3DMapping文件">
+    <Step orderIndex ="1" orderStrName="保存3DMapping文件">
+      <Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="19"  FunName="保存3DMapping文件">
+        <parameter paravalue=""  paratype="1"  paraIndex="7001901"  paraCNname="文件全路径"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7001902" paraCNname ="文件路径"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1472"  Name="显示3DMapping的模式">
+    <Step orderIndex ="1" orderStrName="显示3DMapping的模式">
+      <Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="22"  FunName="显示3DMapping的模式">
+        <parameter paravalue=""  paratype="1"  paraIndex="7002201"  paraCNname="文件全路径"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002202"  paraCNname="文件全路径"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002203"  paraCNname="文件全路径"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1477"  Name="显示3DMapping的模式截取">
+    <Step orderIndex ="1" orderStrName="显示3DMapping的模式截取">
+      <Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="27"  FunName="显示3DMapping的模式截取">
+        <parameter paravalue=""  paratype="1"  paraIndex="7002701"  paraCNname="xmin"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002702"  paraCNname="xmax"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002703"  paraCNname="ymin"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002704"  paraCNname="ymax"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002705"  paraCNname="zmin"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002706"  paraCNname="zmax"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002707"  paraCNname="nmode"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002708"  paraCNname="dwavestart"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002709"  paraCNname="dwaveend"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002710"  paraCNname="showmode"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1711"  Name="获取3DMapping的点的数据">
+    <Step orderIndex ="1" orderStrName="获取3DMapping的点的数据">
+      <Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="20"  FunName="获取3DMapping的点的数据">
+        <parameter paravalue=""  paratype="1"  paraIndex="7002001" paraCNname ="X轴坐标"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002002" paraCNname ="Y轴坐标"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002003" paraCNname ="Z轴坐标"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1712"  Name="保存截取3D的文件">
+    <Step orderIndex ="1" orderStrName="保存截取3D的文件">
+      <Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="26"  FunName="保存截取3D的文件">
+        <parameter paravalue=""  paratype="1"  paraIndex="7002101" paraCNname ="X轴坐标"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002102" paraCNname ="Y轴坐标"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002103" paraCNname ="Z轴坐标"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002104" paraCNname ="Z轴坐标"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1473"  Name="导出全部曲线">
+    <Step orderIndex ="1" orderStrName="导出全部曲线">
+      <Dev sdkIndex ="1"  DevType="7"  DevName="mapping"  FunNum="11"  FunName="设置路径">
+        <parameter  paravalue=""  paratype=""  paraIndex=""  paraCNname="占位"/>
+      </Dev>
+      <Dev sdkIndex ="2"  DevType="7"  DevName="mapping"  FunNum="23"  FunName="导出全部曲线">
+        <parameter paravalue=""  paratype="1"  paraIndex="7002101" paraCNname ="X轴坐标"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002102" paraCNname ="Y轴坐标"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002104" paraCNname ="保存路径"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1474"  Name="导出全部曲线3D">
+    <Step orderIndex ="1" orderStrName="导出全部曲线3D">
+      <Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="24"  FunName="导出全部曲线3D">
+        <parameter paravalue=""  paratype="1"  paraIndex="7002104" paraCNname ="保存路径"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="1475"  Name="保存截取3D的文件">
+    <Step orderIndex ="1" orderStrName="保存截取3D的文件">
+      <Dev sdkIndex = "1"  DevType="7"  DevName="mapping"  FunNum="25"  FunName="保存截取3D的文件">
+        <parameter paravalue=""  paratype="1"  paraIndex="7002501" paraCNname ="X轴坐标"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002502" paraCNname ="Y轴坐标"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002503" paraCNname ="Z轴坐标"/>
+        <parameter paravalue=""  paratype="1"  paraIndex="7002504" paraCNname ="Z轴坐标"/>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3034"  Name="设置是否安装狭缝">
+    <Step orderIndex ="1"  orderStrName="设置是否安装狭缝">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="34"  FunName="设置是否安装狭缝">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3003401"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3003402"  paraCNname="安装"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3035"  Name="设置是否安装摆镜">
+    <Step orderIndex ="1"  orderStrName="设置是否安装摆镜">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="35"  FunName="设置是否安装摆镜">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3003501"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3003502"  paraCNname="安装"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3036"  Name="设置是否安装快门">
+    <Step orderIndex ="1"  orderStrName="设置是否安装快门">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="36"  FunName="设置是否安装快门">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3003601"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3003602"  paraCNname="安装"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+<FunNum BussiNumber ="3037"  Name="查询是否已安装滤光片轮">
+    <Step orderIndex ="1"  orderStrName="查询是否已安装滤光片轮">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="37"  FunName="查询是否已安装滤光片轮">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3003701"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3038"  Name="设置是否安装滤光片轮">
+    <Step orderIndex ="1"  orderStrName="设置是否安装滤光片轮">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="38"  FunName="设置是否安装滤光片轮">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3003801"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3003802"  paraCNname="安装"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3039"  Name="读取自动狭缝型号">
+    <Step orderIndex ="1"  orderStrName="读取自动狭缝型号">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="39"  FunName="读取自动狭缝型号">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3003901"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3040"  Name="设置自动狭缝型号">
+    <Step orderIndex ="1"  orderStrName="设置自动狭缝型号">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="40"  FunName="设置自动狭缝型号">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004001"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004002"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3041"  Name="设置狭缝归零">
+    <Step orderIndex ="1"  orderStrName="设置狭缝归零">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="41"  FunName="设置狭缝归零">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004101"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3042"  Name="设置滤光片轮型号">
+    <Step orderIndex ="1"  orderStrName="设置滤光片轮型号">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="42"  FunName="设置滤光片轮型号">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004201"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3043"  Name="读取滤光片轮型号">
+    <Step orderIndex ="1"  orderStrName="读取滤光片轮型号">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="43"  FunName="读取滤光片轮型号"></Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3044"  Name="设置滤光片有效波长起始位置">
+    <Step orderIndex ="1"  orderStrName="设置滤光片有效波长起始位置">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="44"  FunName="设置滤光片有效波长起始位置">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004401"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004402"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004403"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3045"  Name="读取滤光片有效波长起始位置">
+    <Step orderIndex ="1"  orderStrName="读取滤光片有效波长起始位置">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="45"  FunName="读取滤光片有效波长起始位置">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004501"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004502"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3046"  Name="设置步进电机定位方向">
+    <Step orderIndex ="1"  orderStrName="设置步进电机定位方向">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="46"  FunName="设置步进电机定位方向">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004601"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004602"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3047"  Name="读取步进电机定位方向">
+    <Step orderIndex ="1"  orderStrName="读取步进电机定位方向">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="47"  FunName="读取步进电机定位方向">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004701"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3048"  Name="设置步进电机总步数">
+    <Step orderIndex ="1"  orderStrName="设置步进电机总步数">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="48"  FunName="设置步进电机总步数">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004801"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004802"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3049"  Name="读取步进电机总步数">
+    <Step orderIndex ="1"  orderStrName="读取步进电机总步数">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="49"  FunName="读取步进电机总步数">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3004901"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3050"  Name="读取步进电机移动速度">
+    <Step orderIndex ="1"  orderStrName="读取步进电机移动速度">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="50"  FunName="读取步进电机移动速度">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3005001"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3051"  Name="设置步进电机移动速度">
+    <Step orderIndex ="1"  orderStrName="设置步进电机移动速度">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="51"  FunName="设置步进电机移动速度">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3005101"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3005102"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3052"  Name="设置步进电机绝对移动步数">
+    <Step orderIndex ="1"  orderStrName="设置步进电机绝对移动步数">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="52"  FunName="设置步进电机绝对移动步数">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3005201"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3005202"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3053"  Name="读取步进电机绝对移动步数">
+    <Step orderIndex ="1"  orderStrName="读取步进电机绝对移动步数">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="53"  FunName="读取步进电机绝对移动步数">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3005301"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3054"  Name="读取光栅零级位置参数">
+    <Step orderIndex ="1"  orderStrName="读取光栅零级位置参数">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="54"  FunName="读取光栅零级位置参数">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3005401"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3005402"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3056"  Name="设置开机初始化时光栅位置">
+    <Step orderIndex ="1"  orderStrName="设置开机初始化时光栅位置">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="56"  FunName="设置开机初始化时光栅位置">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3005601"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3057"  Name="读取开机初始化时光栅位置">
+    <Step orderIndex ="1"  orderStrName="读取开机初始化时光栅位置">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="57"  FunName="读取开机初始化时光栅位置"></Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3058"  Name="设置切换光栅时，光栅的定位位置">
+    <Step orderIndex ="1"  orderStrName="设置切换光栅时，光栅的定位位置">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="58"  FunName="设置切换光栅时，光栅的定位位置">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3005801"  paraCNname="光栅号"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3005802"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3059"  Name="读取切换光栅时，光栅的定位位置">
+    <Step orderIndex ="1"  orderStrName="读取切换光栅时，光栅的定位位置">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="59"  FunName="读取切换光栅时，光栅的定位位置">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3005901"  paraCNname="光栅号"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3060"  Name="设置单色仪移动速度">
+    <Step orderIndex ="1"  orderStrName="设置单色仪移动速度">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="60"  FunName="设置单色仪移动速度">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3006001"  paraCNname="光栅号"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3006002"  paraCNname="速度"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3061"  Name="读取单色仪移动速度">
+    <Step orderIndex ="1"  orderStrName="读取单色仪移动速度">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="61"  FunName="读取单色仪移动速度">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3006101"  paraCNname="光栅号"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3062"  Name="设置指定的自动狭缝带宽">
+    <Step orderIndex ="1"  orderStrName="设置指定的自动狭缝带宽">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="62"  FunName="设置指定的自动狭缝带宽">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3006201"  paraCNname="光栅号"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3006202"  paraCNname="带宽"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3064"  Name="获取光栅台转一圈的总步数">
+    <Step orderIndex ="1"  orderStrName="获取光栅台转一圈的总步数">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="64"  FunName="获取光栅台转一圈的总步数"></Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3065"  Name="设置光栅台转一圈的总步数">
+    <Step orderIndex ="1"  orderStrName="设置光栅台转一圈的总步数">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="65"  FunName="设置光栅台转一圈的总步数">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3006501"  paraCNname="总步数"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+
+
+  <FunNum BussiNumber ="3068"  Name="设置指定的自动狭缝零点位置">
+    <Step orderIndex ="1"  orderStrName="设置指定的自动狭缝零点位置">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="68"  FunName="设置指定的自动狭缝零点位置">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3006801"  paraCNname="位置"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3006802"  paraCNname="宽度"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3069"  Name="读取指定的自动狭缝零点位置">
+    <Step orderIndex ="1"  orderStrName="读取指定的自动狭缝零点位置">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="69"  FunName="读取指定的自动狭缝零点位置">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3006901"  paraCNname="位置"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3070"  Name="设置目前安装的塔台号">
+    <Step orderIndex ="1"  orderStrName="设置目前安装的塔台号">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="70"  FunName="设置目前安装的塔台号">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007001"  paraCNname="塔台号"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+
+
+  <FunNum BussiNumber ="3072"  Name="设置光栅校正系数">
+    <Step orderIndex ="1"  orderStrName="设置光栅校正系数">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="72"  FunName="设置光栅校正系数">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007201"  paraCNname="光栅号"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007202"  paraCNname="系数"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3073"  Name="读取光栅校正系数">
+    <Step orderIndex ="1"  orderStrName="读取光栅校正系数">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="73"  FunName="读取光栅校正系数">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007301"  paraCNname="光栅号"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3074"  Name="读取光栅刻线和闪耀波长">
+    <Step orderIndex ="1"  orderStrName="读取光栅刻线和闪耀波长">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="74"  FunName="读取光栅刻线和闪耀波长">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007401"  paraCNname="光栅号"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3075"  Name="设置光栅刻线和闪耀波长">
+    <Step orderIndex ="1"  orderStrName="设置光栅刻线和闪耀波长">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="75"  FunName="设置光栅刻线和闪耀波长">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007501"  paraCNname="光栅号"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007502"  paraCNname="光栅刻线"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007503"  paraCNname="闪耀波长"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3076"  Name="获取光栅的最大波长">
+    <Step orderIndex ="1"  orderStrName="获取光栅的最大波长">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="76"  FunName="获取光栅的最大波长">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007601"  paraCNname="光栅号"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3077"  Name="计算光栅校正系数">
+    <Step orderIndex ="1"  orderStrName="计算光栅校正系数">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="77"  FunName="计算光栅校正系数">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007701"  paraCNname="光栅号"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007702"  paraCNname="显示波长"></parameter>
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007703"  paraCNname="当前波长"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3078"  Name="将波长转换电机步数">
+    <Step orderIndex ="1"  orderStrName="将波长转换电机步数">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="78"  FunName="将波长转换电机步数">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007801"  paraCNname="波长"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3079"  Name="电子伏特转波长">
+    <Step orderIndex ="1"  orderStrName="电子伏特转波长">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="79"  FunName="电子伏特转波长">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3007901"  paraCNname="伏特"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3080"  Name="波长转电子伏特">
+    <Step orderIndex ="1"  orderStrName="波长转电子伏特">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="80"  FunName="波长转电子伏特">
+        <parameter  paravalue=""  paratype="1"  paraIndex="3008001"  paraCNname="波长"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="3081"  Name="设置单色仪重新定位">
+    <Step orderIndex ="1"  orderStrName="设置单色仪重新定位">
+      <Dev sdkIndex ="1"  DevType="3"  DevName="谱仪"  FunNum="81"  FunName="设置单色仪重新定位">
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="4201"  Name="读取激发偏振位置">
+    <Step orderIndex ="1"  orderStrName="读取激发偏振位置">
+      <Dev sdkIndex ="1"  DevType="2"  DevName="光路电机"  FunNum="15"  FunName="读取激发偏振位置">
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="4202"  Name="归零激发偏振">
+    <Step orderIndex ="1"  orderStrName="归零激发偏振">
+      <Dev sdkIndex ="1"  DevType="2"  DevName="光路电机"  FunNum="9"  FunName="归零激发偏振">
+        <parameter  paravalue=""  paratype="1"  paraIndex="420301"  paraCNname="偏振"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="4203"  Name="设置激发偏振">
+    <Step orderIndex ="1"  orderStrName="设置激发偏振">
+      <Dev sdkIndex ="1"  DevType="2"  DevName="光路电机"  FunNum="9"  FunName="设置激发偏振">
+        <parameter  paravalue=""  paratype="1"  paraIndex="420301"  paraCNname="偏振"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="4204"  Name="设置激发偏振水平位置">
+    <Step orderIndex ="1"  orderStrName="设置激发偏振水平位置">
+      <Dev sdkIndex ="1"  DevType="2"  DevName="光路电机"  FunNum="13"  FunName="设置激发偏振水平位置">
+        <parameter  paravalue=""  paratype="1"  paraIndex="420401"  paraCNname="偏振"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="4205"  Name="激发偏振退出">
+    <Step orderIndex ="1"  orderStrName="激发偏振退出">
+      <Dev sdkIndex ="1"  DevType="2"  DevName="谱仪"  FunNum="11"  FunName="激发偏振退出">
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="4206"  Name="读取发射偏振位置">
+    <Step orderIndex ="1"  orderStrName="读取发射偏振位置">
+      <Dev sdkIndex ="1"  DevType="2"  DevName="谱仪"  FunNum="14"  FunName="读取发射偏振位置">
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="4207"  Name="归零发射偏振">
+    <Step orderIndex ="1"  orderStrName="归零发射偏振">
+      <Dev sdkIndex ="1"  DevType="2"  DevName="谱仪"  FunNum="8"  FunName="归零发射偏振">
+        <parameter  paravalue=""  paratype="1"  paraIndex="420801"  paraCNname="偏振"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="4208"  Name="设置发射偏振">
+    <Step orderIndex ="1"  orderStrName="设置发射偏振">
+      <Dev sdkIndex ="1"  DevType="2"  DevName="谱仪"  FunNum="8"  FunName="设置发射偏振">
+        <parameter  paravalue=""  paratype="1"  paraIndex="420801"  paraCNname="偏振"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="4209"  Name="设置发射偏振水平位置">
+    <Step orderIndex ="1"  orderStrName="设置发射偏振水平位置">
+      <Dev sdkIndex ="1"  DevType="2"  DevName="谱仪"  FunNum="12"  FunName="设置发射偏振水平位置">
+        <parameter  paravalue=""  paratype="1"  paraIndex="420901"  paraCNname="偏振"></parameter>
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="4210"  Name="发射偏振退出">
+    <Step orderIndex ="1"  orderStrName="发射偏振退出">
+      <Dev sdkIndex ="1"  DevType="2"  DevName="谱仪"  FunNum="10"  FunName="发射偏振退出">
+      </Dev>
+    </Step>
+  </FunNum>
+  <FunNum BussiNumber ="4211"  Name="偏振测试">
+    <Step orderIndex ="1"  orderStrName="偏振测试">
+      <Dev sdkIndex ="1"  DevType="2"  DevName="谱仪"  FunNum="16"  FunName="偏振测试">
+      </Dev>
+    </Step>
+  </FunNum>
+</root>

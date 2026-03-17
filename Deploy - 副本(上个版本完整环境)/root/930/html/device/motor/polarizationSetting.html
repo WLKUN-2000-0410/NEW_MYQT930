@@ -1,0 +1,241 @@
+<style>
+	#polarization{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #polarization div{
+        width: 100%;
+        height: 50%;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        border-top: 3px ridge #555555;
+    }
+    #polarization div b{
+        font-size: 20px;
+        display: inline-flex;
+        border-bottom: 3px ridge #555555;
+        padding-left: 5px;
+    }
+    #polarization div p{
+        display: inline-flex;
+        align-items: center;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    #polarization div p button{
+        width: 28%;
+    }
+    #polarization div p input[type=text]{
+        width: 30%;
+        margin-left: 10px;
+    }
+    #polarization div p span{
+        width: 10%;
+    }
+    #polarization div p button
+	
+</style>
+<div id="polarization">
+	<div id="level">
+		<b data-locale="popup-device-polar-stimulate">激发偏振</b>
+        <p>
+            <button type="button" id="stimulateRedPos" class="btn btn-secondary btn-sm" data-locale="popup-device-polar-rcp">读取当前位置</button>
+            <input type="text" id="stimulateCurPos" readonly>
+            <span>°</span>
+            <button type="button" id="stimulateZero" class="btn btn-secondary btn-sm" data-locale="popup-device-polar-zero">归零</button>
+        </p>
+        <p>
+            <button type="button" id="stimulateLeft" class="btn btn-secondary btn-sm" data-locale="popup-device-polar-lm">《</button>
+            <input type="text" id="stimulateMove" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+            <span>°</span>
+            <button type="button" id="stimulateRight" class="btn btn-secondary btn-sm" data-locale="popup-device-polar-rm">《</button>
+        </p>
+        <p>
+            <button type="button" id="stimulateMoveToButton" class="btn btn-secondary btn-sm" data-locale="popup-device-polar-mt">转动到</button>
+            <input type="text" id="stimulateMoveTo" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+            <span>°</span>
+        </p>
+        <p>
+        	<button type="button" id="stimulateSettingLevel" class="btn btn-secondary btn-sm" style="width: 100%;" data-locale="popup-device-polar-set-level">设置当前角度水平偏振</button>
+        </p>
+        <p>
+        	<button type="button" id="stimulateExit" class="btn btn-secondary btn-sm" style="width: 100%;" data-locale="popup-device-polar-exit">偏振退出</button>
+        </p>
+	</div>
+	<div id="vertical">
+		<b data-locale="popup-device-polar-launch">发射偏振</b>
+        <p>
+            <button type="button" id="launchRedPos" class="btn btn-secondary btn-sm" data-locale="popup-device-polar-rcp">读取当前位置</button>
+            <input type="text" id="launchCurPos" readonly>
+            <span>°</span>
+            <button type="button" id="launchZero" class="btn btn-secondary btn-sm" data-locale="popup-device-polar-zero">归零</button>
+        </p>
+        <p>
+            <button type="button" id="launchLeft" class="btn btn-secondary btn-sm" data-locale="popup-device-polar-lm">《</button>
+            <input type="text" id="launchMove" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+            <span>°</span>
+            <button type="button" id="launchRight" class="btn btn-secondary btn-sm" data-locale="popup-device-polar-rm">》</button>
+        </p>
+        <p>
+            <button type="button" id="launchMoveToButton" class="btn btn-secondary btn-sm" data-locale="popup-device-polar-mt">转动到</button>
+            <input type="text" id="launchMoveTo" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+            <span>°</span>
+        </p>
+        <p>
+        	<button type="button" id="launchSettingLevel" class="btn btn-secondary btn-sm" style="width: 100%;" data-locale="popup-device-polar-set-level">设置当前角度水平偏振</button>
+        </p>
+        <p>
+        	<button type="button" id="launchExit" class="btn btn-secondary btn-sm" style="width: 100%;" data-locale="popup-device-polar-exit">偏振退出</button>
+        </p>
+	</div>
+</div>
+<script>
+	$("#stimulateRedPos").click(function(){
+//		1201
+		let sendParam = {};
+		websocket.send(funcCode.stimulateReadPos,sendParam);
+        main.setCallbacks(funcCode.stimulateReadPos,rev =>{
+            $("input#stimulateCurPos").val(rev.getFval());
+        })
+		
+	});
+	$("#stimulateZero").click(function(){
+//		1202
+		let sendParam = {};
+		websocket.send(funcCode.stimulateZero,sendParam);
+		main.setCallbacks(funcCode.stimulateZero,rev=>{
+			if(rev.getBstatus()){
+				$("input#stimulateCurPos").val(0);
+			}
+		});
+	});
+	$("#stimulateLeft").click(function(){
+//		1203
+		let fDege = parseFloat($("input#stimulateCurPos").val())-parseFloat($("input#stimulateMove").val());
+		let sendParam = {dege:fDege};
+		websocket.send(funcCode.stimulateMoveTo,sendParam);
+		main.setCallbacks(funcCode.stimulateMoveTo,rev=>{
+			if(rev.getBstatus()){
+				$("input#stimulateCurPos").val(fDege);
+			}
+		});
+	});
+	$("#stimulateRight").click(function(){
+//		1204
+		let fDege = parseFloat($("input#stimulateCurPos").val())+parseFloat($("input#stimulateMove").val());
+		let sendParam = {dege:fDege};
+		websocket.send(funcCode.stimulateMoveTo,sendParam);
+		main.setCallbacks(funcCode.stimulateMoveTo,rev=>{
+			if(rev.getBstatus()){
+				$("input#stimulateCurPos").val(fDege);
+			}
+		});
+	});
+	$("#stimulateMoveToButton").click(function(){
+//		1205
+		let fDege = parseFloat($("input#stimulateMoveTo").val())
+		let sendParam = {dege:fDege};
+		websocket.send(funcCode.stimulateMoveTo,sendParam);
+		main.setCallbacks(funcCode.stimulateMoveTo,rev=>{
+			if(rev.getBstatus()){
+				$("input#stimulateCurPos").val(fDege);
+			}
+		});
+	});
+	$("#stimulateSettingLevel").click(function(){
+//		1206
+		let fDege = parseFloat($("input#stimulateCurPos").val())
+		let sendParam = {dege:fDege};
+		websocket.send(funcCode.stimulateSettingLevel,sendParam);
+		main.setCallbacks(funcCode.stimulateSettingLevel,rev=>{
+			if(rev.getBstatus()){
+				$("input#stimulateCurPos").val(fDege);
+			}
+		});
+	});
+	$("#stimulateExit").click(function(){
+//		1207
+		let sendParam = {};
+		websocket.send(funcCode.stimulateExit,sendParam);
+		main.setCallbacks(funcCode.stimulateExit,rev=>{
+			if(rev.getBstatus()){
+				$("input#stimulateCurPos").val(0);
+			}
+		});
+	});
+	$("#launchRedPos").click(function(){
+//		1208
+		let sendParam = {};
+		websocket.send(funcCode.stimulateReadPos,sendParam);
+        main.setCallbacks(funcCode.stimulateReadPos,rev =>{
+            $("input#launchCurPos").val(rev.getFval());
+        })
+	});
+	$("#launchZero").click(function(){
+//		1209
+		let sendParam = {};
+		websocket.send(funcCode.launchZero,sendParam);
+		main.setCallbacks(funcCode.launchZero,rev=>{
+			if(rev.getBstatus()){
+				$("input#launchCurPos").val(0);
+			}
+		});
+	});
+	$("#launchLeft").click(function(){
+//		1210
+		let fDege = parseFloat($("input#launchCurPos").val())-parseFloat($("input#launchMove").val());
+		let sendParam = {dege:fDege};
+		websocket.send(funcCode.stimulateMoveTo,sendParam);
+		main.setCallbacks(funcCode.stimulateMoveTo,rev=>{
+			if(rev.getBstatus()){
+				$("input#launchCurPos").val(fDege);
+			}
+		});
+	});
+	$("#launchRight").click(function(){
+//		1211
+		let fDege = parseFloat($("input#launchCurPos").val())+parseFloat($("input#launchMove").val());
+		let sendParam = {dege:fDege};
+		websocket.send(funcCode.stimulateMoveTo,sendParam);
+		main.setCallbacks(funcCode.stimulateMoveTo,rev=>{
+			if(rev.getBstatus()){
+				$("input#launchCurPos").val(fDege);
+			}
+		});
+	});
+	$("#launchMoveToButton").click(function(){
+//		1212
+		let fDege = parseFloat($("input#launchMoveTo").val())
+		let sendParam = {dege:fDege};
+		websocket.send(funcCode.stimulateMoveTo,sendParam);
+		main.setCallbacks(funcCode.stimulateMoveTo,rev=>{
+			if(rev.getBstatus()){
+				$("input#launchCurPos").val(fDege);
+			}
+		});
+	});
+	$("#launchSettingLevel").click(function(){
+//		1213
+		let fDege = parseFloat($("input#launchCurPos").val())
+		let sendParam = {dege:fDege};
+		websocket.send(funcCode.stimulateSettingLevel,sendParam);
+		main.setCallbacks(funcCode.stimulateSettingLevel,rev=>{
+			if(rev.getBstatus()){
+				$("input#launchCurPos").val(fDege);
+			}
+		});
+	});
+	$("#launchExit").click(function(){
+//		1214
+		let sendParam = {};
+		websocket.send(funcCode.stimulateExit,sendParam);
+		main.setCallbacks(funcCode.stimulateExit,rev=>{
+			if(rev.getBstatus()){
+				$("input#launchCurPos").val(0);
+			}
+		});
+	});
+</script>

@@ -1,0 +1,142 @@
+<style>
+    #deviceConnect {
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    #deviceConnect div {
+        display: inline-flex;
+        width: 100%;
+        align-items: center;
+       /* justify-content: space-evenly;*/
+        margin-top: 2%;
+    }
+    #deviceConnect div .btn{
+        margin-left: 10px;
+    }
+    #deviceConnect div b {
+        width: 15%;
+        text-align: right;
+        margin-right: 10px;
+    }
+    #deviceConnect div select {
+        width: 28%;
+    }
+    #deviceConnect div input[type=checkbox]{
+        margin-left: 10px;
+    }
+    #deviceConnect div span{
+        margin-left: 5px;
+    }
+</style>
+<div id="deviceConnect">
+    <div>
+        <b data-locale="popup-device-ic-spec">谱仪:</b>
+        <select id="specInfo">
+        </select>
+        <button type="button" class="btn btn-secondary btn-sm" id="specRef" onclick="deviceControl.refresh()"><i class="fa fa-refresh fa-lg"></i></button>
+        <button type="button" class="btn btn-success btn-sm" data-locale="popup-device-ic-con" id="specCon" onclick="deviceControl.connect(deviceType.spec)">连接</button>
+        <button type="button" class="btn btn-danger btn-sm"  data-locale="popup-device-ic-disCon" id="specDisCon" onclick="deviceControl.disConnect(deviceType.spec)">断开</button>
+        <input type="checkbox" class="custom-checkbox" id="specAuto" autoType="0">
+        <span data-locale="popup-device-ic-auto">开机自动连接</span>
+    </div>
+    <div id="dc">
+        <b data-locale="popup-device-ic-dc">数采:</b>
+        <select id="dcInfo">
+            <option>A2</option>
+            <option>A4</option>
+        </select>
+        <button type="button" style="margin-left: 54px" class="btn btn-success btn-sm" data-locale="popup-device-ic-con"  id="dcCon" onclick="deviceControl.connect(deviceType.dc)">连接</button>
+        <button type="button" class="btn btn-danger btn-sm" data-locale="popup-device-ic-disCon"  id="dcDisCon" onclick="deviceControl.disConnect(deviceType.dc)">断开</button>
+        <input type="checkbox" class="custom-checkbox" id="dcAuto" autoType="1">
+        <span data-locale="popup-device-ic-auto">开机自动连接</span>
+    </div>
+    <div id="laser">
+        <b data-locale="popup-device-ic-laser">激光器:</b>
+        <select id="laserInfo">
+        </select>
+        <button style="margin-left: 54px" type="button" class="btn btn-success btn-sm" data-locale="popup-device-ic-con"  id="laserCon" onclick="deviceControl.connect(deviceType.laser)">连接</button>
+        <button type="button" class="btn btn-danger btn-sm" data-locale="popup-device-ic-disCon"  id="laserDisCon" onclick="deviceControl.disConnect(deviceType.laser)">断开</button>
+        <input type="checkbox" class="custom-checkbox" id="laserAuto" autoType="2">
+        <span data-locale="popup-device-ic-auto">开机自动连接</span>
+    </div>
+    <div id="rTot">
+        <b data-locale="popup-device-ic-ocm">光路电机:</b>
+        <select id="rTotInfo">
+        </select>
+        <button style="margin-left: 54px" type="button" class="btn btn-success btn-sm" data-locale="popup-device-ic-con"  id="rTotCon" onclick="deviceControl.connect(deviceType.rTot)">连接</button>
+        <button type="button" class="btn btn-danger btn-sm" data-locale="popup-device-ic-disCon"  id="rTotDisCon" onclick="deviceControl.disConnect(deviceType.rTot)">断开</button>
+        <input type="checkbox" class="custom-checkbox" id="rTotAuto" autoType="3">
+        <span data-locale="popup-device-ic-auto">开机自动连接</span>
+    </div>
+    <div id="dT">
+        <b data-locale="popup-device-ic-dt">位移台:</b>
+        <select id="dTInfo">
+        </select>
+        <button style="margin-left: 54px" type="button" class="btn btn-success btn-sm" data-locale="popup-device-ic-con"  id="dTCon" onclick="deviceControl.connect(deviceType.dt)">连接</button>
+        <button type="button" class="btn btn-danger btn-sm" data-locale="popup-device-ic-disCon"  id="dTDisCon" onclick="deviceControl.disConnect(deviceType.dt)">断开</button>
+        <input type="checkbox" class="custom-checkbox" id="dTAuto" autoType="4">
+        <span data-locale="popup-device-ic-auto">开机自动连接</span>
+    </div>
+    <div id="camera">
+        <b data-locale="popup-device-ic-camera">相机:</b>
+        <select id="cameraInfo">
+            <option value="ST500">ST500</option>
+            <option value="ST130">ST130</option>
+            <option value="3">TP510CA</option>
+        </select>
+        <button type="button" style="margin-left: 54px" class="btn btn-success btn-sm" data-locale="popup-device-ic-con"  id="cameraCon" onclick="deviceControl.connect(deviceType.camera)">连接</button>
+        <button type="button" class="btn btn-danger btn-sm" id="cameraDisCon" data-locale="popup-device-ic-disCon"  onclick="deviceControl.disConnect(deviceType.camera)">断开</button>
+        <input type="checkbox" class="custom-checkbox" id="cameraAuto" autoType="5">
+        <span data-locale="popup-device-ic-auto">开机自动连接</span>
+    </div>
+    <div style="justify-content: space-evenly">
+        <button type="button" class="btn btn-success btn-sm" data-locale="popup-device-ic-conAll"  id="allConnect" onclick="deviceControl.allConnect()">全部连接</button>
+        <button type="button" class="btn btn-danger btn-sm" data-locale="popup-device-ic-disConAll"  id="allDisConnect" onclick="deviceControl.allDisConnect()">全部断开</button>
+    </div>
+</div>
+<script src="js/control/deviceControl.js"></script>
+<script>
+    $(function () {
+        $('#laser').prop('hidden',  !fConfig.deviceChoose.chooseLaser)
+        $('#dT').prop('hidden',     !fConfig.deviceChoose.chooseTango)
+        $('#rTot').prop('hidden',   !fConfig.deviceChoose.chooseMotor)
+        $('#camera').prop('hidden', !fConfig.deviceChoose.chooseCamera)
+        fConfig.comlist.forEach(cur=>{
+            $("#dTInfo").append("<option>"+cur)
+            $("#laserInfo").append("<option>"+cur)
+        })
+        if(fConfig.tangoConf.zmotionType!==0){
+            $("#dTInfo").empty()
+            $("#dTInfo").append("<option>"+fConfig.tangoConf.zmotionIp)
+        }
+        deviceControl.updateInfo()
+        deviceControl.updateStatus()
+    })
+    $("#deviceConnect input[type=checkbox]").click(function () {
+        let t = Number($(this).attr("autoType"))
+        let ck = $(this).prop("checked")
+        switch (t) {
+            case 0:{
+                device.spec.auto = ck;
+            }break
+            case 1:{
+                device.ccd.auto = ck;
+            }break
+            case 2:{
+                device.laser.auto = ck
+            }break
+            case 3:{
+                device.rTOT.auto = ck;
+            }break
+            case 4:{
+                device.dT.auto = ck;
+            }break
+            case 5:{
+                device.camera.auto = ck;
+            }break
+        }
+    })
+</script>

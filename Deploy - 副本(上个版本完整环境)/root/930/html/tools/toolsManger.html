@@ -1,0 +1,224 @@
+<style>
+    #toolsManger {
+        width: 100%;
+        height: 100%;
+    }
+
+    #toolsManger li {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    #toolsManger li input[type=checkbox] {
+        width: 24px;
+        height: 24px;
+        margin-left: 10px;
+    }
+
+    #toolsManger li div {
+        width: 85%;
+        height: 30px;
+        margin-left: 5px;
+        display: inline-flex;
+        align-items: center;
+        background-color: #2b2b2b;
+    }
+
+    #toolsManger li div p {
+        width: 30px;
+        height: 30px;
+        background-color: #2b2b2b;
+    }
+
+    #toolsManger li div b {
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+    #toolsManger li img {
+        width: 24px;
+        height: 24px;
+        margin: 2px
+    }
+</style>
+<ul id="toolsManger">
+    <li btnType="2">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/camera.png"></p>
+            <b data-locale="main-tools-camera">监视相机</b>
+        </div>
+    </li>
+    <li btnType="5">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/trans.png"></p>
+            <b data-locale="main-tools-switchUnit">单位切换</b>
+        </div>
+    </li>
+    <li btnType="8">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/vibrate.png"></p>
+            <b data-locale="main-tools-autoFocus">自动对焦</b>
+        </div>
+    </li>
+    <li btnType="9">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/m.png"></p>
+            <b data-locale="main-tools-mapping">Mapping测试</b>
+        </div>
+    </li>
+    <li btnType="10">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/foundation.png"></p>
+            <b data-locale="main-tools-Fit">基线扣除</b>
+        </div>
+    </li>
+    <li btnType="11">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/smooth.png"></p>
+            <b data-locale="main-tools-smooth">平滑</b>
+        </div>
+    </li>
+    <li btnType="12">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/normal.png"></p>
+            <b data-locale="main-tools-normalization">归一化</b>
+        </div>
+    </li>
+    <li btnType="13">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/shear.png"></p>
+            <b data-locale="main-tools-dataIntercept">数据截取</b>
+        </div>
+    </li>
+    <li btnType="14">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/erase.png"></p>
+            <b data-locale="main-tools-spikeFix">擦除射线</b>
+        </div>
+    </li>
+    <li btnType="15">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/detection.png"></p>
+            <b data-locale="main-tools-findPeak">谱峰检测</b>
+        </div>
+    </li>
+    <li btnType="16">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/mathAlways.png"></p>
+            <b data-locale="main-tools-mathAlways">实时谱峰检测</b>
+        </div>
+    </li>
+    <li btnType="17">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/area.png"></p>
+            <b data-locale="main-tools-HWPA">峰面积、半高宽</b>
+        </div>
+    </li>
+    <li btnType="18">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/language.png"></p>
+            <b data-locale="main-tools-language">语言选择</b>
+        </div>
+    </li>
+    <li btnType="19">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/clean_up.png"></p>
+            <b data-locale="main-tools-emptyMsg">清空信息窗口</b>
+        </div>
+    </li>
+    <li btnType="20">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/close.png"></p>
+            <b data-locale="main-tools-removeAllLine">删除全部曲线</b>
+        </div>
+    </li>
+    <li hidden btnType="21">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/coordinates.png"></p>
+            <b>二维坐标设置</b>
+        </div>
+    </li>
+    <li btnType="22">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/delete.png"></p>
+            <b data-locale="main-tools-removeCheckedLine">删除勾选曲线</b>
+        </div>
+    </li>
+    <li btnType="23">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/configuration.png"></p>
+            <b data-locale="main-tools-config">配置选择</b>
+        </div>
+    </li>
+    <li btnType="24">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/connect.png"></p>
+            <b data-locale="main-tools-connect">仪器连接</b>
+        </div>
+    </li>
+    <li btnType="25">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/spec_set.png"></p>
+            <b data-locale="main-tools-specSet">谱仪设置</b>
+        </div>
+    </li>
+    <li btnType="26">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/CCD_set.png"></p>
+            <b data-locale="main-tools-dcSet">数采设置</b>
+        </div>
+    </li>
+    <li btnType="27">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/tango_set.png"></p>
+            <b data-locale="main-tools-dtSet">位移台设置</b>
+        </div>
+    </li>
+    <li btnType="28">
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/polarization.png"></p>
+            <b data-locale="main-tools-polarSet">偏振设置</b>
+        </div>
+    </li>
+    <li btnType="29" hidden>
+        <input type="checkbox" class="custom-checkbox" checked>
+        <div>
+            <p><img src="source/image/database.png"></p>
+            <b data-locale="main-tools-DB">数据库</b>
+        </div>
+    </li>
+</ul>
+<script>
+    $('#toolsManger li input[type=checkbox]').click(function () {
+        let isShow = $(this).prop('checked')
+        let index = Number($(this).parent('li').attr("btnType"))
+        let bgColor = isShow ? '#2b2b2b' : '#5d5d5d';
+        $(this).next('div').find('p').css("backgroundColor",bgColor)
+        $(this).next('div').css('backgroundColor',bgColor )
+        main.isShowTools(isShow,index)
+    })
+</script>

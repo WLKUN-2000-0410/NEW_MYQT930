@@ -1,0 +1,82 @@
+<style>
+    #autoFocus{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #autoFocus div{
+        display: inline-flex;
+        align-items: center;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    #autoFocus div input[type=text]{
+        margin-left: 10px;
+        width: 45%;
+    }
+    #autoFocus div span:nth-child(1){
+        width: 35%;
+        text-align: right;
+    }
+    #autoFocus div span:nth-child(3){
+        margin-left: 10px;
+        text-align: left;
+    }
+
+</style>
+<div id="autoFocus">
+    <div>
+        <input style="margin-left: 30%" type="checkbox"  class="custom-checkbox" checked>
+        <span style="width: auto;margin-left: 10px" data-locale="popup-af-startAf">启动自动对焦</span>
+    </div>
+    <div>
+        <span data-locale="popup-af-peakMin">峰位Min</span>
+        <input type="text" value="0" id="peakMin">
+    </div>
+    <div>
+        <span data-locale="popup-af-peakMax">峰位Max</span>
+        <input type="text" value="1" id="peakMax">
+    </div>
+    <div>
+        <span data-locale="popup-af-intensity">强度灵敏度</span>
+        <input type="text" value="10" id="sensitivity">
+        <span>%</span>
+    </div>
+    <div>
+        <span data-locale="popup-af-dtMin">位移台Min</span>
+        <input type="text" value="0" id="tangoMin">
+        <span>μm</span>
+    </div>
+    <div>
+        <span data-locale="popup-af-dtMx">位移台Max</span>
+        <input type="text" value="1" id="tangoMax">
+        <span>μm</span>
+    </div>
+    <div>
+        <span data-locale="popup-af-stepLeader">步长</span>
+        <input type="text" value="5" id="stepSize">
+        <span>μm</span>
+    </div>
+    <div>
+        <span data-locale="popup-af-curPosZ">当前位置Z</span>
+        <input type="text" disabled value="450" id="dtZCurPos">
+        <span>μm</span>
+    </div>
+    <div style="justify-content: space-evenly;">
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-af-startBtn" onclick="autoFocus.startAutoFocus()">开始</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-af-stopBtn" onclick="autoFocus.stopAutoFocus()">停止</button>
+    </div>
+</div>
+<script>
+    $.getScript("js/control/DT/dt.js",()=>{dt.readDtPos(2)})
+    $.getScript('js/algorithm/autoFocus.js',()=>{autoFocus.initAutoFocus()})
+    $("a.jeBox-close").click(function(){
+        fConfig.autoFocus.peakMin = $("#peakMin").val()
+        fConfig.autoFocus.peakMax = $("#peakMax").val()
+        fConfig.autoFocus.sensitivity = $("#sensitivity").val()
+        fConfig.autoFocus.tangoMin = $("#tangoMin").val()
+        fConfig.autoFocus.tangoMax = $("#tangoMax").val()
+        fConfig.autoFocus.stepSize = $("#stepSize").val()
+    });
+</script>

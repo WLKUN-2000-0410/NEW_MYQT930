@@ -1,0 +1,60 @@
+<style>
+    #dtAdv{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #dtAdv b{
+        font-size: 20px;
+        display: inline-flex;
+        justify-content: flex-start;
+    }
+    #dtAdv div{
+        display: inline-flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+    #dtAdv div span{
+        width: 36%;
+        text-align: right;
+        margin-right: 10px;
+    }
+    #dtAdv div input{
+        width: 28%;
+    }
+    #dtAdv div button{
+       margin-left: 10px;
+    }
+    div>.dtAdvUnit{
+        margin-left: 5px;
+        width: 14% !important;
+        text-align: left !important;
+        margin-right: 0 !important;
+    }
+</style>
+<div id="dtAdv">
+    <b>X、Y、Z</b>
+    <div>
+        <span data-locale="popup-device-dt-adv-speed">速度</span>
+        <input type="text" id="dtAdvSpeed" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')"><span class="dtAdvUnit">mm/s</span>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-adv-btn" onclick="dt.setDtVelocity(Number($('#dtAdvSpeed').val()))">设置</button>
+    </div>
+    <div>
+        <span data-locale="popup-device-dt-adv-as">加速度</span>
+        <input type="text" id="dtAdvAccVelocity" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')"><span class="dtAdvUnit">mm/s2</span>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-adv-btn" onclick="dt.setDtAccVelocity(Number($('#dtAdvAccVelocity').val()))">设置</button>
+    </div>
+    <div>
+        <span data-locale="popup-device-dt-adv-rd">回程差</span>
+        <input type="text" id="dTAdvJoyStick" value="0"><span class="dtAdvUnit">mm/s</span>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-adv-btn">设置</button>
+    </div>
+</div>
+<script>
+    $.getScript("js/control/DT/dt.js",function () {
+        $('#dtAdvSpeed').val(device.dT.fval)
+        $('#dtAdvAccVelocity').val(device.dT.fAccval)
+    })
+
+</script>

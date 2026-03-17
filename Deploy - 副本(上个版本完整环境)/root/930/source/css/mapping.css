@@ -1,0 +1,256 @@
+#mappingDiv{
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    /*width: 100%;*/
+    /*height: calc(100% - 40px);*/
+    /*display: inline-flex;*/
+    /*flex-direction: column;*/
+    /*position: absolute;*/
+    /*left: 0;*/
+    /*top: 40px;*/
+}
+#mappingDiv1{
+    width: 100%;
+    height: 5%;
+    display: inline-flex;
+    align-items: center;
+    border-bottom: 3px ridge #555555;
+}
+#mappingDiv1 button{
+    border: 0;
+    margin-left: 10px;
+}
+#mappingDiv1 img{
+    width: 28px;
+    height: 28px;
+}
+#mappingDiv2{
+    width: 100%;
+    height: 95%;
+    display: inline-flex;
+}
+#mappingDiv3{
+    width: 20%;
+    height: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    border: 3px ridge #555555;
+    font-size: 1rem;
+}
+#mappingDiv3 input[type=text]{
+    color: #fff;
+}
+#mappingDiv3 b{
+    font-size: 1.5rem;
+    border-bottom: 3px ridge #555555;
+    display: inline-flex;
+    padding-left: 1%;
+    height: 20%;
+    align-items: center;
+}
+#mSP{
+    height: 23%;
+    display: inline-flex;
+    flex-direction: column;
+    border-bottom: 3px ridge #555555;
+}
+#mSP div{
+    margin-top: 1.5%;
+    display: inline-flex;
+}
+#mSP input {
+    width: 50%;
+}
+#mSP div span{
+    width: 30%;
+    text-align: right;
+    margin-right: 10px;
+}
+#mSA{
+    /*height: 31%;*/
+    display: inline-flex;
+    flex-direction: column;
+    border-bottom: 3px ridge #555555;
+    padding-bottom: 5px;
+}
+
+#mSA div{
+    margin-top: 1.5%;
+    display: inline-flex;
+    align-items: center;
+}
+#mSA span{
+	width: 50px;
+    text-align: right;
+}
+#mSA input[type=text]{
+    width: 25%;
+    margin-left: 1%;
+    color: #fff;
+}
+#mSA input[type=number]{
+    width: 35%;
+    margin-left: 1%;
+    color: #fff;
+}
+#mSA button {
+    width: 51%;
+    margin-left: 31%;
+}
+#mSA input[type=radio]{
+    width: 24px;
+    height: 24px;
+    margin-left: 10%;
+}
+#mDP{
+    height: 19%;
+    display: inline-flex;
+    flex-direction: column;
+    border-bottom: 3px ridge #555555;
+}
+#mDP b{
+    height: 25%;
+}
+#mDP div{
+    margin-top: 1.5%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+#mDP div select{
+    width: 60%;
+    margin-left: 11%;
+    color: #fff;
+}
+#mDP div input {
+    width: 30%;
+}
+#mDP div button{
+    width: 60%;
+    margin-left: 11%;
+}
+#mMSC{
+    height: 27%;
+    display: inline-flex;
+    flex-direction: column;
+}
+#mMSC b{
+    height: 18%;
+}
+#mMSC div{
+    margin-top: 1.5%;
+    display: inline-flex;
+    align-items: center;
+}
+#mMSC div span{
+    width: 27%;
+    text-align: right;
+    margin-right: 10px;
+}
+#mMSC div input{
+    width: 50%;
+}
+#mMSC div button{
+    width: 50%;
+    margin-left: 30%;
+}
+#mappingDiv4{
+    width: 80%;
+    height: 100%;
+    display: inline-flex;
+    flex-direction: column;
+}
+#mappingDiv5{
+    height: 50%;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#mappingImg{
+    width: 50%;
+    height: 100%;
+    border: 3px ridge #555555;
+    position: relative;
+    right: 0;
+}
+#mappingHeatmap{
+  width: 50%;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+}
+#mappingHot{
+    width: 85%;
+    height: 100%;
+    border: 3px ridge #555555;
+}
+#mappingLut{
+    width: 15%;
+    height: 100%;
+    border: 3px ridge #555555;
+}
+#mappingImage{
+    width: 100%;
+    height: 100%;
+}
+#mappingBox{
+    border: 3px ridge #9d9d9d;
+    position: absolute;
+    background-color: transparent;
+}
+#mappingDiv6{
+    height: 50%;
+    display: inline-flex;
+    flex-direction: column;
+}
+#mProgress{
+    display: inline-flex;
+    align-items: center;
+}
+#mProgress1{
+    background: #383838;
+    border: 3px ridge #555555;
+    margin-top: 0.2rem;
+    width: 100%;
+    /*width: 75%;*/
+}
+#mProgress2{
+    background: #383838;
+    border: 3px ridge #555555;
+    margin-top: 0.2rem;
+    width: 24.5%;
+    margin-left: 4px;
+}
+#mappingLine{
+    height: calc(100% - 1.2rem);
+    display: inline-flex;
+}
+#mappingChart{
+    width: 75%;
+    height: 98.6%;
+    border: 3px ridge #555555;
+}
+#mappingLegend{
+    width: 24.8%;
+    height: 100%;
+    border: 3px ridge #555555;
+    margin-left: 0.2%;
+    display: inline-flex;
+    flex-direction: column;
+}
+.mScale{
+    width: 80px;
+    height: 12px;
+    border: 2px solid #9d9d9d;
+    border-top: 0;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+}
+.mScale span{
+    position: relative;
+    bottom: 12px;
+}
+.dg select,.dg input{height: 19px}

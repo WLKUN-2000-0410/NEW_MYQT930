@@ -1,0 +1,260 @@
+<style>
+    #tools{
+        width: 99.6%;
+        height: 100%;
+        display: inline-flex;
+    }
+</style>
+<ul id="tools">
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-startScan" btntype="0" title="开始采集" disabled >
+            <img src="source/image/start.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-stopScan" btntype="1" title="停止采集" disabled>
+            <img src="source/image/stop.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-camera" btntype="2" title="监视相机" disabled>
+            <img src="source/image/camera.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-openFile" btntype="3" title="打开文件" >
+            <img src="source/image/openFile.png" alt="">
+        </button>
+        <input type="file" id="toolsOpen" style="display: none" accept=".txt" >
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-saveFile"  btntype="4" title="保存文件">
+            <img src="source/image/saveFile.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-switchUnit"  btntype="5" title="单位切换" >
+            <img src="source/image/trans.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-steadyScan"  btntype="6" id="steadyScan" title="稳定性测试" >
+            <img src="source/image/stabilize.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-wavelengthScan" btntype="7" id="waveScan" title="接谱测试"  >
+            <img src="source/image/Spectrum.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-polarizationTest-title" btntype="31" id="polarScan" title="位移台">
+            <img src="source/image/polarization.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-autoFocus" btntype="8" title="自动对焦" >
+            <img src="source/image/vibrate.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-mapping" btntype="9" title="Mapping测试" >
+            <img src="source/image/m.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-Fit" btntype="10" title="基线扣除">
+            <img src="source/image/foundation.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-smooth" btntype="11" title="平滑">
+            <img src="source/image/smooth.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-normalization" btntype="12" title="归一化">
+            <img src="source/image/normal.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-dataIntercept" btntype="13" title="数据截取">
+            <img src="source/image/shear.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-spikeFix" btntype="14" title="擦除射线" >
+            <img src="source/image/erase.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-findPeak" btntype="15" title="谱峰检测">
+            <img src="source/image/detection.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-mathAlways" btntype="16" title="实时谱峰检测">
+            <img src="source/image/mathAlways.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-HWPA" btntype="17" title="峰面积、半高宽" >
+            <img src="source/image/area.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-language" btntype="18" title="语言选择">
+            <img src="source/image/language.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-emptyMsg" btntype="19" title="清空信息窗口">
+            <img src="source/image/clean_up.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-removeAllLine" btntype="20" title="删除全部曲线" >
+            <img src="source/image/close.png" alt="">
+        </button>
+    </li>
+    <li hidden>
+        <button type="button" class="btn btn-outline-secondary btn-sm" btntype="21" title="二维坐标设置">
+            <img src="source/image/coordinates.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-removeCheckedLine" btntype="22" title="删除勾选曲线">
+            <img src="source/image/delete.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-config" btntype="23" title="配置选择" >
+            <img src="source/image/configuration.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-connect" btntype="24" title="仪器连接" >
+            <img src="source/image/connect.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-specSet" btntype="25" title="谱仪设置"  disabled>
+            <img src="source/image/spec_set.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-dcSet" btntype="26" title="数采设置" disabled>
+            <img src="source/image/CCD_set.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-dtSet" btntype="27" title="位移台" disabled >
+            <img src="source/image/tango_set.png" alt="">
+        </button>
+    </li>
+    <li>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="main-tools-polarSet" btntype="28" title="位移台" disabled>
+            <img src="source/image/polarization.png" alt="">
+        </button>
+    </li>
+    <li >
+        <button type="button" class="btn btn-outline-secondary btn-sm" title="数据库" data-tips="main-tools-DB" btntype="29"  >
+            <img src="source/image/database.png" alt="">
+        </button>
+    </li>
+    
+</ul>
+<button type="button" class="btn btn-outline-secondary btn-sm" style="float: right"  onclick="main.showToolsBox($.i18n.prop('main-tools-add'),30)" >
+    <img src="source/image/add.png" alt="">
+</button>
+<script>
+    $("#tools li button").click(function () {
+    	$(this).attr("btntype");
+        let title = $(this).attr("title")
+        let index = Number(true?$(this).attr("btntype"):$(this).parent('li').index())
+        switch (index) {
+            case 0:{
+                if (fConfig.funnm === 0) {
+                    steady.startScan()
+                }
+                if(fConfig.funnm === 1){
+                    wavelength.startScan()
+                }
+                if (fConfig.funnm === 2) {
+                	polar.startScan()
+                }
+
+            }break;
+            case 1:{
+                if (fConfig.funnm === 0) {
+                    steady.stopScan()
+                }
+                if(fConfig.funnm === 1){
+                   wavelength.stopScan()
+                }
+                if (fConfig.funnm === 2) {
+                	polar.stopScan()
+                }
+
+            }break;
+            case 3:{
+                main.openFile("toolsOpen")
+            }break
+            case 4:{
+                main.saveFile()
+            }break
+            case 6:
+            case 31:
+            case 7:{
+                let src = index ===6?"html/scan/steady.html":index ===7?"html/scan/wavelength.html":"html/scan/polarization.html"
+                fConfig.funnm = index===6?0:index===7?1:2
+                $("#steadyScan").prop('disabled',fConfig.funnm===0)
+                $("#waveScan").prop('disabled',fConfig.funnm===1)
+                $("#polarScan").prop('disabled',fConfig.funnm===2)
+                $("#mSteadyScan").prop('disabled',fConfig.funnm===0)
+                $("#mWaveScan").prop('disabled',fConfig.funnm===1)
+                $("#mPolarScan").prop('disabled',fConfig.funnm===2)
+                $("#mainChart").prop('hidden',index===31);
+                $("#mainPolarChart").prop('hidden',index<31);
+                console.log(fConfig.funnm);
+	            if(fConfig.funnm===0){
+	            	fConfig.spectrumUnit = $("#waveFUnit").html();
+	            	if(fConfig.spectrumUnit=="nm"){
+	            		fConfig.waveFrom = parseFloat($("#waveFrom").attr("nm")) 
+	            		fConfig.waveTo = parseFloat($("#waveTo").attr("nm"))
+	            	}else{
+		            	fConfig.waveFrom = parseFloat($("#waveFrom").val()) 
+		            	fConfig.waveTo = parseFloat($("#waveTo").val())	
+	            	}
+	            	
+	            }else if(fConfig.funnm===1){
+	            	fConfig.steadyUnit = $("#steadyUnit").html();
+	            	if(fConfig.steadyUnit=="nm"){
+	            		fConfig.steadyCenter = parseFloat($("#steadyCW").attr("nm"));
+	            	}else{
+		            	fConfig.steadyCenter = parseFloat($("#steadyCW").val());
+	            	}
+	            }else{
+	            	fConfig.polarUnit = $("#polarUnit").html();
+	            	if(fConfig.polarUnit=="nm"){
+	            		fConfig.polarCenter = parseFloat($("#polarCW").attr("nm"));
+	            	}else{
+		            	fConfig.polarCenter = parseFloat($("#polarCW").val());
+	            	}
+	            }
+                websocket.send(funcCode.TestModeChange,{funNm:fConfig.funnm},false)
+                main.setCallbacks(funcCode.TestModeChange,(rev)=>{
+		            $("#mainBodyLeft").load(src)
+		        })
+            }break;
+            // case 9:{
+            //    window.open("html/mapping/mapping.html","Mapping测试")
+            //    // let p = {c:fConfig.centerwave,exp:fConfig.expTime,slit:fConfig.slit,acc:fConfig.totalnum}
+            //     localStorage.setItem("p",JSON.stringify(fConfig))
+            // }break
+            default:{
+                main.showToolsBox(title,index)
+            }break
+        }
+    })
+</script>

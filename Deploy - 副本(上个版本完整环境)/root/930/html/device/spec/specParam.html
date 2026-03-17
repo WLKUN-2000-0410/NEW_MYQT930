@@ -1,0 +1,296 @@
+<style>
+    #specParamDiv{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    #specParamDiv div{
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        margin-top: 2%;
+    }
+    #specParamDiv div p{
+        width: 50%;
+        display: inline-flex;
+        align-items: center;
+    }
+    #specParamDiv div p span{
+        width: 50%;
+        text-align: right;
+        margin-right: 10px;
+    }
+    #specParamDiv div p input{
+        width: 50%;
+    }
+</style>
+<div id="specParamDiv">
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-sf">谱仪焦距</span>
+            <input type="text" class="FOCLEN">
+        </p>
+        <p>
+            <span data-locale="popup-device-spec-sbIf">谱仪内置角</span>
+            <input type="text" class="ANGDEV">
+        </p>
+    </div>
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-taOf">焦面倾斜角</span>
+            <input type="text" class="FOCTLT">
+        </p>
+        <p>
+            <span data-locale="popup-device-spec-rcf1">光栅校正系数1</span>
+            <input type="text" class="POLY1">
+        </p>
+    </div>
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-rcf2">光栅校正系数2</span>
+            <input type="text" class="POLY2">
+        </p>
+        <p>
+            <span data-locale="popup-device-spec-rcf3">光栅校正系数3</span>
+            <input type="text" class="POLY3">
+        </p>
+    </div>
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-rcf4">光栅校正系数4</span>
+            <input type="text" class="POLY4">
+        </p>
+        <p>
+            <span data-locale="popup-device-spec-rcf5">光栅校正系数5</span>
+            <input type="text" class="POLY5">
+        </p>
+    </div>
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-amplify">振幅</span>
+            <input type="text" class="SINAMPLITUDE">
+        </p>
+        <p>
+            <span data-locale="popup-device-spec-phase">相位</span>
+            <input type="text" class="SINPHASE">
+        </p>
+    </div>
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-Hz">频率</span>
+            <input type="text" class="SINFREQUENCY">
+        </p>
+    </div>
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-g1sms">光栅1起始电机步数</span>
+            <input type="text" class="GRATSTART1">
+        </p>
+        <p>
+            <span data-locale="popup-device-spec-g1bms">光栅1偏置电机步数</span>
+            <input type="text" class="GRATOFFSET1">
+        </p>
+    </div>
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-g1sl">光栅1刻线</span>
+            <input type="text" class="GRATLINES1">
+        </p>
+        <p>
+            <span data-locale="popup-device-spec-g1fw">光栅1闪耀波长</span>
+            <input type="text" class="GRATBLAZE1">
+        </p>
+    </div>
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-g2sms">光栅2起始电机步数</span>
+            <input type="text" class="GRATSTART2">
+        </p>
+        <p>
+            <span data-locale="popup-device-spec-g2bms">光栅2偏置电机步数</span>
+            <input type="text" class="GRATOFFSET2">
+        </p>
+    </div>
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-g2sl">光栅2刻线</span>
+            <input type="text" class="GRATLINES2">
+        </p>
+        <p>
+            <span data-locale="popup-device-spec-g2fw">光栅2闪耀波长</span>
+            <input type="text" class="GRATBLAZE2">
+        </p>
+    </div>
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-g3sms">光栅3起始电机步数</span>
+            <input type="text" class="GRATSTART3">
+        </p>
+        <p>
+            <span data-locale="popup-device-spec-g3bms">光栅3偏置电机步数</span>
+            <input type="text" class="GRATOFFSET3">
+        </p>
+    </div>
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-g3sl">光栅3刻线</span>
+            <input type="text" class="GRATLINES3">
+        </p>
+        <p>
+            <span data-locale="popup-device-spec-g3fw">光栅3闪耀波长</span>
+            <input type="text" class="GRATBLAZE3">
+        </p>
+    </div>
+    <div>
+        <p>
+            <span data-locale="popup-device-spec-ob">直出偏置</span>
+            <input type="text" class="DETECTOROFFSET1">
+        </p>
+        <p>
+            <span data-locale="popup-device-spec-sb">侧出偏置</span>
+            <input type="text" class="DETECTOROFFSET2">
+        </p>
+    </div>
+    <div style="justify-content: space-evenly;">
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-spec-rf" onclick="readFile()">读取文件</button>
+        <input type="file" style="display: none" accept=".bck" id="readFile">
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-spec-rdp" onclick="readDeviceParam()">读取设备参数</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-spec-sdp" onclick="setDeviceParam()">设置设备参数</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-spec-ef" onclick="exportFile()">导出文件</button>
+        <span id="specVer"></span>
+    </div>
+</div>
+<script>
+    $(function () {
+           websocket.send(funcCode.SpecGetVersion,{})
+            main.setCallbacks(funcCode.SpecGetVersion,rev=>{
+                let sn = rev.getVersion()
+                let idx = sn.indexOf('V')
+                let ver = Number(sn.slice(idx+1,sn.length)).toFixed(1)
+                $("#specVer").text(sn)
+                $(".GRATBLAZE1").prop('disabled',ver<3.4)
+                $(".GRATBLAZE2").prop('disabled',ver<3.4)
+                $(".GRATBLAZE3").prop('disabled',ver<3.4)
+            })
+    })
+    function readFile() {
+        $("#readFile").click();
+        $('input#readFile').change(function () {
+            let file = this.files[0];
+            if (this.files.length > 0) {
+                let reader = new FileReader(); //new一个FileReader实例
+                reader.onload = function () {
+                    let strFileC = this.result;
+                    let strArrays = strFileC.split("\r\n");
+                    for (let i = 0; i < strArrays.length; i++) {
+                        let index= strArrays[i].indexOf("=");
+                        if (index>=0) {
+                            let strKey= strArrays[i].substring(0,index);
+                            let strValue = strArrays[i].substr(index+1);
+                            $("input."+strKey).val(strValue);
+                        }
+                    }
+                };
+                reader.readAsText(file);
+            }
+            $("input#readFile").val('');
+
+        });
+    }
+    function readDeviceParam() {
+        let grating = fConfig.funnm===0?$("#steadyGrating").get(0).selectedIndex+1:$("#waveGrating").get(0).selectedIndex+1
+        websocket.send(funcCode.SpecGetParams,{grating:grating})
+        main.setCallbacks(funcCode.SpecGetParams,rev=>{
+            let idx = grating
+            $(".FOCLEN").val(rev.getFoclen())
+            $(".ANGDEV").val(rev.getAngdev())
+            $(".FOCTLT").val(rev.getFoctlt())
+            $(".POLY1").val(rev.getPoly1())
+            $(".POLY2").val(rev.getPoly2())
+            $(".POLY3").val(rev.getPoly3())
+            $(".POLY4").val(rev.getPoly4())
+            $(".POLY5").val(rev.getPoly5())
+            $(".SINAMPLITUDE").val(rev.getSinamplitude())
+            $(".SINPHASE").val(rev.getSinphase())
+            $(".SINFREQUENCY").val(rev.getSinfrequency())
+            $(".GRATSTART"+idx).val(rev.getGratstart())
+            $(".GRATOFFSET"+idx).val(rev.getGratoffset())
+            $(".GRATLINES"+idx).val(rev.getGratlines())
+            $(".GRATBLAZE"+idx).val(rev.getGratblaze())
+            $(".DETECTOROFFSET1").val(rev.getDetectoroffset1())
+            $(".DETECTOROFFSET2").val(rev.getDetectoroffset2())
+        })
+    }
+    function setDeviceParam() {
+        let grating = fConfig.funnm===0?$("#steadyGrating").get(0).selectedIndex:$("#waveGrating").get(0).selectedIndex
+        let [data,idx] = [{},(grating+1)]
+        data.FOCLEN = Number($(".FOCLEN").val())
+        data.ANGDEV = Number($(".ANGDEV").val())
+        data.FOCTLT = Number($(".FOCTLT").val())
+        data.POLY1 = $(".POLY1").val()
+        data.POLY2 = $(".POLY2").val()
+        data.POLY3 = $(".POLY3").val()
+        data.POLY4 = $(".POLY4").val()
+        data.POLY5 = $(".POLY5").val()
+        data.SINAMPLITUDE = Number($(".SINAMPLITUDE").val())
+        data.SINPHASE = Number($(".SINPHASE").val())
+        data.SINFREQUENCY = Number($(".SINFREQUENCY").val())
+        data.DETECTOROFFSET1 = Number($(".DETECTOROFFSET1").val())
+        data.DETECTOROFFSET2 = Number($(".DETECTOROFFSET2").val())
+        data.grating = idx
+        data.GRATSTART = Number($(".GRATSTART"+idx).val())
+        data.GRATOFFSET = Number($(".GRATOFFSET"+idx).val())
+        data.GRATLINES = Number($(".GRATLINES"+idx).val())
+        data.GRATBLAZE = Number($(".GRATBLAZE"+idx).val())
+
+        websocket.send(funcCode.SpecSetParams,data)
+    }
+    function exportFile() {
+        let strPrams="[General]"+"\r\n"+
+            "FOCLEN="+$("input.FOCLEN").val()+"\r\n"+
+            "ANGDEV="+$("input.ANGDEV").val()+"\r\n"+
+            "FOCTLT="+$("input.FOCTLT").val()+"\r\n"+
+            "IDSTRING=Andor Technology"+"\r\n"+
+            "SVERNO=2.1"+"\r\n"+
+            "IVERNO="+''+"\r\n"+
+            "DOM=02/08/2007"+"\r\n"+
+            "DATE=28/03/2022"+"\r\n"+
+            "[Wavelength]"+"\r\n"+
+            "POLY1="+$("input.POLY1").val()+"\r\n"+
+            "POLY2="+$("input.POLY2").val()+"\r\n"+
+            "POLY3="+$("input.POLY3").val()+"\r\n"+
+            "POLY4="+$("input.POLY4").val()+"\r\n"+
+            "POLY5="+$("input.POLY5").val()+"\r\n"+
+            "SINAMPLITUDE="+$("input.SINAMPLITUDE").val()+"\r\n"+
+            "SINPHASE="+$("input.SINPHASE").val()+"\r\n"+
+            "SINFREQUENCY="+$("input.SINFREQUENCY").val()+"\r\n"+
+            "ENABLECALIBRATION=1"+"\r\n"+
+            "CURRENTWAVELENGTH=0"+"\r\n"+
+            "DETECTOROFFSET1="+$("input.DETECTOROFFSET1").val()+"\r\n"+
+            "DETECTOROFFSET2="+$("input.DETECTOROFFSET2").val()+"\r\n"+
+            "NOOFTURRETS=1"+"\r\n"+
+            "ACTIVETURRET=0"+"\r\n"+
+            "GRATSTART1="+$("input.GRATBLAZE1").val()+"\r\n"+
+            "GRATOFFSET1="+$("input.GRATOFFSET1").val()+"\r\n"+
+            "GRATLINES1="+$("input.GRATLINES1").val()+"\r\n"+
+            "GRATBLAZE1="+$("input.GRATBLAZE1").val()+"\r\n"+
+            "GRATSTART2="+$("input.GRATSTART2").val()+"\r\n"+
+            "GRATOFFSET2="+$("input.GRATOFFSET2").val()+"\r\n"+
+            "GRATLINES2="+$("input.GRATLINES2").val()+"\r\n"+
+            "GRATBLAZE2="+$("input.GRATBLAZE2").val()+"\r\n"+
+            "GRATSTART3="+$("input.GRATSTART3").val()+"\r\n"+
+            "GRATOFFSET3="+$("input.GRATOFFSET3").val()+"\r\n"+
+            "GRATLINES3="+$("input.GRATLINES3").val()+"\r\n"+
+            "GRATBLAZE3="+$("input.GRATBLAZE3").val()+"\r\n"+
+            "NOOFGRATINGS=3"+"\r\n"+
+            "[Filter]"+"\r\n"+
+            "FILTERSTRINGS1=Filter 1"+"\r\n"+
+            "FILTERSTRINGS2=Filter 2"+"\r\n"+
+            "FILTERSTRINGS3=Filter 3"+"\r\n"+
+            "FILTERSTRINGS4=Filter 4"+"\r\n"+
+            "FILTERSTRINGS5=Filter 5"+"\r\n"+
+            "FILTERSTRINGS6=Filter 6";
+        download(new Blob([strPrams]),'factor.bck', 'text/plain')
+    }
+</script>

@@ -1,0 +1,33 @@
+<style>
+    #delAll{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #delAll div{
+        margin-top: 10px;
+        font-size: 16px;
+    }
+</style>
+<div id="delAll">
+    <div data-locale="popup-edit-removeAllMsg">您确定要删除所有曲线吗？</div>
+    <div>
+        <button type="button" class="btn btn-primary btn-sm" data-locale="popup-confirm" onclick="delAll()">确定</button>
+        <button type="button" class="btn btn-light btn-sm" data-locale="popup-cancel" onclick="cancel()">取消</button>
+    </div>
+</div>
+<script>
+    function delAll() {
+    	lineProcess.DeleteLineDataParams([...main.legend.names.keys()]);
+        let index = $("#delAll").parents('.jeBox-wrap').attr("id")
+        main.chart.remove_all()
+        $("#legendItem").empty()
+        main.legend.names.clear();
+        $("#"+index+" .jeBox-close").click()
+    }
+    function cancel() {
+        let index = $("#delAll").parents('.jeBox-wrap').attr("id")
+        $("#"+index+" .jeBox-close").click()
+    }
+</script>

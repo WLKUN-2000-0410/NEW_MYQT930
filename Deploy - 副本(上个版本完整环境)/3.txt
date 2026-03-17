@@ -1,0 +1,2 @@
+ --allow-file-access-from-files --incognito     //G2 无痕设置
+start G2 127.0.0.1:8082                                  //2.bat打开网址在G2设置后进行更新修改

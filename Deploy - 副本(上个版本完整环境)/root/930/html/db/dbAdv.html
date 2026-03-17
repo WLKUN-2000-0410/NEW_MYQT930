@@ -1,0 +1,76 @@
+<style>
+    #dbAdvDiv {
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    #dbAdvDiv div {
+        width: 100%;
+        height: 12%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    #dbAdvDiv div b {
+        display: inline-flex;
+    }
+
+    #dbAdvDiv div p {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    #dbAdvDiv div p span {
+        width: 15%;
+        text-align: right;
+        margin-right: 10px;
+    }
+
+    #dbAdvDiv div p input {
+        width: 40%;
+    }
+</style>
+<div id="dbAdvDiv">
+    <div style="border-bottom: 3px ridge #555555">
+        <b data-locale="popup-db-add-title1">一、测试基本信息</b>
+        <p>
+            <span data-locale="popup-db-add-num">样品编号</span>
+            <input type="text" style="width: 10%" id="dvAdvNum" disabled>
+            <span data-locale="popup-db-add-zhName">中文名</span>
+            <input type="text" id="dvAdvCName" class="text-truncate" disabled>
+            <span data-locale="popup-db-add-enName">英文名</span>
+            <input type="text" id="dvAdvEName" class="text-truncate" disabled>
+        </p>
+    </div>
+    <div style="height: 76%">
+        <b data-locale="popup-db-add-title2">二、谱图</b>
+        <p style="height: 94%;border: 3px ridge #555555" id="dbAdvChart"></p>
+    </div>
+    <div>
+        <b data-locale="popup-db-add-title3">三、测试方法</b>
+        <p class="w-75">
+            <span data-locale="popup-db-add-power">功率</span>
+            <input type="text" id="dbAdvPower" class="w-25" disabled>
+          <!--  <span>积分次数</span>
+            <input type="text" disabled>-->
+            <span data-locale="popup-db-add-expTime">积分时间</span>
+            <input type="text" id="dbAdvExpTime" class="w-25" disabled>
+     <!--       <span>积分间隔</span>
+            <input type="text" disabled>-->
+        </p>
+    </div>
+</div>
+<script>
+    function initDbAdv(msg) {
+        main.translate()
+        $('#dvAdvNum').val(msg.num).attr('title',msg.num)
+        $('#dvAdvCName').val(msg.cName).attr('title',msg.cName)
+        $('#dvAdvEName').val(msg.eName).attr('title',msg.eName)
+        $("#dbAdvPower").val(msg.powervalue)
+        $("#dbAdvExpTime").val(msg.ExpTime)
+        let dbAdvChart = new chart_xy('dbAdvChart')
+        dbAdvChart.add_series('dbLine',0).add_array(msg.xPd,msg.yPd)
+    }
+</script>

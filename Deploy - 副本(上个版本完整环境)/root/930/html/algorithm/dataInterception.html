@@ -1,0 +1,134 @@
+<style>
+    #dataInter{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #dataInter div{
+        height: 8%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #dataInter div select{
+        width: 150px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    #dataInter div input{
+        width: 100px;
+        margin-left: 10px;
+    }
+    #dataInter div button {
+        margin-left: 10px;
+    }
+    #dataInterChart{
+        border: 3px ridge #555555;
+    }
+</style>
+<div id="dataInter">
+    <div>
+        <span data-locale="popup-algorithm-lineSelect">曲线选择:</span>
+        <select id="dataInterLines"></select>
+        <span data-locale="popup-algorithm-startPos">起始位置</span>
+        <input type="number" id="dataIS">
+        <span style="margin-left: 5px" data-locale="popup-algorithm-endPos">结束位置</span>
+        <input type="number" id="dataIE">
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-algorithm-executeBtn" onclick="algorithm.Interception(this)">执行</button>
+        <button type="button" class="btn btn-secondary btn-sm" disabled data-locale="popup-algorithm-abolitionBtn" onclick="algorithm.restore(this,'_interception')">撤销</button>
+    </div>
+    <div id="dataInterChart" style="height: 95%;">
+
+    </div>
+</div>
+<script>
+    let [m1,m2,interChart,flag,dataInterLines,lines,active] = ['','','',false,$("#dataInterLines"),new Map(),'']
+    $.getScript('js/algorithm/algorithm.js',()=>{
+        algorithm.initAlgorithm('dataInterChart')
+        interChart = algorithm.chart
+        lines = algorithm.lineMap
+        algorithm.lines.forEach(cur=>{dataInterLines.append("<option>"+cur.name()+"</option>")})
+
+        m1 = interChart.add_custom_tick("begin");
+        m2 = interChart.add_custom_tick("end");
+        //let name = dataInterLines.val()
+        //list_select_changed(name)
+        m1.onValueChange((obj,num) => {
+            if (!flag) return;
+            let x = num.toFixed(3);
+            if (num < active.min_x()) {
+                m1.setValue(active.min_x());
+                return;
+            }
+            if (num >= m2.getValue()) {
+                let f = m2.getValue() > 0 ? 0.9 : 1.1;
+                m1.setValue(m2.getValue()*f);
+                return;
+            }
+
+            $('#dataIS').val(x);
+        });
+
+        m2.onValueChange((obj,num) => {
+            if (!flag) return;
+            let x = num.toFixed(3);
+            if (num <= m1.getValue()) {
+                let f = m1.getValue() > 0 ? 1.1 : 0.9;
+                m2.setValue(m1.getValue()*f);
+                return;
+            }
+            if (num > active.max_x()) {
+                m2.setValue(active.max_x());
+                return;
+            }
+            $('#dataIE').val(x);
+        });
+        dataInterLines.change()
+    })
+    function list_select_changed(name) {
+        active = lines.get(name);
+
+        m1.setValue(active.min_x());
+        m2.setValue(active.max_x());
+        $('#dataIS').val(active.min_x().toFixed(3));
+        $('#dataIE').val(active.max_x().toFixed(3));
+        flag = true;
+    }
+    $("input#dataIS").change(function(){
+    	let minX = parseFloat($(this).val());
+    	m1.setValue(minX);
+    });
+    $("input#dataIE").change(function(){
+    	let maxX = parseFloat($(this).val());
+        m2.setValue(maxX);
+    });
+    dataInterLines.change(function () {
+        interChart.remove_all();
+        let name = dataInterLines.val();
+        if(lines.get(name) === undefined)return
+        let data = lines.get(name).get_data();
+        let color = lines.get(name).get_color()
+        let line =  interChart.add_series(name,0)
+
+        line.add_array(data.x,data.y)
+        line.set_color(color)
+        list_select_changed(name)
+    })
+
+    $("a.jeBox-close").click(function(){
+    	let flag = $("div#dataInter button").first().prop('disabled');
+    	if (flag) {
+    		let lines = interChart.active_series()
+            algorithm.addToMainLine(lines[lines.length-1].name(),lines[lines.length-1].get_data().x,lines[lines.length-1].get_data().y,'_interception')
+
+            // for (let i = 0; i <lines.length ; i++) {
+	        //     if (lines[i].name().indexOf('_interception') > 0) {
+            //         algorithm.addToMainLine(lines[i].name(),lines[i].get_data().x,lines[i].get_data().y,'_interception')
+            //
+            //         //algorithm.updateLineByName(lines[i].name().replace('_interception',""),lines[i].get_data().x,lines[i].get_data().y,1);
+	        //     }
+	        // }
+    	}
+    });
+</script>

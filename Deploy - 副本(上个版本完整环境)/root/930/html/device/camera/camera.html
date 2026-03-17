@@ -1,0 +1,546 @@
+<style>
+    #cameraDiv{
+        width: 718px;
+        height: 100%;
+    }
+    #cameraDiv1{
+        width: 550px;
+        height: 412.5px;
+        position: absolute;
+        left: 0;
+        border:3px ridge #555555;
+
+    }
+    #boxColor{
+    	background: #00FFFF00;
+    	position: absolute;
+    	left: 0;right: 0;
+    	top: 0;bottom: 0;
+    	z-index: 1;
+    }
+    #cameraDiv2{
+        width: 180px;
+        height: 413px;
+        position: absolute;
+        left: 550px;
+        border:3px ridge #555555;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #cameraDiv2 div{
+        height: 65%;
+        display: inline-flex;
+        flex-direction: column;
+        border-bottom:3px ridge #555555;
+    }
+    #cameraDiv2 div p{
+        display: inline-flex;
+        align-items: center;
+        margin-top: 10%;
+        margin-left: 10%;
+    }
+    #cameraDiv2 div  b{
+        display: inline-flex;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+    #cameraDiv2 div p span{
+        margin-left: 10px;
+    }
+    #cameraDiv2 div p select{
+        width: 55%;
+        margin-left: 10px;
+    }
+    #cameraDiv2 div p input[type=text]{
+        width: 55%;
+        margin-left: 10px;
+    }
+    #cameraDiv2 div p button{
+        width: 80%;
+    }
+
+    #cameraDiv3{
+        width: 350px;
+        height: 413px;
+        display: inline-flex;
+        border:3px ridge #555555;
+        flex-direction: column;
+        overflow-y: auto;
+        position: absolute;
+        left: 730px;
+    }
+    #cps {
+        width: 100%;
+    }
+    #cps div{
+        width: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #cps div p{
+        display: inline-flex;
+        align-items: center;
+        margin-top: 10px;
+        margin-left: 15px;
+    }
+    #cps div p span{
+        width: 70px;
+        text-align: right;
+    }
+    #cps div p  input[type=range]{
+        margin-left: 5px;
+    }
+    #cps div p  input[type=checkbox]{
+        margin-left: 10px;
+    }
+    #cps div p  input[type=text]{
+        width: 45px;
+        margin-left: 10px;
+    }
+    #cps div b{
+        font-size: 18px;
+        text-align: left;
+        margin-top: 10px;
+        padding-left: 10px;
+        border-bottom:3px ridge #555555;
+    }
+    #shotEdit{
+        width: 100%;
+        display: inline-flex;
+        flex-direction: column;
+        border-top:3px ridge #555555;
+    }
+    #shotEdit  b{
+        font-size: 18px;
+        text-align: left;
+        margin-top: 10px;
+        padding-left: 10px;
+        border-bottom:3px ridge #555555;
+    }
+    #shotEdit p{
+        display: inline-flex;
+        align-items: center;
+        margin-top: 10px;
+        margin-left: 15px;
+    }
+    #shotEdit p span{
+        width: 60px;
+        text-align: right;
+    }
+    #shotEdit p  input[type=text]{
+        width: 150px;
+        margin-left: 10px;
+    }
+    #shotEdit p  select{
+        width: 150px;
+        margin-left: 10px;
+    }
+    #shortBD {
+        width: 100%;
+        display: inline-flex;
+        flex-direction: column;
+        border-top:3px ridge #555555;
+    }
+    #shortBD  b{
+        font-size: 18px;
+        text-align: left;
+        margin-top: 10px;
+        padding-left: 10px;
+        border-bottom:3px ridge #555555;
+    }
+    #shortBD p{
+        display: inline-flex;
+        align-items: center;
+        margin-top: 10px;
+        margin-left: 15px;
+    }
+    #shortBD p span{
+        width: 60px;
+        text-align: right;
+    }
+    #shortBD p  input[type=text]{
+        width: 150px;
+        margin-left: 10px;
+    }
+    #shortBD p  select{
+        width: 150px;
+        margin-left: 10px;
+    }
+    #edt {
+        width: 100%;
+        display: inline-flex;
+        flex-direction: column;
+        border-top:3px ridge #555555;
+    }
+    #edt div p{
+        display: inline-flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+    #edt div{
+        display: inline-flex;
+        flex-direction: column;
+        border-bottom:3px ridge #555555;
+    }
+    #edt  b{
+        font-size: 18px;
+        text-align: left;
+        margin-top: 10px;
+        padding-left: 10px;
+        border-bottom:3px ridge #555555;
+    }
+    #edt div input{
+        width: 70px;
+        margin-left: 10px;
+    }
+    #edt div p span{
+        margin-left: 5px;
+    }
+    #edt div p button{
+        width: 105px;
+        margin-left: 10px;
+    }
+    #crossH{
+        position: absolute;
+        width: 21px;
+        height: 1px;
+        background: #28a745;
+        top: 50%;
+        left: 50%;
+        margin-left: -10px;
+    }
+    #crossV{
+        position: absolute;
+        width: 1px;
+        height: 21px;
+        background: #28a745;
+        top: 50%;
+        left: 50%;
+        margin-top: -10px;
+    }
+    #drawLine{
+        width: 1px;
+        height: 1px;
+        border-bottom: 1px solid #9d9d9d;
+        position: absolute;
+        top: 1px;
+        left: 1px;
+    }
+    #drawLine>div.leftLine{
+    	width: 2px;
+        height: 5px;
+        border-left: 2px solid #9d9d9d;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
+    #drawLine>div.rightLine{
+    	width: 2px;
+        height: 5px;
+        border-left: 2px solid #9d9d9d;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+    #drawBox{
+        border: 2px solid #9d9d9d;
+        background-color: #002b2b2b;
+        width: 2px;
+        height: 5px;
+        position: absolute;
+        left: 1px;
+        top: 1px;
+    }
+    #cameraImg{
+        width: 100%;
+        height: 100%;
+	    
+    }
+    .btn-secondary-ds{
+    	color: #fff;
+	    background-color: #6c757d;
+	    border-color: #6c757d;
+    }
+    .btn-secondary-ds:hover{
+    	color: #fff;
+    	background-color: #5a6268;
+    	border-color: #545b62;
+    } 
+    .btn-secondary-ds.je-bg-red{
+    	background-color: #FF1F06;
+    }
+    .btn-secondary-ds.je-bg-red:hover{
+    	background-color: #FF5722;
+    }   
+    .scale{
+        width: 80px;
+        height: 12px;
+        border: 2px solid #9d9d9d;
+        border-top: 0;
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+    }
+    .scale span{
+        position: relative;
+        bottom: 12px;
+    }
+</style>
+<div id="cameraDiv" draggable="false">
+    <div id="cameraDiv1" draggable="false">
+        <img src="" id="cameraImg" draggable="false">
+        <div id="drawLine" hidden>
+        	<div class="leftLine"></div>
+        	<div class="rightLine"></div>
+        </div>
+        <div id="drawBox" hidden></div>
+        <div id="crossH" hidden></div>
+        <div id="crossV" hidden></div>
+        <div class="scale" id="showScale">
+            <span id="lensSize">50μm</span>
+        </div>
+        <div id="boxColor" hidden></div>
+    </div>
+    <div id="cameraDiv2">
+        <div>
+            <p>
+                <input type="checkbox" class="custom-checkbox" id="cpsCK" onclick="camera.showCamera()">
+                <span data-locale="popup-device-camera-cps">摄像头参数设置</span>
+            </p>
+            <p>
+                <input type="checkbox" class="custom-checkbox" id="showCC" onclick="camera.showCrossCursor()">
+                <span data-locale="popup-device-camera-sc">显示十字光标</span>
+            </p>
+            <p>
+                <input type="checkbox" class="custom-checkbox" id="edtCk" onclick="camera.showCamera()">
+                <span data-locale="popup-device-camera-mds">电动位移台</span>
+            </p>
+            <p>
+                <input type="checkbox" class="custom-checkbox" id="sECK" onclick="camera.showCamera()">
+                <span data-locale="popup-device-camera-se">镜头编辑</span>
+            </p>
+            <p>
+                <input type="checkbox" class="custom-checkbox" id="scCK" onclick="camera.showCamera()">
+                <span data-locale="popup-device-camera-lc">镜头标定</span>
+            </p>
+            <p>
+                <span style="margin-left: 0" data-locale="popup-device-camera-se-name">名称</span>
+                <select id="lensName1" onchange="camera.switchLens()">
+                </select>
+            </p>
+        </div>
+        <div style="height: 20%;border-bottom: 0" id="regionAreaDiv">
+            <p>
+                <input type="checkbox" class="custom-checkbox" id="regionArea" onclick="camera.showBox()">
+                <span data-locale="popup-device-camera-br">框选范围</span>
+            </p>
+            <p>
+                <input type="checkbox" class="custom-checkbox" id="cameraCroller" onclick="camera.cameraCroller(this)">
+                <span data-locale="popup-device-camera-croller">图像控制</span>
+            </p>
+        </div>
+        <p class="je-mt2">
+            <button data-locale="popup-device-camera-open-laser" id="cameraOpenLaser" type="button" style="width: auto" class="btn btn-secondary-ds btn-sm">打开激光</button>
+        </p>
+        <p class="je-mt2">
+            <a id="saveImge" download="b.png"><button data-locale="popup-device-camera-si" type="button" style="width: auto" class="btn btn-secondary btn-sm" onclick="camera.saveImage(camera.camBase)">保存图片</button></a>
+        </p>
+    </div>
+    <div id="cameraDiv3" hidden>
+        <div id="cps">
+            <div>
+                <b data-locale="popup-device-camera-cps-title1">色彩</b>
+                <p>
+                    <span data-locale="popup-device-camera-cps-gamma">伽马</span>
+                    <input class="gamma" type="text" value="41" disabled >
+                    <input class="gamma"  type="range" min="20" max="150" value="41" onchange="camera.MCECameraSetGamama(Number($(this).val()))">
+                </p>
+                <p>
+                    <span data-locale="popup-device-camera-cps-contrast">对比度</span>
+                    <input class="contrastRatio" type="text" value="74" disabled>
+                    <input class="contrastRatio" type="range" min="0" max="255" value="74" onchange="camera.MCECameraSetRatio(Number($(this).val()))">
+                </p>
+                <p>
+                    <span data-locale="popup-device-camera-cps-saturation">饱和度</span>
+                    <input class="saturation" type="text" value="155" disabled>
+                    <input class="saturation" type="range" min="0" max="255" value="155" onchange="camera.MCECameraSetSaturation(Number($(this).val()))">
+                </p>
+                <p>
+                    <input  type="checkbox" class="custom-checkbox enhanceColor" onclick="camera.MCECameraSetEnhanceColor($(this).prop('checked'))" >
+                    <span style="width: auto;margin-left: 10px" data-locale="popup-device-camera-cps-ce">色彩增强</span>
+                </p>
+                <p style="margin-bottom: 10px">
+                    <input type="checkbox" class="custom-checkbox horizontal" onclick="camera.MCECameraSetHoriaotalMirror(0,$(this).prop('checked'))">
+                    <span style="width: auto;margin-left: 10px" data-locale="popup-device-camera-cps-hm">水平镜像</span>
+                </p>
+
+            </div>
+            <div style="border-top: 3px ridge #555555">
+                <b data-locale="popup-device-camera-cps-title2">曝光控制</b>
+                <p>
+                    <input type="checkbox" class="aeState custom-checkbox" onclick="camera.MCECameraSetAeState($(this).prop('checked'))" >
+                    <span data-locale="popup-device-camera-cps-ae" style="width: auto;margin-left: 10px">自动曝光</span>
+                </p>
+                <p>
+                    <span data-locale="popup-device-camera-cps-gain">增益</span>
+                    <input class="analogGain" type="text" value="48" disabled>
+                    <input class="analogGain" type="range" min="0" max="100" value="48" onchange="camera.MCECameraSetAnalogGain($(this).val())">
+                </p>
+                <p style="margin-bottom: 10px">
+                    <span data-locale="popup-device-camera-cps-time">时间</span>
+                    <input class="time" type="text" value="74" disabled>
+                    <input class="time" type="range" min="0" max="100" value="74" onchange="camera.MCECameraSetTime($(this).val())">
+                </p>
+            </div>
+            <div style="border-top: 3px ridge #555555">
+                <b data-locale="popup-device-camera-cps-title3">手动白平衡</b>
+                <p>
+                    <span data-locale="popup-device-camera-cps-red">红</span>
+                    <input class="rVal" type="text" value="115" disabled>
+                    <input class="rVal" type="range" min="0" max="255" value="115" id="nR" onchange="camera.MCECameraSetGain() ">
+                </p>
+                <p>
+                    <span data-locale="popup-device-camera-cps-green">绿</span>
+                    <input class="gVal" type="text" value="115" disabled>
+                    <input class="gVal" type="range" min="0" max="255" value="115" id="nG" onchange="camera.MCECameraSetGain()" >
+                </p>
+                <p>
+                    <span data-locale="popup-device-camera-cps-blue">蓝</span>
+                    <input class="bVal" type="text" value="115" disabled>
+                    <input class="bVal" type="range" min="0" max="255" value="115" id="nB" onchange="camera.MCECameraSetGain()">
+                </p>
+                <p style="margin-bottom: 10px;justify-content: center">
+                    <button type="button" data-locale="popup-device-camera-cps-autoBtn" id="autoBalance" class="btn btn-secondary btn-sm" style="width: 150px" onclick="camera.MCECameraSetAWBState()">自动</button>
+                </p>
+            </div>
+        </div>
+        <div id="shotEdit">
+            <b data-locale="popup-device-camera-se">镜头编辑</b>
+            <p>
+                <span data-locale="popup-device-camera-se-lens">镜头</span>
+                <select id="lensName2">
+                </select>
+            </p>
+            <p>
+                <span data-locale="popup-device-camera-se-name">名称</span>
+                <input type="text" id="newLens">
+            </p>
+            <p>
+                <span data-locale="popup-device-camera-se-ol">物镜</span>
+                <input type="text" id="newLensSize" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')">
+            </p>
+            <p style="justify-content: space-evenly;margin-bottom: 10px">
+                <button type="button" data-locale="popup-device-camera-se-addBtn" class="btn btn-secondary btn-sm" onclick="camera.addLens()">添加</button>
+                <button type="button" data-locale="popup-device-camera-se-delBtn" class="btn btn-secondary btn-sm" onclick="camera.deleteLens()">删除</button>
+             <!--   <button type="button" data-locale="popup-device-camera-se-saveBtn" class="btn btn-secondary btn-sm">保存</button>-->
+            </p>
+        </div>
+        <div id="shortBD">
+            <b data-locale="popup-device-camera-lc">镜头标定</b>
+<!--            <p>-->
+<!--                <input style="margin-left:15px " type="checkbox" id="startCalibration" class="custom-checkbox" onclick="camera.showLine()">-->
+<!--                <span>启动标定</span>-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                <span style="margin-left: 0">名称</span>-->
+<!--                <select id="lensName1" onchange="camera.switchLens('lensName1')">-->
+<!--                </select>-->
+<!--            </p>-->
+            <p>
+                <span data-locale="popup-device-camera-lc-length">长度</span>
+                <input type="text" id="calibrateLength" disabled>&nbsp;μm
+            </p>
+            <p style="margin-bottom: 10px">
+                <button style="width: 150px;margin-left: 70px;" data-locale="popup-device-camera-lc-calibrate" type="button" class="btn btn-secondary btn-sm" onclick="camera.calibration()">标定</button>
+            </p>
+        </div>
+        <div id="edt">
+            <b data-locale="popup-device-camera-mds-title">位移台设置</b>
+            <div>
+                <p style="border-bottom: 3px ridge #555555;font-size: 16px;padding-left: 5px">X</p>
+                <p>
+                    <button data-locale="popup-device-dt-rcp" type="button" class="btn btn-secondary btn-sm" onclick="dt.readDtPos(0)">读取当前位置</button>
+                    <input type="text" id="dtXCurPos" readonly>
+                    <span>μm</span>
+                    <button data-locale="popup-device-dt-zero" type="button" class="btn btn-secondary btn-sm" onclick="dt.dtZero(0)">归零</button>
+                </p>
+                <p>
+                    <button data-locale="popup-device-dt-lm" type="button" class="btn btn-secondary btn-sm" onclick="dt.setDtMove(0,'X',-1)">《左移</button>
+                    <input type="text" id="dtXMove" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+                    <span>μm</span>
+                    <button data-locale="popup-device-dt-rm" type="button" class="btn btn-secondary btn-sm" onclick="dt.setDtMove(0,'X',1)">右移》</button>
+                </p>
+                <p style="margin-bottom: 10px">
+                    <button data-locale="popup-device-dt-mt" type="button" class="btn btn-secondary btn-sm" onclick="dt.setDtMoveTo(0,'X')">移动到</button>
+                    <input type="text" id="dtXMoveTo" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+                    <span>μm</span>
+                </p>
+            </div>
+            <div>
+                <p style="border-bottom: 3px ridge #555555;font-size: 16px;padding-left: 5px">Y</p>
+                <p>
+                    <button data-locale="popup-device-dt-rcp" type="button" class="btn btn-secondary btn-sm" onclick="dt.readDtPos(1)">读取当前位置</button>
+                    <input type="text" id="dtYCurPos" readonly>
+                    <span>μm</span>
+                    <button data-locale="popup-device-dt-zero" type="button" class="btn btn-secondary btn-sm" onclick="dt.dtZero(1)">归零</button>
+                </p>
+                <p>
+                    <button data-locale="popup-device-dt-fm" type="button" class="btn btn-secondary btn-sm" onclick="dt.setDtMove(1,'Y',-1)">《前移</button>
+                    <input type="text" id="dtYMove" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+                    <span>μm</span>
+                    <button data-locale="popup-device-dt-hm" type="button" class="btn btn-secondary btn-sm" onclick="dt.setDtMove(1,'Y',1)">后移》</button>
+                </p>
+                <p style="margin-bottom: 10px">
+                    <button data-locale="popup-device-dt-mt" type="button" class="btn btn-secondary btn-sm" onclick="dt.setDtMoveTo(1,'Y')">移动到</button>
+                    <input type="text" id="dtYMoveTo" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+                    <span>μm</span>
+                </p>
+            </div>
+            <div style="margin-bottom: 10px;border-bottom: 0">
+                <p style="border-bottom: 3px ridge #555555;font-size: 16px;padding-left: 5px">Z</p>
+                <p>
+                    <button data-locale="popup-device-dt-rcp" type="button" class="btn btn-secondary btn-sm" onclick="dt.readDtPos(2)">读取当前位置</button>
+                    <input type="text" id="dtZCurPos" readonly>
+                    <span>μm</span>
+                    <button data-locale="popup-device-dt-zero" type="button" class="btn btn-secondary btn-sm" onclick="dt.dtZero(2)">归零</button>
+                </p>
+                <p>
+                    <button data-locale="popup-device-dt-tm" type="button" class="btn btn-secondary btn-sm" onclick="dt.setDtMove(2,'Z',-1)">《上移</button>
+                    <input type="text" id="dtZMove" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+                    <span>μm</span>
+                    <button data-locale="popup-device-dt-bm" type="button" class="btn btn-secondary btn-sm" onclick="dt.setDtMove(2,'Z',1)">下移》</button>
+                </p>
+                <p>
+                    <button data-locale="popup-device-dt-mt" type="button" class="btn btn-secondary btn-sm" onclick="dt.setDtMoveTo(2,'Z')">移动到</button>
+                    <input type="text" id="dtZMoveTo" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+                    <span>μm</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+  	$.getScript("js/control/DT/dt.js")
+  	$.getScript("js/utils/draw.js")
+  	$.getScript("js/control/camera/camera.js",()=>{
+		camera.initCamera(device.camera.type)
+  	})
+    $("#cps p input[type=range]").change(function () {
+        let value = $(this).val();
+        $(this).prev('input').val(value)
+    })
+	$("button#cameraOpenLaser").click(function(){
+		let isBg = $(this).hasClass("je-bg-red");
+		if (isBg) {
+			$(this).removeClass("je-bg-red");
+		}else{
+			$(this).addClass("je-bg-red");
+		}
+		let EW = $("#steadyEW").length===1?$("#steadyEW").val():$("#waveEW").val()
+        let power = isBg? "归零":"0.1"
+        fConfig.excwave = EW
+        fConfig.powervalue = power
+        websocket.send(funcCode.pS,{"excWave":EW,"powerValue":power})
+	});
+
+</script>

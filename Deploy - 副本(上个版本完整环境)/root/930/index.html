@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Finder930</title>
+    <link rel="icon" href="source/image/Finder930.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="source/lib/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="source/lib/jeui/skin/jebox.css">
+    <link rel="stylesheet" href="source/lib/jeui/jeui.css">
+    <link rel="stylesheet" href="source/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="source/lib/uiduck/css/uiduck.css">
+    <link rel="stylesheet" href="source/lib/uiduck/css/table.css">
+ <!--   <link rel="stylesheet" href="source/css/main.css">
+    <link rel="stylesheet" href="source/css/custom/myBoots.css">
+    <link rel="stylesheet" href="source/css/custom/custom.css">
+    <link rel="stylesheet" href="source/css/custom/wait.css">-->
+    <script type="importmap">
+         {
+            "imports": {
+                "three": "./source/lib/threeJS/three.module.js",
+                "gui": "./source/lib/threeJS/dat.gui.module.js",
+                "control":"./source/lib/threeJS/OrbitControls.js",
+                "lut":"./source/lib/threeJS/Lut.js",
+                "BufferGeometryUtils":"./source/lib/threeJS/BufferGeometryUtils.js",
+                "text":"./source/lib/threeJS/TextGeometry.js",
+                "fontLoad":"./source/lib/threeJS/FontLoader.js"
+            }
+        }
+    </script>
+    <script>
+        const url = window.location.protocol + "//" + window.location.host + "/"+"js/utils/loadJS_CSS.js"/*"Finder930-3D/js/utils/loadJS_CSS.js"*/
+        document.writeln('<script src="'+url+'?'+new Date().getTime()+'"><\/script>')
+    </script>
+</head>
+<body >
+    <div id="mainHead" >
+        <div id="mainTitle">
+            <div id="logo">
+                <img src="source/image/logo.svg" style="width: 100%;height: 100%" alt="logo">
+            </div>
+            <div id="tittle">Finder930</div>
+        </div>
+        <div id="mainMenu" >
+            <!--文件-->
+            <div class="dropdown">
+                <button class="btn btn-secondary" data-locale="main-menu-file" type="button" id="mainFile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="mainFile">
+                    <button class="dropdown-item" type="button"  onclick="main.openFile('menuOpen')"><img src="source/image/openFile.png" alt=""><span data-locale="main-menu-file-open">打开</span></button>
+                    <input type="file" id="menuOpen" style="display: none" accept=".txt" >
+                    <button class="dropdown-item" type="button" onclick="main.saveFile()"><img src="source/image/saveFile.png"  alt=""><span data-locale="main-menu-file-save">保存</span></button>
+                    <button class="dropdown-item" type="button" onclick="main.recycleBin()"><img src="source/image/delete.png" alt=""><span data-locale="main-menu-file-rB">回收站</span></button>
+                    <button class="dropdown-item" type="button" onclick="main.printData()" ><img src="source/image/printer.png" alt=""><span data-locale="main-menu-file-print">打印</span></button>
+                </div>
+            </div>
+            <!--编辑-->
+            <div class="dropdown">
+                <button class="btn btn-secondary" data-locale="main-menu-edit" type="button" id="mainEdit" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="mainEdit">
+                    <button class="dropdown-item" type="button" btntype="18"><img src="source/image/language.png" alt=""><span data-locale="main-menu-edit-lg">语言选择</span></button>
+                    <button class="dropdown-item" type="button" btntype="19"><img src="source/image/clean_up.png" alt=""><span data-locale="main-menu-edit-empty">清空信息窗口</span></button>
+                    <button class="dropdown-item" type="button" btntype="20"><img src="source/image/close.png" alt=""><span data-locale="main-menu-edit-removeAll">删除全部曲线</span></button>
+                    <button class="dropdown-item" type="button" btntype="22"><img src="source/image/delete.png" alt=""><span data-locale="main-menu-edit-remove">删除勾选曲线</span></button>
+                </div>
+            </div>
+            <!--仪器-->
+            <div class="dropdown">
+                <button class="btn btn-secondary" data-locale="main-menu-device" type="button" id="mainDevice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="mainDevice">
+                    <button class="dropdown-item" type="button" btntype="23"><img src="source/image/configuration.png" alt=""><span data-locale="main-menu-device-config">配置选择</span></button>
+                    <button class="dropdown-item" type="button" btntype="24"><img src="source/image/connect.png" alt=""><span data-locale="main-menu-device-connect">仪器连接</span></button>
+                    <button class="dropdown-item" type="button" btntype="25" disabled><img src="source/image/spec_set.png" alt=""><span data-locale="main-menu-device-specSet">谱仪设置</span></button>
+                    <button class="dropdown-item" type="button" btntype="26" disabled><img src="source/image/CCD_set.png" alt=""><span data-locale="main-menu-device-dcSet">数采设置</span></button>
+                    <button class="dropdown-item" type="button" btntype="27" disabled><img src="source/image/tango_set.png" alt=""><span data-locale="main-menu-device-dtSet">位移台设置</span></button>
+                    <button class="dropdown-item" type="button" btntype="28" disabled><img src="source/image/polarization.png" alt=""><span data-locale="main-menu-device-polaSet">偏振设置</span></button>
+                </div>
+            </div>
+            <!--测试-->
+            <div class="dropdown">
+                <button class="btn btn-secondary" data-locale="main-menu-test" type="button" id="mainTest" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="mainTest">
+                    <button class="dropdown-item" type="button" btntype="6" id="mSteadyScan"><img src="source/image/stabilize.png" alt=""><span data-locale="main-menu-test-steady">稳定性测试</span></button>
+                    <button class="dropdown-item" type="button" btntype="7" id="mWaveScan"><img src="source/image/Spectrum.png" alt=""><span data-locale="main-menu-test-wave">接谱测试</span></button>
+                    <button class="dropdown-item" type="button" btntype="31"id="mPolarScan"><img src="source/image/polarization.png" alt=""><span data-locale="main-polarizationTest-title">偏振测试</span></button>
+                    <button class="dropdown-item" type="button" btntype="9" disabled><img src="source/image/m.png" alt=""><span data-locale="main-menu-test-mapping">Mapping测试</span></button> 
+                </div>
+            </div>
+            <!--曲线处理-->
+            <div class="dropdown">
+                <button class="btn btn-secondary" data-locale="main-menu-algorithm" type="button" id="mainAlgorithm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="mainAlgorithm">
+                    <button class="dropdown-item" type="button" btntype="10"><img src="source/image/foundation.png" alt=""><span data-locale="main-menu-algorithm-fit">基线扣除</span></button>
+                    <button class="dropdown-item" type="button" btntype="11"><img src="source/image/smooth.png" alt=""><span data-locale="main-menu-algorithm-smooth">平滑</span></button>
+                    <button class="dropdown-item" type="button" btntype="12"><img src="source/image/normal.png" alt=""><span data-locale="main-menu-algorithm-normalize">归一化</span></button>
+                    <button class="dropdown-item" type="button" btntype="13"><img src="source/image/shear.png" alt=""><span data-locale="main-menu-algorithm-di">数据截取</span></button>
+                    <button class="dropdown-item" type="button" btntype="14"><img src="source/image/erase.png" alt=""><span data-locale="main-menu-algorithm-wipe">擦除射线</span></button>
+                    <button class="dropdown-item" type="button" btntype="15"><img src="source/image/detection.png" alt=""><span data-locale="main-menu-algorithm-peak">谱峰检测</span></button>
+                    <button class="dropdown-item" type="button" btntype="16"><img src="source/image/mathAlways.png" alt=""><span data-locale="main-menu-algorithm-peakIn">实时谱峰检测</span></button>
+                    <button class="dropdown-item" type="button" btntype="17"><img src="source/image/area.png" alt=""><span data-locale="main-menu-algorithm-hWH">峰面积、半高宽</span></button>
+                    <button class="dropdown-item" type="button" btntype="28" hidden><img src="source/image/database.png" alt=""><span data-locale="main-menu-algorithm-db">数据库</span></button>
+                </div>
+            </div>
+            <!--测试方案-->
+            <div class="dropdown">
+                <button class="btn btn-secondary" data-locale="main-menu-testPlan" type="button" id="mainTestPlan" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu">
+                    <div class="dropdown-submenu">
+                        <button class="dropdown-item"  id="steadyTest"  type="button"><img src="source/image/stabilize.png" alt=""><span data-locale="main-menu-scheme-steady">稳定性测试方案</span></button>
+                        <div class="dropdown-menu">
+                        </div>
+                    </div>
+                    <div class="dropdown-submenu">
+                        <button class="dropdown-item" type="button" id="wavelengthTest"><img src="source/image/Spectrum.png" alt=""><span data-locale="main-menu-scheme-wave">接谱测试方案</span></button>
+                        <div class="dropdown-menu">
+                        </div>
+                    </div>
+                    <button class="dropdown-item" type="button" onclick="dialog.saveTestBox()"><img src="source/image/saveFile.png" alt=""><span data-locale="main-menu-scheme-save">保存</span></button>
+                </div>
+            </div>
+            <!--关于-->
+            <div class="dropdown">
+                <button class="btn btn-secondary" data-locale="main-menu-about" type="button" id="mainAbout" onclick="main.about()">
+                </button>
+            <div>
+
+    </div>
+        </div>
+        </div>
+        <div id="mainTools"></div>
+    </div>
+    <div id="mainBody" >
+        <div id="mainBodyLeft"></div>
+        <div id="mainBodyRight">
+            <div id="mainChart" >
+                <div id="chart"></div>
+                <div id="legend"></div>
+            </div>
+            <div id="mainPolarChart" hidden="hidden">
+            	<div id="polarChart"></div>
+                <div id="polarLineChart"></div>
+            </div>
+            <div id="mainMsg">
+                <button type="button" class="btn btn-outline-dark btn-block" onclick="main.showMsg()"  data-locale="main-infoWindow">信息窗口</button>
+                <div id="log_body"></div>
+            </div>
+        </div>
+    </div>
+    <div id="mainFoot" >
+        <!--设备状态-->
+        <div id="mainDS">
+            <!--谱仪-->
+            <div class="mainLight" id="specLight">
+                <div class="lightBorder">
+                    <div class="breath_light" ></div>
+                </div>
+                <span data-locale="main-foot-spec"></span>
+            </div>
+            <!--数采-->
+            <div class="mainLight" id="dcLight">
+                <div class="lightBorder">
+                    <div class="breath_light"></div>
+                </div>
+                <span data-locale="main-foot-dc"></span>
+            </div>
+            <!--相机-->
+            <div class="mainLight" id="cameraLight">
+                <div class="lightBorder">
+                    <div class="breath_light"></div>
+                </div>
+                <span data-locale="main-foot-camera"></span>
+            </div>
+            <!--激光器-->
+            <div class="mainLight" id="laserLight">
+                <div class="lightBorder">
+                    <div class="breath_light"></div>
+                </div>
+                <span data-locale="main-foot-laser"></span>
+            </div>
+            <!--位移台-->
+            <div class="mainLight" id="dtLight">
+                <div class="lightBorder">
+                    <div class="breath_light"></div>
+                </div>
+                <span data-locale="main-foot-dt"></span>
+            </div>
+            <!--光路电机-->
+            <div class="mainLight" id="rTOTtLight">
+                <div class="lightBorder">
+                    <div class="breath_light"></div>
+                </div>
+                <span data-locale="main-foot-oM"></span>
+            </div>
+        </div>
+        <!--峰面积-->
+        <div id="mainPA" hidden>
+            <b data-locale="main-foot-pa">峰面积:</b>
+            <span>100</span>
+        </div>
+        <!--半高宽-->
+        <div id="mainHW">
+            <b data-locale="main-foot-hw"></b>
+            <span>null</span>
+        </div>
+        <!--温度-->
+        <div id="mainTemp">
+            <b data-locale="main-foot-T"></b>
+            <span id="ccdTemp">-50℃</span>
+        </div>
+    </div>
+    <!--遮罩层-->
+    <div id="menuShadow" class="shadow" hidden></div>
+    <div id="toolsShadow" class="shadow" hidden></div>
+    <div id="leftShadow" class="shadow" hidden></div>
+    <div id="legendShadow" class="shadow" hidden></div>
+    <div id="busy" class="shadow" hidden>
+        <div class="container">
+            <div class="gearbox">
+                <div class="overlay"></div>
+                <div class="gear one">
+                    <div class="gear-inner">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                <div class="gear two">
+                    <div class="gear-inner">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                <div class="gear three">
+                    <div class="gear-inner">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                <div class="gear four large">
+                    <div class="gear-inner">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+            </div>
+            <h1>Please wait...</h1>
+        </div>
+    </div>
+</body>
+</html>
+<script src="source/lib/js/jquery-2.1.0.js"></script>
+<script src="source/lib/js/jquery.i18n.properties.js"></script>
+<script src="source/lib/js/popper.min.js"></script>
+<script src="source/lib/js/bootstrap.min.js"></script>
+<script src="source/lib/js/download.js"></script>
+<script src="source/lib/jeui/jeBox.js"></script>
+<script src="source/lib/jeui/jeui.js"></script>
+<script src="source/lib/lc/lcjs.iife_5.2.0.js"></script>
+<script src="source/lib/uiduck/js/uiduck.js"></script>
+<script src="source/lib/js/reconnecting-websocket.js"></script>
+<script src="source/lib/verSelector/verSelect.2.0.js"></script>
+<!--<script src="source/lib/lc/my_lc_4.1.js"></script>
+<script src="source/lib/proto/finderProto.js"></script>
+
+
+<script src="js/config/dataType.js"></script>
+<script src="js/config/config.js"></script>
+<script src="js/control/deviceControl.js"></script>
+<script src="js/scan/steady.js"></script>
+<script src="js/scan/wavelength.js"></script>
+
+<script src="js/wsDispatch/sendDispatch.js"></script>
+<script src="js/wsDispatch/receiveDispatch.js"></script>
+<script src="js/wsDispatch/revJsonDispatch.js"></script>
+<script src="js/wsDispatch/webSocket.js"></script>
+
+<script src="js/algorithm/lineProcess.js"></script>
+<script src="js/utils/legend.js"></script>
+<script src="js/utils/load.js"></script>
+<script src="js/utils/dialog.js"></script>
+<script src="js/utils/inputRange.js"></script>
+<script src="js/index.js"></script>-->
+<script>
+    let keys = ['mainCSS','myBoots','custom','wait','proto','myLC','dataType','config','deviceControl','steady','wavelength','polar','sendDispatch','receiveDispatch','revJsonDispatch','webSocket','lineProcess','legend','load','dialog','inputRange','index']
+    loadJSAndCSS.loadJS_CSS(keys)
+</script>
+
+
+
+

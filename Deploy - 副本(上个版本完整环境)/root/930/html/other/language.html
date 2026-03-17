@@ -1,0 +1,42 @@
+<style>
+   #language{
+       width: 100%;
+       height:100%;
+       display: inline-flex;
+       flex-direction: column;
+   }
+   #language div{
+       font-size: 16px;
+       margin-top: 10px;
+   }
+   #language div button{
+       width: 40%;
+   }
+</style>
+<div id="language">
+    <div>
+        <button type="button" class="btn btn-primary btn-sm" id="languageZh" data-locale="popup-edit-zhBtn"  onclick="switch_language('zh')">中文</button>
+        <button type="button" class="btn btn-light btn-sm" id="languageEn" data-locale="popup-edit-enBtn" onclick="switch_language('en')">英文</button>
+    </div>
+</div>
+<script>
+    $(function () {
+        let lg = localStorage.getItem("lg")
+        $("#languageZh").prop('disabled',lg==="zh")
+        $("#languageEn").prop('disabled',lg==="en")
+    })
+    //切换中英文
+    function switch_language(l) {
+
+        $("#languageZh").prop('disabled',l==="zh")
+        $("#languageEn").prop('disabled',l==="en")
+        localStorage.setItem('lg', l);
+        //logo 切换
+       // let src = localStorage.getItem('lg') !== 'en' ? 'static/img/logo.svg' : 'static/img/logo1.svg';
+        //$('#logo img').attr('src', src)
+        main.translate(undefined);
+        main.updateToolsTips() //更新工具栏
+        main.updateChartUnit() //更新图表单位
+        $("a.jeBox-close").click()
+    };
+</script>

@@ -1,0 +1,138 @@
+<style>
+    #dtDiv{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #dtDiv div{
+        width: 100%;
+        height: 30%;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        border-top: 3px ridge #555555;
+    }
+    #dtDiv div b{
+        font-size: 20px;
+        display: inline-flex;
+        border-bottom: 3px ridge #555555;
+        padding-left: 5px;
+    }
+    #dtDiv div p{
+        display: inline-flex;
+        align-items: center;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    #dtDiv div p button{
+        width: 28%;
+    }
+    #dtDiv div p input[type=text]{
+        width: 30%;
+        margin-left: 10px;
+    }
+    #dtDiv div p span{
+        width: 10%;
+    }
+</style>
+<div id="dtDiv">
+    <div style="height: 10%;align-items: flex-end;border-top: 0">
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-adv" onclick="main.ask_password(()=>showDtAdv())">高级设置</button>
+    </div>
+    <div>
+        <b>X</b>
+        <p>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-rcp" onclick="dt.readDtPos(0)">读取当前位置</button>
+            <input type="text" id="dtXCurPos" readonly>
+            <span>μm</span>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-zero" onclick="dt.dtZero(0)">归零</button>
+        </p>
+        <p>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-lm" onclick="dt.setDtMove(0,'X',-1)">《左移</button>
+            <input type="text" id="dtXMove" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+            <span>μm</span>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-rm" onclick="dt.setDtMove(0,'X',1)">右移》</button>
+        </p>
+        <p>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-mt" onclick="dt.setDtMoveTo(0,'X')">移动到</button>
+            <input type="text" id="dtXMoveTo" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+            <span>μm</span>
+        </p>
+    </div>
+    <div>
+        <b>Y</b>
+        <p>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-rcp" onclick="dt.readDtPos(1)">读取当前位置</button>
+            <input type="text" id="dtYCurPos" readonly>
+            <span>μm</span>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-zero" onclick="dt.dtZero(1)">归零</button>
+        </p>
+        <p>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-fm" onclick="dt.setDtMove(1,'Y',-1)">《前移</button>
+            <input type="text" id="dtYMove" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+            <span>μm</span>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-hm" onclick="dt.setDtMove(1,'Y',1)">后移》</button>
+        </p>
+        <p>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-mt" onclick="dt.setDtMoveTo(1,'Y')">移动到</button>
+            <input type="text" id="dtYMoveTo" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+            <span>μm</span>
+        </p>
+    </div>
+    <div>
+        <b>Z</b>
+        <p>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-rcp" onclick="dt.readDtPos(2)">读取当前位置</button>
+            <input type="text" id="dtZCurPos">
+            <span>μm</span>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-zero" onclick="dt.dtZero(2)">归零</button>
+        </p>
+        <p>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-tm" onclick="dt.setDtMove(2,'Z',-1)">《上移</button>
+            <input type="text" id="dtZMove" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+            <span>μm</span>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-bm" onclick="dt.setDtMove(2,'Z',1)">下移》</button>
+        </p>
+        <p>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dt-mt" onclick="dt.setDtMoveTo(2,'Z')">移动到</button>
+            <input type="text" id="dtZMoveTo" value="5" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+            <span>μm</span>
+        </p>
+    </div>
+</div>
+<script>
+    $.getScript("js/control/DT/dt.js",function(){
+		setTimeout(function(){
+			dt.readDtPos(0);
+		},100); 
+		setTimeout(function(){
+			dt.readDtPos(1);
+		},200);
+		setTimeout(function(){
+			dt.readDtPos(2);
+		},300);
+    });
+    function showDtAdv() {
+        $.get("html/device/dt/dtAdv.html?"+new Date().getTime(), function (str) {
+            jeBox.open({
+                title: [$.i18n.prop('popup-device-dt-adv-title'), {
+                    'text-align': 'center',
+                    'font-size': '1.5em'
+                }],
+                type: 'dialog',
+                maskLock: true, //是否遮罩
+                maskClose: false,
+                isDrag: true,
+                shadow: true,
+                closeBtn: true,
+                boxSize: [350, 200],
+                zIndex: 1,
+                content: str,
+                success: function () {
+                    main.translate(undefined)
+                }
+            })
+        })
+    }
+</script>

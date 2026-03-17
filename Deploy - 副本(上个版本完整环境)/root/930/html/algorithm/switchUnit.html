@@ -1,0 +1,293 @@
+<style>
+    #switchUnit{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #switchUnit div{
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    #switchUnit div span{
+        margin-left: 10px;
+        text-align: left;
+        width: 35%;
+    }
+    #switchUnit div input[type=text]{
+        width: 50%;
+    }
+    #switchUnit div button{
+        width: 50%;
+    }
+</style>
+<div id="switchUnit">
+    <div>
+            <input type="checkbox" class="custom-checkbox" id="switchW" index='0'>
+
+            <!--<input type="radio" class="custom-radio" name="unit">-->
+            <span data-locale="popup-unitSwitch-wavelength">波长</span>
+
+    </div>
+    <div>
+        <!--<input type="radio" class="custom-radio" name="unit" checked>-->
+            <input type="checkbox" class="custom-checkbox"  id="switchWN" index='1'>
+            <span data-locale="popup-unitSwitch-waveNum">波数</span>
+    </div>
+    <div>
+        <input type="text" id="sUVal">
+    </div>
+    <div>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-confirm">确定</button>
+    </div>
+</div>
+<script>
+    $(function(){
+        let selectedUnit = $("span.showUnit").html()==="nm"?0:1;
+        let checkedIndex = selectedUnit;
+        let [radio,sEw,wEw,pEw,wG,sG,pG] = [$("input.custom-radio"),$("select#steadyEW"),$("select#waveEW"),$("select#polarEW"),$("select#waveGrating"),$("select#steadyGrating"),$("select#polarGrating")]
+        //$(radio.get(selectedUnit)).click();
+        $("#switchUnit input[index="+checkedIndex+']').prop('checked',true)
+        $("input[type=checkbox][index="+checkedIndex+']').change()
+        let laserWaveVal = sEw.length!==0?sEw.val():wEw.length!==0? wEw.val():pEw.val();
+        let gratingNum = sEw.length!==0?(sG.get(0).selectedIndex<0?1:sG.get(0).selectedIndex+1):
+        wG.length!==0?(wG.get(0).selectedIndex<0?1:wG.get(0).selectedIndex+1)
+        :(pG.get(0).selectedIndex<0?1:pG.get(0).selectedIndex+1);
+
+        if (laserWaveVal===$.i18n.prop('main-test-null')) {
+            $("#sUVal").val(fConfig.excwaveselect[0].E);
+        } else{
+            fConfig.excwaveselect.forEach((cur)=>{
+                if(cur.name === laserWaveVal){
+                    $("#sUVal").val(cur["grating"+gratingNum])
+                }
+            })
+        }
+
+        /**
+         * 获取nm单位的数据更新到控件
+         * @param {Object} lines
+         * @param {Object} ind
+         */
+        function getNmLineData(lines,ind){
+        	if(ind==lines.length)return;
+        	let info = {};
+        	info.lineName=lines[ind];
+        	websocket.send(funcCode.GetLineDataNmParams,info)
+        	main.setCallbacks(funcCode.GetLineDataNmParams,rev =>{
+                let x = rev.getPdList()
+                //更新谱图
+                console.log(x);
+                let y = main.chart.series(lines[ind]).get_data().y;
+                main.chart.series(lines[ind]).add_array(x,y);
+                ind++;
+                setTimeout(function(){
+	                getNmLineData(lines,ind);
+	            },10);
+            })
+        }
+        /**
+         * 获取cm单位的数据更新到控件
+         * @param {Object} lines
+         * @param {Object} ind
+         */
+        function getCmLineData(lines,ind){
+        	if(ind==lines.length)return;
+        	let info = {};
+        	info.lineName       =lines[ind];
+        	
+        	info.laserWave      =$("input#waveFrom").length>0
+        				?$("select#waveEW").val():$("select#steadyEW").val();
+        	info.strGrating     =$("input#waveFrom").length>0
+        				?$("select#waveGrating").val():$("select#steadyGrating").val();
+        	info.laserWaveLength=parseFloat($("input#sUVal").val());
+        	websocket.send(funcCode.GetLineDataCMParams,info)
+            main.setCallbacks(funcCode.GetLineDataCMParams,rev =>{
+                let x = rev.getPdList()
+                //更新谱图
+                let y = main.chart.series(lines[ind]).get_data().y;
+                console.log(x);
+                main.chart.series(lines[ind]).add_array(x,y);
+                ind++;
+                setTimeout(function(){
+	                getCmLineData(lines,ind);
+	            },10);
+            })
+        	
+        }
+
+        $("#switchW").change(function () {
+            $("#switchWN").prop("checked",false)
+            checkedIndex = 0
+        })
+        $("#switchWN").change(function () {
+            $("#switchW").prop("checked",false)
+            checkedIndex = 1
+        })
+        // radio.click(function(){
+        //     checkedIndex = $(this).index("input.custom-radio");
+        // });
+
+        $("div#switchUnit button").click(function(){
+        	lineProcess.updatelaserWaveLengthParams(laserWaveVal,gratingNum,$("input#sUVal").val());
+        	main.setCallbacks(funcCode.updatelaserWaveLengthParams,rev =>{
+	            let dLaserWave = parseFloat($("#sUVal").val());
+	            if (laserWaveVal===$.i18n.prop('main-test-null')) {
+		            fConfig.excwaveselect[0].E=dLaserWave;
+		        } else{
+		            fConfig.excwaveselect.forEach((cur)=>{
+		                if(cur.name === laserWaveVal){
+		                    cur["grating"+gratingNum]=dLaserWave
+		                }
+		            })
+		        }
+	            let [cw,polarCw,wFrom,wTo] = [$("input#steadyCW"),$("input#polarCW"),$("input#waveFrom"),$("input#waveTo")]
+				let sendParam = {};
+	            sendParam.laserWave = dLaserWave;
+	            sendParam.array = [];
+	//  		nm->cm-1:通过算法转化
+	            console.log(selectedUnit+"/"+checkedIndex);
+	            if(checkedIndex===1){
+	            	if (selectedUnit===0) {
+		                $("span.showUnit").html("cm-1");
+		                //转化参数
+		                fConfig.waveunit="cm-1";
+	                    main.chart.set_axis_x_title($.i18n.prop('main-chart-xTitle2'))
+	
+	                    if (cw.length>0) {
+		                    sendParam.array.push(parseFloat(cw.attr("nm")));
+		                    sendParam.array.push(0);
+		                    sendParam.array.push(parseFloat(cw.attr("max")));
+		                }
+	                    if (polarCw.length>0) {
+		                    sendParam.array.push(parseFloat(polarCw.attr("nm")));
+		                    sendParam.array.push(0);
+		                    sendParam.array.push(parseFloat(polarCw.attr("max")));
+		                }
+		                if (wFrom.length>0) {
+		                    sendParam.array.push(parseFloat(wFrom.attr("nm")));
+		                    
+		                }
+		                if (wTo.length>0) {
+		                    sendParam.array.push(parseFloat(wTo.attr("nm")));
+		                    sendParam.array.push(0);
+		                    sendParam.array.push(parseFloat(wTo.attr("max")));
+		                }
+		                console.log(sendParam);
+		
+		                websocket.send(funcCode.NmToCmParams,sendParam);
+		                main.setCallbacks(funcCode.NmToCmParams,rev =>{
+		                    let selectW = rev.getPdList();
+		                    if (selectW.length>3) {
+		                        wFrom.val(selectW[0].toFixed(2));
+		                        wTo.val(selectW[1].toFixed(2));
+	                            wFrom.attr('oldData',selectW[0].toFixed(2))
+	                            wTo.attr('oldData',selectW[1].toFixed(2))
+	                            wFrom.attr("mincm",selectW[2])
+		                        wFrom.attr("maxcm",selectW[3])
+		                        wTo.attr("mincm",selectW[2])
+		                        wTo.attr("maxcm",selectW[3])
+		                        device.spec.minRangeCM = selectW[2]
+		                        device.spec.maxRangeCM = selectW[3]
+	                        } else{
+	                        	if (fConfig.funnm !== 2) {
+			                        cw.val(selectW[0].toFixed(2));
+			                        cw.attr('oldData',selectW[0].toFixed(2))
+			                        cw.attr("mincm",selectW[1])
+			                        cw.attr("maxcm",selectW[2])
+			                        device.spec.minRangeCM = selectW[1]
+			                        device.spec.maxRangeCM = selectW[2]
+		                        }else{
+		                        	polarCw.val(selectW[0].toFixed(2));
+			                        polarCw.attr('oldData',selectW[0].toFixed(2))
+			                        polarCw.attr("mincm",selectW[1])
+			                        polarCw.attr("maxcm",selectW[2])
+			                        device.spec.minRangeCM = selectW[1]
+			                        device.spec.maxRangeCM = selectW[2]
+		                        }
+		                    }
+		                    
+		                })
+		                //转化曲线
+		//				1.获取全部谱线
+		            }else{
+	            		if (cw.length>0) {
+		                    sendParam.array.push(parseFloat(cw.val()));
+		                }
+	            		if (polarCw.length>0) {
+		                    sendParam.array.push(parseFloat(polarCw.val()));
+		                }
+		                if (wFrom.length>0) {
+		                    sendParam.array.push(parseFloat(wFrom.val()));
+		                }
+		                if (wTo.length>0) {
+		                    sendParam.array.push(parseFloat(wTo.val()));
+		                }
+		                console.log(sendParam);
+		                websocket.send(funcCode.CmToNmParams,sendParam);
+		                main.setCallbacks(funcCode.CmToNmParams,rev =>{
+		                    let selectW = rev.getPdList();
+		                    if (selectW.length>1) {
+		                        wFrom.attr("nm",selectW[0]);
+		                        wTo.attr("nm",selectW[1]);
+	                        } else{
+	                        	if(cw.length>0){
+	                        		cw.attr("nm",selectW[0]);
+	                        	}
+		                       	if (polarCw.length>0) {
+		                       		polarCw.attr("nm",selectW[0]);
+		                       	}
+		                    }
+		                    
+		                })
+	            	}
+	            	selectedUnit = 1;
+		            setTimeout(function(){
+		            	lineProcess.GetLineDataCMParams(Array.from(fConfig.funnm !== 2?main.chart.all_series().keys():main.polarLineChart.all_series().keys()));
+		            },100);
+	            	
+	            }
+	//			cm-1->nm：直接换成记录的参数
+	            if (checkedIndex===0) {
+	            	if(selectedUnit===1){
+	            		$("span.showUnit").html("nm");
+	            		fConfig.waveunit="nm";
+	                    main.chart.set_axis_x_title($.i18n.prop('main-chart-xTitle1'))
+		                //转化参数
+		                if (cw.length>0) {
+		                	cw.val(Number(cw.attr("nm")).toFixed(2));
+	                        cw.attr('oldData',Number(cw.attr("nm")).toFixed(2))
+	
+	                    }
+		                if (polarCw.length>0) {
+		                	polarCw.val(Number(polarCw.attr("nm")).toFixed(2));
+	                        polarCw.attr('oldData',Number(polarCw.attr("nm")).toFixed(2))
+	
+	                    }
+		                if (wFrom.length>0) {
+		                    wFrom.val(Number(wFrom.attr("nm")).toFixed(2));
+	                        wFrom.attr('oldData',Number(wFrom.attr("nm")).toFixed(2))
+	                    }
+		                if (wTo.length>0) {
+		                    wTo.val(Number(wTo.attr("nm")).toFixed(2));
+	                        wTo.attr('oldData',Number(wTo.attr("nm")).toFixed(2))
+	                    }
+		                
+	            	}
+	            	setTimeout(function(){
+		            	lineProcess.GetLineDataNmParams(Array.from(fConfig.funnm !== 2?main.chart.all_series().keys():main.polarLineChart.all_series().keys()));
+		            	lineProcess.SaveCm2NmStatus();
+		            },100);
+	            	
+	            	selectedUnit = 0;
+	                //转化曲线,当前记录的nm数据的x轴直接替换，更新谱图
+	                
+	            }
+			});
+        });
+    })
+</script>

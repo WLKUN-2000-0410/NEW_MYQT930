@@ -1,0 +1,53 @@
+<style>
+    .rename_div{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+    .rename_div1{
+        width: 100%;
+        font-size:1em;
+        display: inline-flex;
+        text-align: center;
+        align-items: center;
+    }
+    .rename_div1 span{
+        width: 40%;
+        color: #fff;
+        text-align: right;
+        padding: 0 5%;
+    }
+    .rename_div1 select{
+        width: 40%;
+        height: 1.5rem;
+    }
+    .rename_div1 input{
+        width: 40%;
+        height: 1.5rem;
+    }
+    .rename_div1 button{
+        width: 40%;
+        margin-left: 40%;
+    }
+</style>
+<div class="rename_div">
+    <div class="rename_div1">
+        <span data-locale="popup-algorithm-old">旧名称:</span>
+        <input id="old_name" type="text" disabled>
+    </div>
+    <div class="rename_div1">
+        <span data-locale="popup-algorithm-new">新名称:</span>
+        <input  id="new_name" type="text" placeholder="" />
+    </div>
+    <div class="rename_div1">
+        <button type="button" class="btn btn-primary btn-sm " id="saveName" data-locale="popup-algorithm-renameBtn" >保存</button>
+    </div>
+</div>
+<script>
+    function initRename(name){
+        $("#old_name").val(name)
+        $("#new_name").attr("placeholder",name)
+        main.translate(undefined)
+    }
+</script>

@@ -1,0 +1,116 @@
+<style>
+    #hWAP{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #hWAP div{
+        height: 8%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #hWAP div select{
+        width: 150px;
+        margin-left: 10px;
+    }
+    #hWAP div span {
+        margin-left: 10px;
+    }
+    #hWAP div input[type=text]{
+        width: 75px;
+        margin-left: 10px;
+    }
+    #hWAP div button {
+        margin-left: 10px;
+    }
+    #hWAPChart{
+        border: 3px ridge #555555;
+    }
+</style>
+<div id="hWAP">
+    <div>
+        <span data-locale="popup-algorithm-lineSelect">选择曲线</span>
+        <select >
+        </select>
+        <span data-locale="popup-algorithm-startPos">起始位置</span>
+        <input type="text" id="hWAPs" disabled>
+        <span data-locale="popup-algorithm-endPos">结束位置</span>
+        <input type="text" id="hWAPe" disabled>
+        <button type="button" data-locale="popup-algorithm-executeBtn" class="btn btn-secondary btn-sm" onclick="algorithm.peakAreaHWH()">执行</button>
+        <span data-locale="popup-algorithm-pA">峰面积</span>
+        <input type="text" id="area" disabled/>
+        <span data-locale="popup-algorithm-HW">半高宽</span>
+        <input type="text" id="hafWidth" disabled/>
+    </div>
+    <div id="hWAPChart" style="height: 95%;">
+
+    </div>
+</div>
+<script>
+    let [lines,hWAPChart,hwAP,flag,active,m1,m2] = [new Map(),'',$("#hWAP div select"),false,'','',''];
+    $.getScript('js/algorithm/algorithm.js',()=>{
+        algorithm.initAlgorithm('hWAPChart')
+        lines = algorithm.lineMap
+        hWAPChart = algorithm.chart
+        algorithm.lines.forEach(cur=>{hwAP.append("<option>"+cur.name()+"</option>")})
+        //let name = hwAP.val()
+        m1 = hWAPChart.add_custom_tick("begin");
+        m2 = hWAPChart.add_custom_tick("end");
+
+        m1.onValueChange((obj,num) => {
+            if (!flag) return;
+            let x = num.toFixed(3);
+            if (num < active.min_x()) {
+                //let f = active.min_x() > 0 ? 1.1 : 0.9;
+                m1.setValue(active.min_x());
+                return;
+            }
+            if (num >= m2.getValue()) {
+                let f = m2.getValue() > 0 ? 0.9 : 1.1;
+                m1.setValue(m2.getValue() * f);
+                return;
+            }
+
+            $('#hWAPs').val(x);
+        });
+        m2.onValueChange((obj,num) => {
+            if (!flag) return;
+            let x = num.toFixed(3);
+            if (num <= m1.getValue()) {
+                let f = m1.getValue() > 0 ? 1.1 : 0.9;
+                m2.setValue(m1.getValue() * f);
+                return;
+            }
+            if (num > active.max_x()) {
+                m2.setValue(active.max_x());
+                return;
+            }
+
+            $('#hWAPe').val(x);
+        });
+
+        hwAP.change()
+    })
+    hwAP.change(function () {
+        hWAPChart.remove_all();
+        let name = hwAP.val();
+        if(lines.get(name) === undefined)return
+        let data = lines.get(name).get_data();
+        let color = lines.get(name).get_color()
+        let line =  hWAPChart.add_series(name,0)
+        //hWAPChart.legend_box().set_visible(true)
+        line.add_array(data.x,data.y)
+        line.set_color(color)
+        list_select_changed(name)
+    })
+    function list_select_changed(name) {
+        active = lines.get(name);
+        m1.setValue(active.min_x());
+        // m1.set_position(active.min_x(), 0);
+        // m2.set_position(active.max_x(), 0);
+        m2.setValue(active.max_x());
+        flag = true;
+    }
+</script>

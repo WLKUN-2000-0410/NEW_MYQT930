@@ -1,0 +1,53 @@
+<style>
+    #mathAlways{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #mathAlways div{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    #mathAlways div span{
+        width: 35%;
+        text-align: right;
+    }
+    #mathAlways div input[type=text]{
+        width: 100px;
+        margin-left: 10px;
+    }
+</style>
+<div id="mathAlways">
+    <div >
+        <input type="checkbox" class="custom-checkbox" >
+        <span style="margin-left: 10px;text-align: left" data-locale="popup-algorithm-start">启动</span>
+    </div>
+    <div>
+        <span data-locale="popup-algorithm-startPos">起始位置:</span>
+        <input type="text" id="mAStart">
+    </div>
+    <div>
+        <span data-locale="popup-algorithm-endPos">结束位置:</span>
+        <input type="text" id="mAEnd">
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#mathAlways input[type=checkbox]").prop('checked',fConfig.peakFlag)
+        $("#mAStart").val(fConfig.peakFrom)
+        $("#mAEnd").val(fConfig.peakTo)
+    })
+    $("a.jeBox-close").click(function(){
+        let flag  = $("#mathAlways input[type=checkbox]").prop('checked')
+        let start = $("#mAStart").val()
+        let end  = $("#mAEnd").val()
+        if(fConfig.peakFlag === flag && fConfig.peakFrom === start && fConfig.peakTo === end) return
+        fConfig.peakFlag = flag
+        fConfig.peakFrom = start
+        fConfig.peakTo = end
+        websocket.send(funcCode.MathPeakDetect,{peakFlag:flag,peakFrom:start,peakTo:end});
+    })
+</script>

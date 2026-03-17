@@ -1,0 +1,194 @@
+<style>
+    #waveDiv {
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    #waveDiv b {
+        width: 100%;
+        font-size: 18px;
+        text-align: left;
+        margin-left: 2%;
+        margin-top: 2%;
+    }
+
+    #waveDiv div {
+        width: 100%;
+        margin-top: 2%;
+        display: inline-flex;
+        align-items: center;
+        font-size: 14px;
+    }
+
+    #waveDiv div span {
+        width: 30%;
+        text-align: right;
+        margin-right: 10px
+    }
+
+    #waveDiv div select {
+        width: 40%;
+    }
+
+    #waveDiv div input {
+        width: 40%;
+    }
+
+    .showUnit {
+        width: auto !important;
+        margin-left: 0 !important;
+    }
+</style>
+<div id="waveDiv">
+    <b data-locale="main-wavelengthTest-title">接谱测试</b>
+    <div>
+        <span data-locale="main-test-excWave">激发波长:</span>
+        <select id="waveEW" onchange="deviceControl.setEW(1)"></select>
+    </div>
+    <div>
+        <span data-locale="main-test-power">功率:</span>
+        <select id="wavePower" onchange="deviceControl.setPower(1)"></select>
+        &nbsp;mw
+    </div>
+    <div>
+        <span data-locale="main-test-pinhole">针孔尺寸:</span>
+        <select id="wavePZ" onchange="deviceControl.setPZ(1)"> </select>
+        &nbsp;μm
+    </div>
+    <div>
+        <span data-locale="main-test-grating">光栅:</span>
+        <select id="waveGrating" onchange="deviceControl.setGrating(1)"> </select>
+
+    </div>
+    <div>
+        <span data-locale="main-test-slit">狭缝:</span>
+        <input type="number" id="waveSlit" step="10" onchange="deviceControl.setSlit(1)">
+        &nbsp;μm
+    </div>
+    <div>
+        <span data-locale="main-test-expTime">积分时间:</span>
+        <input type="text" id="waveExp" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')"
+               onchange="deviceControl.setExpTime(1)">
+        &nbsp;s
+    </div>
+    <div>
+        <span data-locale="main-wavelengthTest-from">起始:</span>
+        <input type="number" id="waveFrom">
+        &nbsp<span class="showUnit" id="waveFUnit">nm</span>
+    </div>
+    <div>
+        <span data-locale="main-wavelengthTest-To">终止:</span>
+        <input type="number" id="waveTo">
+        &nbsp<span class="showUnit">nm</span>
+    </div>
+    <div>
+        <span data-locale="main-test-total">累计次数:</span>
+        <input type="text" id="waveTotalNum" value="1" onkeyup="this.value.length===1?this.value=this.value.replace(/[^1-9]/g,'')
+               :this.value=this.value.replace(/\D/g,'')">
+    </div>
+</div>
+<script>
+    $(function () {
+        main.translate('#waveDiv')
+        let waveDiv = $('#waveDiv')
+        waveDiv.css({'opacity': '0', ' transition': 'opacity 1s ease-in-out;'});
+        waveDiv.animate({opacity: '1', transition: 'opacity 1s ease-in-out;'}, 1000)
+        wavelength.updateParam()
+    })
+    $('input#waveFrom').change(function () {
+        let unit = $('#waveFUnit').text();
+        let from = inputRange.isOutRange($(this), function (dom, old, cur, min, max) {
+            if ((cur < min) || (cur > max)) {
+                jeBox.msg($.i18n.prop('tips-range-seMsg') + min + '~' + max, {icon: 1})
+                dom.val(old)
+                return false
+            }
+            return true
+        }, (unit === 'cm-1'))
+        if (from === undefined) return
+        if (unit === 'cm-1') {
+            let [radio, sEw, wEw, wG, sG] = [$('input.custom-radio'), $('select#steadyEW'), $('select#waveEW'), $('select#waveGrating'), $('select#steadyGrating')]
+            let laserWaveVal = sEw.length === 0 ? wEw.val() : sEw.val();
+            let gratingNum = sEw.length === 0 ? (wG.get(0).selectedIndex < 0 ? 1 : wG.get(0).selectedIndex + 1) : (sG.get(0).selectedIndex < 0 ? 1 : sG.get(0).selectedIndex + 1);
+            let dLaserWave = 0.0;
+            if (laserWaveVal === $.i18n.prop('main-test-null')) {
+                dLaserWave = fConfig.excwaveselect[0].E;
+            } else {
+                fConfig.excwaveselect.forEach((cur) => {
+                    if (cur.name === laserWaveVal) {
+                        dLaserWave = cur['grating' + gratingNum];
+                    }
+                })
+            }
+            let sendParam = {};
+            sendParam.laserWave = dLaserWave;
+            sendParam.array = [Number($(this).val())];
+            websocket.send(funcCode.CmToNmParams, sendParam);
+            main.setCallbacks(funcCode.CmToNmParams, rev => {
+                let selectW = rev.getPdList();
+                $(this).attr('nm', selectW[0]);
+                fConfig.spectrumfrom = selectW[0]
+            })
+        } else {
+            $(this).attr('nm', $(this).val());
+            fConfig.spectrumfrom = Number($(this).val())
+        }
+
+    });
+    $('input#waveTo').change(function () {
+        let wf = Number($('#waveFrom').val())
+        let wt = Number($(this).val())
+
+        let unit = $('#waveFUnit').text();
+        let to = inputRange.isOutRange($(this), function (dom, old, cur, min, max) {
+            if ((cur < min) || (cur > max)) {
+                jeBox.msg($.i18n.prop('tips-range-seMsg') + min + '~' + max, {icon: 1})
+                dom.val(old)
+                return false
+            }
+            return true
+        }, (unit === 'cm-1'))
+        if (to === undefined) return
+        if (wf >= wt) {
+            let wf1 = $('#waveFrom').attr('oldData')
+            let wt1 = $(this).attr('oldData')
+            $('#waveFrom').val(wf1)
+            $(this).val(wt1)
+
+            jeBox.msg($.i18n.prop('tips-range-seMsg1'), {icon: 1})
+            return
+        }
+        if (unit === 'cm-1') {
+            let [radio, sEw, wEw, wG, sG] = [$('input.custom-radio'), $('select#steadyEW'), $('select#waveEW'), $('select#waveGrating'), $('select#steadyGrating')]
+            let laserWaveVal = sEw.length === 0 ? wEw.val() : sEw.val();
+            let gratingNum = sEw.length === 0 ? (wG.get(0).selectedIndex < 0 ? 1 : wG.get(0).selectedIndex + 1) : (sG.get(0).selectedIndex < 0 ? 1 : sG.get(0).selectedIndex + 1);
+            let dLaserWave = 0.0;
+            if (laserWaveVal === $.i18n.prop('main-test-null')) {
+                dLaserWave = fConfig.excwaveselect[0].E;
+            } else {
+                fConfig.excwaveselect.forEach((cur) => {
+                    if (cur.name === laserWaveVal) {
+                        dLaserWave = cur['grating' + gratingNum];
+                    }
+                })
+            }
+            let sendParam = {};
+            sendParam.laserWave = dLaserWave;
+            sendParam.array = [Number($(this).val())];
+            websocket.send(funcCode.CmToNmParams, sendParam);
+            main.setCallbacks(funcCode.CmToNmParams, rev => {
+                let selectW = rev.getPdList();
+                $(this).attr('nm', selectW[0]);
+                fConfig.spectrumto = selectW[0]
+            })
+        } else {
+            $(this).attr('nm', $(this).val());
+            fConfig.spectrumto = Number($(this).val())
+        }
+        fConfig.spectrumto = Number($(this).attr('nm'));
+    });
+
+
+</script>

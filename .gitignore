@@ -1,0 +1,44 @@
+# Keep release outputs and DLLs tracked by design.
+# Do NOT add rules like "Release/" or "*.dll" in this repo.
+
+# Visual Studio
+.vs/
+*.VC.db
+*.VC.opendb
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Qt Creator / Qt tooling
+*.pro.user*
+*.qbs.user*
+CMakeLists.txt.user*
+*.autosave
+
+# CMake / Ninja generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+Makefile
+*.ninja
+.ninja_*
+
+# Intermediate build artifacts
+*.obj
+*.o
+*.lo
+*.pch
+*.idb
+*.ilk
+*.ipch
+*.tmp
+*.log
+*.cache
+*.tlog
+
+# Debug outputs only (Release should be committed)
+Debug/
+x64/Debug/
+x86/Debug/

@@ -1,0 +1,93 @@
+<style>
+    #smooth{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #smooth div{
+        height: 8%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #smooth div select{
+        width: 150px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    #smooth div input[type=text]{
+        width: 50px;
+        margin-left: 10px;
+    }
+    #smooth div input[type=range]{
+        margin-left: 5px;
+    }
+    #smooth div button {
+        margin-left: 10px;
+    }
+    #smoothChart{
+        border: 3px ridge #555555;
+    }
+</style>
+<div id="smooth">
+    <div>
+        <span data-locale="popup-algorithm-lineSelect">曲线选择:</span>
+        <select id="smoothLines"></select>
+        <select id="smoothMode">
+            <option>FFT</option>
+            <option>Savitzky-Golay</option>
+            <option>Boxcar</option>
+        </select>
+        <input type="text" value="5" disabled>
+        <input type="range" min="3" max="31" value="5" id="smoothValue">
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-algorithm-executeBtn" onclick="algorithm.perform(this)">执行</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-algorithm-abolitionBtn" disabled onclick="algorithm.restore(this,'_smooth')">撤销</button>
+
+    </div>
+    <div id="smoothChart" style="height: 95%;">
+
+    </div>
+</div>
+<script>
+    let smoothChart = {},smoothLines = $("#smoothLines"),lines = new Map()
+    $.getScript('js/algorithm/algorithm.js',()=>{
+        algorithm.initAlgorithm('smoothChart')
+        smoothChart = algorithm.chart
+        lines = algorithm.lineMap
+        algorithm.lines.forEach(cur=>{smoothLines.append("<option>"+cur.name()+"</option>")})
+        smoothLines.change()
+    })
+    $("#smooth div input[type=range]").change(function () {
+        let value = $("#smooth div input[type=range]").val();
+        //$("#fit div input[type=range]").attr("title",value)
+        $("#smooth div input[type=text]").val(value)
+        algorithm.smooth()
+    })
+    smoothLines.change(function () {
+        smoothChart.remove_all();
+        let name = smoothLines.val();
+        if(lines.get(name) === undefined)return
+        let data = lines.get(name).get_data();
+        let color = lines.get(name).get_color()
+        let line =  smoothChart.add_series(name,0)
+        line.add_array(data.x,data.y)
+        line.set_color(color)
+    })
+    $("a.jeBox-close").click(function(){
+        let flag = $("div#smooth button").first().prop('disabled')
+        if (flag) {
+            let lines = algorithm.chart.active_series()
+            algorithm.addToMainLine(lines[lines.length-1].name(),lines[lines.length-1].get_data().x,lines[lines.length-1].get_data().y,'_smooth')
+
+            // for (let i = 0; i <lines.length ; i++) {
+            //     if (lines[i].name().indexOf('_smooth') > 0) {
+            //         console.log(lines[i].get_data());
+            //         algorithm.addToMainLine(lines[i].name(),lines[i].get_data().x,lines[i].get_data().y,'_smooth')
+            //         // let name = lines[i].name().replace('_smooth',"")
+            //         // algorithm.updateMainLine(name,lines[i].get_data().y)
+            //     }
+            // }
+        }
+    });
+</script>

@@ -1,0 +1,148 @@
+<style>
+    #wTPDiv{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+    }
+    .wTPDiv{
+        width: 50%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    .wTPDiv b{
+        font-size: 18px;
+    }
+    .wTPDiv div{
+        display: inline-flex;
+        margin-top: 10px;
+    }
+    .wTPDiv div  span{
+        width: 40%;
+        text-align: right;
+        margin-right: 10px;
+    }
+    .wTPDiv div  select{
+        width: 40%;
+    }
+    .wTPDiv div  input[type=text]{
+        width: 40%;
+    }
+    .wTPDiv div input[type=checkbox]{
+        margin-left: 30px;
+    }
+    .wTPDiv div button{
+        width: 80%;
+    }
+</style>
+<div id="wTPDiv">
+    <div class="wTPDiv">
+        <b data-locale="main-wavelengthTest-title">接谱测试</b>
+        <div>
+            <span data-locale="main-test-excWave">激发波长:</span>
+            <input type="text" id="wTPEw"  disabled>
+        </div>
+        <div>
+            <span data-locale="main-test-pinhole">针孔尺寸:</span>
+            <input type="text" id="wTPPz" disabled>
+            &nbsp;μm
+        </div>
+        <div>
+            <span data-locale="main-test-slit">狭缝:</span>
+            <input type="text" id="wTPSlit" disabled>
+            &nbsp;μm
+        </div>
+        <div>
+            <span data-locale="main-test-total">累计次数:</span>
+            <input type="text" id="wTPCn" disabled>
+        </div>
+    </div>
+    <div class="wTPDiv">
+        <b>464</b>
+        <div>
+            <span data-locale="main-test-power">功率:</span>
+            <input type="text" id="wTPPower" disabled>
+            &nbsp;mw
+        </div>
+        <div>
+            <span data-locale="main-test-grating">光栅:</span>
+            <input type="text" id="wTPGrating" disabled>
+        </div>
+        <div>
+            <span data-locale="main-test-expTime">积分时间:</span>
+            <input type="text" id="wTPExp" disabled>
+            &nbsp;s
+        </div>
+        <div>
+            <span data-locale="main-wavelengthTest-from">起始:</span>
+            <input type="text" id="wTPFrom" disabled>
+            <span id="wFUnit" style="width: auto;margin-right: 0;margin-left: 4px;">nm</span>
+
+        </div>
+        <div>
+            <span data-locale="main-wavelengthTest-To">终止:</span>
+            <input type="text" id="WTPTo" disabled>
+            <span id="wTUnit" style="width: auto;margin-right: 0;margin-left: 4px;">nm</span>
+
+        </div>
+        <div style="justify-content: center">
+            <button data-locale="popup-testPlan-apply" type="button" class="btn btn-secondary btn-sm" onclick="applyWave()">应用</button>
+        </div>
+    </div>
+</div>
+<script>
+    function initTestBox(tag) {
+        let name = $(tag).text()
+        deviceControl.getTestScheme({'funnm':1,"name":name})
+        main.setCallbacks(funcCode.GetTestScheme,updateWTPParam)
+    }
+    function applyWave() {
+        let unit = $("#wFUnit").text();
+        if (fConfig.waveunit !== unit) return jeBox.msg($.i18n.prop('tips-testPlan-msg'), {icon: 1})
+        let data = {
+            funNm:1,
+            excWave: "空",
+            powerValue:'',
+            pinhole:0,
+            grating:"grating",
+            slit:0,
+            expTime:'',
+            centerWave:0,
+            waveUnit:"nm",
+            intervalFlag:false,
+            intervalTime:0,
+            intervalNum:0,
+            spectrumFrom:'',
+            spectrumTo:'',
+            totalNum:0
+        }
+        data.excWave = fConfig.excwave =  $("#wTPEw").val()
+        data.powerValue = fConfig.powervalue = $("#wTPPower").val()
+        data.pinhole = fConfig.pinhole = Number($("#wTPPz").val())
+        data.grating = fConfig.grating = $("#wTPGrating").val()
+        data.slit = fConfig.slit = Number($("#wTPSlit").val())
+        data.expTime = fConfig.expTime = $("#wTPExp").val()
+        data.spectrumFrom = fConfig.spectrumfrom = Number($("#wTPFrom").val())
+        data.spectrumTo = fConfig.spectrumto = Number($("#WTPTo").val())
+        data.waveUnit = fConfig.waveunit = unit
+        data.totalNum = fConfig.totalnum = Number($("#wTPCn").val())
+        fConfig.spectrumUnit= unit
+        fConfig.waveFrom = Number($("#wTPFrom").val())
+        fConfig.waveTo = Number($("#WTPTo").val())
+        deviceControl.applyTestPlan(data)
+        ///$("#waveEW").val($("#wTPEw").val())
+    }
+    function updateWTPParam(rev) {
+        let unit = rev.getWaveunit()
+        $("#wTPEw").val(rev.getExcwave())
+        $("#wTPPower").val(rev.getPowervalue())
+        $("#wTPPz").val(rev.getPinholenm())
+        $("#wTPGrating").val(rev.getGrating())
+        $("#wTPSlit").val(rev.getSlit())
+        $("#wTPExp").val(rev.getExptime())
+        $("#wTPCn").val(rev.getTotalnum())
+        $("#wTPFrom").val(rev.getSpectrumfrom())
+        $("#WTPTo").val(rev.getSpectrumto())
+        $("#wFUnit").text(unit)
+        $("#wTUnit").text(unit)
+    }
+</script>

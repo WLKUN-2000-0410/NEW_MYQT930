@@ -1,0 +1,154 @@
+.dropdown {
+    width: 100px;
+}
+
+.dropdown button {
+    background-color: transparent;
+    border: 0;
+}
+
+.dropdown-menu {
+    background-color: #2b2b2b;
+    font-size: 0.8rem;
+}
+
+.dropdown-item {
+    color: #fff !important;;
+    display: inline-flex;
+    align-items: center;
+}
+.dropdown-item.disabled, .dropdown-item:disabled {
+    cursor: not-allowed;
+    pointer-events: auto;
+}
+.dropdown-item img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+    color: #fff;
+    background-color: #383838;
+}
+
+.card {
+    display: inline-flex;
+    flex-direction: inherit;
+    background-color: #383838;
+}
+
+.card button {
+    border: 0;
+}
+
+.card button img {
+    width: 24px;
+    height: 24px;
+}
+
+.jeBox-header {
+    background-color: #2b2b2b;
+    color: #fff;
+}
+
+.jeBox-content {
+    background-color: #383838;
+    color: #fff;
+}
+
+.jeBox-wrap.jeBox-anim {
+    background-color: #383838;
+    border: 0.1rem solid #555555;
+}
+
+.jeBox-headbtn, .jeBox-headbtn a {
+    height: 38px;
+}
+
+.jeBox-headbtn a:hover {
+    background-color: #383838;
+}
+
+.jeBox-footer button.jeBox-btn0 {
+    background-color: #6c757d;
+    border: 1px #6c757d solid;
+}
+
+.jeBox-animMsg .jeBox-content {
+    width: 100% !important;
+    height: 100% !important;
+    background-color: #2b2b2b;
+}
+
+/*多级下拉菜单*/
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu > a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 2px; /*方向图标上方位置*/
+    margin-left: 2px; /*方向图标左侧位置*/
+    margin-right: -10px;
+}
+.dropdown-submenu:hover > a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+.testPlan {
+    padding: 0;
+    /*display: block;*/
+}
+
+.testPlan button:nth-child(1) {
+    float: left;
+}
+
+.testPlan button:nth-child(2) {
+    float: right;
+}
+.btn-danger.disabled, .btn-danger:disabled {
+    background-color: #d58990;
+    border-color: #d58990;
+    cursor: not-allowed;
+}
+.btn-success.disabled, .btn-success:disabled {
+    background-color: #98bfa0;
+    border-color: #98bfa0;
+    cursor: not-allowed;
+}

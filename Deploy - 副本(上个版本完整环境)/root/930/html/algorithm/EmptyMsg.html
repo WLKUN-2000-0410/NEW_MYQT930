@@ -1,0 +1,30 @@
+<style>
+    #emptyMsg{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #emptyMsg div{
+        margin-top: 10px;
+        font-size: 16px;
+    }
+</style>
+<div id="emptyMsg">
+    <div data-locale="popup-edit-emptyMsg">您确定要清空信息窗口吗？</div>
+    <div>
+        <button type="button" class="btn btn-primary btn-sm" data-locale="popup-confirm" onclick="emptyMsg()">确定</button>
+        <button type="button" class="btn btn-light btn-sm" data-locale="popup-cancel" onclick="cancel()">取消</button>
+    </div>
+</div>
+<script>
+    function emptyMsg() {
+        let index = $("#emptyMsg").parents('.jeBox-wrap').attr("id")
+        $("#log_body").empty()
+        $("#"+index+" .jeBox-close").click()
+    }
+    function cancel() {
+        let index = $("#emptyMsg").parents('.jeBox-wrap').attr("id")
+        $("#"+index+" .jeBox-close").click()
+    }
+</script>

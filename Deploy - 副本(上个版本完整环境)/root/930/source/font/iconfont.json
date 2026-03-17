@@ -1,0 +1,79 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1126",
+      "name": "文件夹",
+      "font_class": "wenjianjia",
+      "unicode": "f00c5",
+      "unicode_decimal": 983237
+    },
+    {
+      "icon_id": "666891",
+      "name": "图片",
+      "font_class": "tupian",
+      "unicode": "e695",
+      "unicode_decimal": 59029
+    },
+    {
+      "icon_id": "1029205",
+      "name": "下载",
+      "font_class": "download-1-copy",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "3868276",
+      "name": "使用文档",
+      "font_class": "shiyongwendang",
+      "unicode": "eb66",
+      "unicode_decimal": 60262
+    },
+    {
+      "icon_id": "8229462",
+      "name": "瘦桌面",
+      "font_class": "shouzhuomian",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "8288815",
+      "name": "Txt",
+      "font_class": "Txt",
+      "unicode": "e83d",
+      "unicode_decimal": 59453
+    },
+    {
+      "icon_id": "10135288",
+      "name": "raw",
+      "font_class": "raw",
+      "unicode": "e8bc",
+      "unicode_decimal": 59580
+    },
+    {
+      "icon_id": "11374065",
+      "name": "csv",
+      "font_class": "csv",
+      "unicode": "e6af",
+      "unicode_decimal": 59055
+    },
+    {
+      "icon_id": "29522708",
+      "name": "23E磁盘",
+      "font_class": "a-23Ecipan",
+      "unicode": "e685",
+      "unicode_decimal": 59013
+    },
+    {
+      "icon_id": "36347239",
+      "name": "hdr",
+      "font_class": "hdr",
+      "unicode": "e6b6",
+      "unicode_decimal": 59062
+    }
+  ]
+}

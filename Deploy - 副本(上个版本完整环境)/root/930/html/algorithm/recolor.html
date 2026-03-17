@@ -1,0 +1,39 @@
+<style>
+    .recolor_div{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+    .recolor_div1{
+        width: 100%;
+        font-size:1em;
+        display: inline-flex;
+        text-align: center;
+    }
+    #recolor_lines{
+        width: 45%;
+        height: 1.5rem;
+        margin-left: 30%;
+    }
+    .recolor_div1 input{
+        width: 27%;
+        height: 2rem;
+        margin-left: 30%;
+    }
+</style>
+<div class="recolor_div">
+    <div class="recolor_div1">
+        <input id="recolor_lines" type="text" disabled>
+    </div>
+    <div class="recolor_div1">
+        <input type="color" id="custom" value="#2F59CF"/>&nbsp;
+        <button type="button" class="btn btn-primary btn-sm" data-locale="popup-algorithm-recolorBtn" id="upColor" >修改</button>
+    </div>
+</div>
+<script>
+    function  initRecolor(name) {
+        $("#recolor_lines").val(name)
+        main.translate(undefined)
+    }
+</script>

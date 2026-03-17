@@ -1,0 +1,506 @@
+<link rel="stylesheet" href="source/css/mapping.css">
+<div id="mappingDiv">
+    <div id="mappingDiv1" class="justify-content-between">
+        <div class="d-flex align-items-center">
+            <button type="button" data-tips="popup-mapping-startBtn" class="btn btn-outline-secondary btn-sm" title="开始采集" disabled id="startMapping" onclick="mapping.startMapping()">
+                <img alt="0" src="source/image/start.png"></button>
+            <!--        <button type="button" class="btn btn-outline-secondary btn-sm" title="停止采集" onclick="mapping.stopMapping()">-->
+            <!--            <img alt="" src="source/image/stop.png"></button>-->
+            <button type="button" data-tips="popup-mapping-delBtn" class="btn btn-outline-secondary btn-sm" title="删除所有数据" onclick="mapping.removeAll()">
+                <img alt="" src="source/image/clean_up.png">
+            </button>
+            <button type="button" data-tips="popup-mapping-removeBtn" class="btn btn-outline-secondary btn-sm" title="删除曲线" onclick="mapping.removeAllLine()">
+                <img alt="" src="source/image/delete.png">
+            </button>
+            <button type="button" data-tips="popup-mapping-openBtn" class="btn btn-outline-secondary btn-sm" title="打开文件" onclick="mapping.openFileMapping()">
+                <img alt="" src="source/image/openFile.png">
+            </button>
+            <input type="file" id="mappingOpen" style="display: none" accept=".txt" >
+            <div id="mapping2dBtn">
+                <button type="button" data-tips="popup-mapping-saveBtn" class="btn btn-outline-secondary btn-sm" title="保存文件" onclick="mapping.saveMappingFile()">
+                    <img alt="" src="source/image/saveFile.png">
+                </button>
+                <a id="saveImgd" download="a.png"><button type="button" data-tips="popup-mapping-save1Btn" class="btn btn-outline-secondary btn-sm" title="保存图片" onclick="mapping.saveMappingImage(1)">
+                    <img alt="" src="source/image/saveFile1.png" style="width: 36px; height: 36px;">
+                </button></a>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="popup-mapping-save2Btn" title="保存HeatMap文件" onclick="mapping.saveHeatMapDataFile()">
+                    <img alt="" src="source/image/saveFile2.png" style="width: 35px; height: 35px;">
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="popup-mapping-export2DTxt" title="导出数据文件" onclick="mapping.export2DCurves()">
+                <span class="fa-stack fa-1x">
+                    <i class="fa fa-file-o fa-stack-2x text-white"></i>
+                    <i class="fa fa-arrow-right fa-stack-1x fa-inverse"></i>
+                </span>
+                </button>
+            </div>
+            <div id="mapping3dBtn" hidden>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="popup-mapping-save3D" title="保存3D文件" onclick="mapping.save3DMapping()">
+                <span class="fa-stack fa-1x">
+                    <i class="fa fa-cube fa-stack-2x text-white"></i>
+                    <i class="fa fa-arrow-down fa-stack-1x fa-inverse"></i>
+                </span>
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="popup-mapping-save3DCut" title="保存三维界面数据文件" onclick="mapping.save3DCutPlane()">
+                <span class="fa-stack fa-1x">
+                    <i class="fa fa-file-o fa-stack-2x text-white"></i>
+                    <i class="fa fa-arrow-down fa-stack-1x fa-inverse"></i>
+                </span>
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="popup-mapping-export3DTxt" title="导出3D数据文件" onclick="mapping.export3DCurves()">
+                <span class="fa-stack fa-1x">
+                    <i class="fa fa-cube fa-stack-2x text-white"></i>
+                    <i class="fa fa-arrow-right fa-stack-1x fa-inverse"></i>
+                </span>
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="popup-mapping-export3DTxtCut" title="导出3D截图数据文件" onclick="mapping.export3DCutCurves()">
+                <span class="fa-stack fa-1x">
+                    <i class="fa fa-file-o fa-stack-2x text-white"></i>
+                    <i class="fa fa-arrow-right fa-stack-1x fa-inverse"></i>
+                </span>
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-tips="popup-mapping-export3DTxtPoint" title="导出单点数据文件" onclick="mapping.exportPointData()">
+                <span class="fa-stack fa-1x">
+                    <i class="fa fa-file-o fa-stack-2x text-white"></i>
+                    <i class="fa fa-arrow-circle-o-right fa-stack-1x fa-inverse"></i>
+                </span>
+                </button>
+            </div>
+            <button type="button" class="btn btn-outline-secondary btn-sm" title="回收站" hidden>
+                <img alt="" src="source/image/clean_up.png">
+            </button>
+        </div>
+        <button type="button" class="btn btn-outline-secondary btn-sm  align-items-center" id="switchBtn" hidden onclick="mapping.switchDimensions()"><span class="text-white mr-2">2D</span><i class="fa fa-toggle-off fa-2x text-white"></i></button>
+    </div>
+    <div id="mappingDiv2">
+        <div id="mappingDiv3">
+            <div id="mSP">
+                <b data-locale="popup-mapping-title1">光谱参数</b>
+                <div>
+                    <span data-locale="main-SteadyTest-centerWave">中心波长:</span>
+                    <input type="number" id="mCenWave" min="0" step="1" max="30000" value="0">
+                    &nbsp;<p class="showUnits" id="mUnit">nm</p>
+                </div>
+                <div>
+                    <span data-locale="main-test-expTime">积分时间:</span>
+                    <input type="text" id="mExpTime" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+                    &nbsp;s
+                </div>
+                <div>
+                    <span data-locale="main-test-slit">狭缝:</span>
+                    <input type="number" id="mSlit" step="10">
+                    &nbsp;μm
+                </div>
+                <div>
+                    <span data-locale="main-test-total">累计次数:</span>
+                    <input type="text" id="mAcc" onkeyup="this.value.length===1?this.value=this.value.replace(/[^1-9]/g,'')
+               :this.value=this.value.replace(/\D/g,'')">
+                </div>
+            </div>
+            <div id="mSA">
+                <b data-locale="popup-mapping-title2">扫描区域</b>
+                <div style="justify-content: center">
+                    <span style="width: 23%;" data-locale="popup-mapping-centerPoint">中心点</span>
+                    <span style="width: 23%;" data-locale="popup-mapping-length">长度</span>
+                    <span style="width: 23%;" data-locale="popup-mapping-step">步距</span>
+                </div>
+                <div>
+                    <input id="mXCheckbox" style="width: 16px;margin-right: 2px;" type="checkbox"/><span data-locale="popup-mapping-xAisle">X轴:</span>
+                    <input type="number" style="width: 23%;" id="mXCp" step="1" value="1">
+                    <input type="number" style="width: 23%;" id="mXL" step="1" value="1" disabled="disabled">
+                    <input type="number" style="width: 23%;" id="mXStep" value="1" step="1" disabled="disabled">
+                    &nbsp;μm
+                </div>
+                <div>
+                    <input id="mYCheckbox" style="width: 16px;margin-right: 2px;" type="checkbox"/><span data-locale="popup-mapping-yAisle">Y轴:</span>
+                    <input type="number" style="width: 23%;" id="mYCp" step="1" value="1">
+                    <input type="number" style="width: 23%;" id="mYL" step="1" value="1" disabled="disabled">
+                    <input type="number" style="width: 23%;" id="mYStep" value="1" step="1" disabled="disabled">
+                    &nbsp;μm
+                </div>
+                <div id="sAZAixs">
+                    <input id="mZCheckbox" style="width: 16px;margin-right: 2px;" type="checkbox"/><span data-locale="popup-mapping-zAisle">Z轴:</span>
+                    <input type="number" style="width: 23%;" id="mZCp" step="1" value="1">
+                    <input type="number" style="width: 23%;" id="mZL" step="1" value="1" disabled="disabled">
+                    <input type="number" style="width: 23%;" id="mZStep" value="1" step="1" disabled="disabled">
+                    &nbsp;μm
+                </div>
+                <div class="justify-content-center">
+                    <button type="button" class="btn btn-secondary btn-sm ml-4 w-50" data-locale="popup-mapping-read-center-pos" onclick="mapping.readCenterPos()">读取中心点</button>
+                    <button type="button" id="mappingCamera" class="btn btn-secondary btn-sm ml-2 mr-4 w-50" data-locale="popup-mapping-cameraBtn" onclick="mapping.openCamera()">摄像头</button>
+                </div>
+            </div>
+            <div id="mDP">
+                <b data-locale="popup-mapping-title3">显示参数</b>
+                <div>
+                    <select id="mStrMode" onchange="mapping.showDP($(this).get(0).selectedIndex)">
+                        <option data-locale="popup-mapping-single" datatype="单波长强度">单波长强度</option>
+                        <option data-locale="popup-mapping-expH" datatype="积分高度">积分高度</option>
+                        <option data-locale="popup-mapping-pvW" datatype="峰值波长">峰值波长</option>
+                        <option data-locale="popup-mapping-hHW" datatype="半高宽">半高宽</option>
+                    </select>
+                </div>
+                <div id="dPSW">
+                    <input type="text" style="width: 48%;margin-left: 9%" id="dWave1" > &nbsp;<p class="showUnits" style="width: 10%">nm</p>
+                </div>
+                <div id="dPHW">
+                    <input type="text" id="dWave0" style="margin-left: 22%">
+                    &nbsp;
+                    <input type="text" id="dWave2" style="">
+                    &nbsp;<p class="showUnits" style="width: 10%">nm</p>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-mapping-updateBtn" onclick="mapping.GetShowModeData()">更新</button>
+                </div>
+            </div>
+            <div id="mMSC">
+                <b data-locale="popup-mapping-title4">手动设置坐标</b>
+                <div style="margin-top: 6%;">
+                    <span>X:</span>
+                    <input type="text" id="mCoordsX" value="5" min="1"  onkeyup="this.value.length===1?this.value=this.value.replace(/[^1-9]/g,'')
+               :this.value=this.value.replace(/\D/g,'')">
+                </div>
+                <div>
+                    <span>Y:</span>
+                    <input type="text" id="mCoordsY" value="5" min="1" onkeyup="this.value.length===1?this.value=this.value.replace(/[^1-9]/g,'')
+               :this.value=this.value.replace(/\D/g,'')">
+                </div>
+                <div id="mMSCZ" hidden>
+                    <span>Z:</span>
+                    <input type="text" id="mCoordsZ" value="5" min="1" onkeyup="this.value.length===1?this.value=this.value.replace(/[^1-9]/g,'')
+               :this.value=this.value.replace(/\D/g,'')">
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-mapping-showBtn" onclick="mapping.showLine(Number($('#mCoordsX').val()),Number($('#mCoordsY').val()))">显示曲线</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-mapping-save3Btn" onclick="mapping.saveLineMapping()">保存数据</button>
+                </div>
+            </div>
+        </div>
+        <div id="mappingDiv4">
+            <div id="mappingDiv5">
+                <div id="mappingHeatmap">
+                    <div id="mappingHot" hidden></div>
+                    <div id="mappingLut" hidden></div>
+                </div>
+                <div id="mappingImg" hidden>
+                    <img src="" alt="" id="mappingImage">
+                    <div id="mappingBox"></div>
+                    <div class="mScale" id="mShowScale">
+                        <span id="mLensSize">50μm</span>
+                    </div>
+                </div>
+            </div>
+            <!--3D-->
+            <div id="mappingDiv7" class="h-50 w-100 d-none">
+                <div id="mapping3D" style="width: 65%!important;" class="w-50 h-100"></div>
+                <div id="mapping2D" style="width: 35%!important;" class="w-50 p-1 d-flex">
+                    <div id="mappingMap" style="width: 85%!important;" class="w-75 h-100"></div>
+                    <div id="mappingMapLut" style="width: 15%!important;"  class="w-25 h-100 "></div>
+                </div>
+            </div>
+            <div id="mappingDiv6">
+                <div id="mProgress">
+                    <div id="mProgress1" class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    </div>
+                    <div id="mProgress2" class="progress">
+                        <div class="progress-bar" role="progressbar" style="width:0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-locale="popup-mapping-progress-time">剩余时长</div>
+                    </div>
+                </div>
+                <div id="mappingLine">
+                    <div id="mappingChart"></div>
+                    <div id="mappingLegend"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="source/lib/threeJS/three.js"></script>
+<script>
+    $.getScript('js/mapping/mapping.js', () => {
+    	mapping.initMapping();
+    })
+    //长度监听事件
+    function updateWaveParam(dom){
+        let lines = mapping.mappingChart.active_series()
+        if(lines.length>0){
+            let cur = parseFloat($(dom).val())
+            let min = lines[0].min_x().toFixed(2),max=lines[0].max_x().toFixed(2)
+            if((cur < min)||(cur > max)){
+                $(dom).val('')
+                return  jeBox.msg($.i18n.prop('tips-range-seMsg')+min+"~"+max,{icon:1});
+            }
+        }else {
+            let unit= $("#mUnit").text()
+            let dw = inputRange.isOutRange($(dom),function (dom,old,cur,min,max) {
+                if ((cur < min)||(cur > max)) {
+                    jeBox.msg($.i18n.prop('tips-range-seMsg')+min+"~"+max,{icon:1})
+                    dom.val(old)
+                    return false
+                }
+                return true
+            },(unit==="cm-1"))
+            if(dw===undefined) return
+            if(fConfig.waveunit==="cm-1"){
+                let gratingNum = 0;
+                if($("#steadyGrating").length===1){
+                    gratingNum =$("#steadyGrating").get(0).selectedIndex+1;
+                }else{
+                    gratingNum =$("#waveGrating").get(0).selectedIndex+1;
+                }
+                let dLaserWave = 0.0;
+                if (fConfig.excwave==="空"||gratingNum===0) {
+                    dLaserWave=fConfig.excwaveselect[0].E;
+                } else{
+                    fConfig.excwaveselect.forEach((cur)=>{
+                        if(cur.name === fConfig.excwave){
+                            dLaserWave=cur["grating"+gratingNum];
+                        }
+                    })
+                }
+                if($(dom).attr("id")==="mCenWave"){
+                    $('#dWave0').val($(dom).val());
+                    $('#dWave1').val($(dom).val());
+                    $('#dWave2').val($(dom).val());
+                }
+                let sendParam = {};
+                sendParam.laserWave = dLaserWave;
+                sendParam.array = [Number($(dom).val())];
+                websocket.send(funcCode.CmToNmParams,sendParam);
+                main.setCallbacks(funcCode.CmToNmParams,rev =>{
+                    let selectW = rev.getPdList();
+                    $(dom).attr("nm",selectW[0].toFixed(4));
+                    if($(dom).attr("id")==="mCenWave"){
+                        $('#dWave0').attr("nm",selectW[0].toFixed(4));
+                        $('#dWave1').attr("nm",selectW[0].toFixed(4));
+                        $('#dWave2').attr("nm",selectW[0].toFixed(4));
+                    }
+                })
+            }else{
+                $(dom).attr("nm",Number($(dom).val()));
+                if($(dom).attr("id")==="mCenWave"){
+                    $('#dWave0').val($(dom).val());
+                    $('#dWave1').val($(dom).val());
+                    $('#dWave2').val($(dom).val());
+                    $('#dWave0').attr("nm",$(dom).val());
+                    $('#dWave1').attr("nm",$(dom).val());
+                    $('#dWave2').attr("nm",$(dom).val());
+                }
+            }
+        }
+        
+    }
+    
+	$("#mXCheckbox").change(function(){
+    	if(this.checked){
+    		$("#mXL").removeAttr("disabled");
+    		$("#mXStep").removeAttr("disabled");
+    	}else{
+    		$("#mXL").attr("disabled","disabled");
+    		$("#mXStep").attr("disabled","disabled");
+    	}
+    	mapping.dimensions=$("#mXCheckbox").get(0).checked&&$("#mYCheckbox").get(0).checked&&$("#mZCheckbox").get(0).checked;
+    	mapping.switchDimensions();
+    });
+    $("#mYCheckbox").change(function(){
+    	if(this.checked){
+    		$("#mYL").removeAttr("disabled");
+    		$("#mYStep").removeAttr("disabled");
+    	}else{
+    		$("#mYL").attr("disabled","disabled");
+    		$("#mYStep").attr("disabled","disabled");
+    	}
+    	mapping.dimensions=$("#mXCheckbox").get(0).checked&&$("#mYCheckbox").get(0).checked&&$("#mZCheckbox").get(0).checked;
+    	mapping.switchDimensions();
+    });
+    $("#mZCheckbox").change(function(){
+    	if(this.checked){
+    		$("#mZL").removeAttr("disabled");
+    		$("#mZStep").removeAttr("disabled");
+    	}else{
+    		$("#mZL").attr("disabled","disabled");
+    		$("#mZStep").attr("disabled","disabled");
+    	}
+    	mapping.dimensions=$("#mXCheckbox").get(0).checked&&$("#mYCheckbox").get(0).checked&&$("#mZCheckbox").get(0).checked;
+    	mapping.switchDimensions();
+    });
+    
+    $('#dWave1').change(function(){
+    	updateWaveParam(this);
+    });
+	$('#dWave0').change(function(){
+		updateWaveParam(this);
+	});
+	$('#dWave2').change(function(){
+	    let dw0 = Number($("#dWave0").val())
+        let dw2 = Number($(this).val())
+	    if(dw0>dw2){
+	        jeBox.msg($.i18n.prop('tips-range-seMsg1'),{icon:1})
+            let oldDw0 = $("#dWave0").attr("oldData")
+            let oldDw2 = $(this).attr("oldData")
+            $("#dWave0").val(oldDw0)
+            $(this).val(oldDw2)
+            return
+        }
+		updateWaveParam(this);
+	});
+    $("#mXL").change(function () {
+        if(mapping.dimensions) return
+        if($("#mappingImg").prop('hidden')){
+            let mXL = parseFloat($("#mXL").val()) //当前框长度um
+            let mXC = parseFloat($("#mXCp").val())
+            let min = mXC-mXL/2,max = mXC+mXL/2
+            if(min<0||max>75000) jeBox.msg($.i18n.prop('tips-range-seMsg')+0+'~'+75000,{icon:1})
+            return;
+        }
+        let imgW = $("#mappingImage").width()
+        if(typeof camera === 'undefined') return;
+        fConfig.lensConf.forEach(cur=>{
+            if (camera.lenName === cur.name) {
+                let mXL = $("#mXL").val() //当前框长度um
+                let w = mXL*cur.scale
+                let boxL = $("#mappingBox").position().left
+                let boxW = $("#mappingBox").get(0).offsetWidth
+                let left = boxL-(w-boxW)/2.0
+
+                if(left<0||(left+w)>imgW){
+                	$("#mXL").val(mapping.xW)
+                    return jeBox.msg($.i18n.prop('tips-mapping-imgW'),{icon:1})
+                }
+				mapping.xW = mXL
+                $("#mappingBox").css({left:left,width:w})
+            }
+        })
+    })
+    $("#mYL").change(function () {
+        if(mapping.dimensions) return
+
+        if($("#mappingImg").prop('hidden')){
+            let mYL = parseFloat($("#mYL").val()) //当前框长度um
+            let mYC = parseFloat($("#mYCp").val())
+            let min = mYC-mYL/2,max = mYC+mYL/2
+            if(min<0||max>75000) jeBox.msg($.i18n.prop('tips-range-seMsg')+0+'~'+50000,{icon:1})
+            return;
+        }
+        let imgH = $("#mappingImage").height()
+        if(typeof camera === 'undefined') return;
+        fConfig.lensConf.forEach(cur=>{
+            if (camera.lenName === cur.name) {
+                let mYL = $("#mYL").val() //当前框长度um
+                let h = mYL*cur.scale
+                let boxT = $("#mappingBox").position().top
+                let boxH = $("#mappingBox").get(0).offsetHeight
+                let top = boxT-(h-boxH)/2.0
+
+                if(imgH<(h+top)||top<0) {
+                    $("#mYL").val(mapping.yH)
+                    return jeBox.msg($.i18n.prop('tips-mapping-imgH'), {icon: 1})
+                }
+                $('#mappingBox').css({top:top,height:h})
+                mapping.yH = mYL
+            }
+        })
+    })
+    //中心点监听事件
+    $("#mXCp").change(function () {
+        if(mapping.dimensions) return
+    	let imgW = $("#mappingImage").width()
+    	if(typeof camera === 'undefined') return;
+        fConfig.lensConf.forEach(cur=>{
+            if (camera.lenName === cur.name) {
+                let mXL =Number($("#mXL").val())  //当前框长度um
+                let xc = Number($("#mXCp").val())
+                let dv = (mapping.xC-xc)*cur.scale
+                let boxL = $("#mappingBox").position().left
+                let boxW = $("#mappingBox").get(0).offsetWidth
+                let left = boxL -  dv*device.camera.mirrorPos
+
+                if(left<0||(left+boxW)>imgW){
+                    jeBox.msg($.i18n.prop('tips-mapping-outImgRange'),{icon:1})
+                    return
+                }
+                $('#mappingBox').css("left",left)
+                draws.boxL = left
+                mapping.xC = xc
+
+            }
+        })
+    })
+    $("#mYCp").change(function () {
+        if(mapping.dimensions) return
+        let imgH = $("#mappingImage").height()
+        if(typeof camera === 'undefined') return;
+        fConfig.lensConf.forEach(cur=>{
+            if (camera.lenName === cur.name) {
+                let mYL =Number($("#mYL").val())  //当前框长度um
+                let yc = Number($("#mYCp").val()) //当前中心点 μm
+                let dv = (mapping.yC - yc)*cur.scale
+                let boxT = $("#mappingBox").position().top
+                let boxH = $("#mappingBox").get(0).offsetHeight
+                let top = boxT - dv*(-1.0)
+                if(top<0||(top+boxH)>imgH){
+                    jeBox.msg($.i18n.prop('tips-mapping-outImgRange'),{icon:1})
+                    return
+                }
+                $('#mappingBox').css("top",top)
+                draws.boxT = top
+                mapping.yC = yc
+
+            }
+        })
+    })
+
+    //范围限制
+    $("#mCenWave").change(function () {
+        let unit= $("#mUnit").text()
+        let cw = inputRange.isOutRange($(this),function (dom,old,cur,min,max) {
+            if ((cur < min)||(cur > max)) {
+                jeBox.msg($.i18n.prop('tips-range-centerWaveMsg')+min+"~"+max,{icon:1})
+                dom.val(old)
+                return false
+
+            }
+            return true
+        },(unit==="cm-1"))
+        if(cw===undefined) return
+        updateWaveParam(this);
+    })
+    $("#mSlit").change(function () {
+         inputRange.isOutRange($(this),function (dom,old,cur,min,max) {
+            if ((cur < min)||(cur > max)) {
+                jeBox.msg($.i18n.prop('tips-range-slitMsg1')+min+"~"+max,{icon:1})
+                dom.val(old)
+                return false
+            }
+            if(cur%10!==0){
+                jeBox.msg($.i18n.prop('tips-range-slitMsg2'),{icon:1})
+                dom.val(old)
+                return false
+            }
+            return true
+        },false)
+    })
+    $("#mCoordsX").change(function () {
+        inputRange.isOutRange($(this),function (dom,old,cur,min,max) {
+            if ((cur < min)||(cur > max)) {
+                jeBox.msg($.i18n.prop('tips-mapping-range')+min+"~"+max,{icon:1})
+                dom.val(old)
+                return false
+            }
+            return true
+        },false)
+    })
+    $("#mCoordsY").change(function () {
+        inputRange.isOutRange($(this),function (dom,old,cur,min,max) {
+            if ((cur < min)||(cur > max)) {
+                jeBox.msg($.i18n.prop('tips-mapping-range')+min+"~"+max,{icon:1})
+                dom.val(old)
+                return false
+            }
+            return true
+        },false)
+    })
+
+
+</script>

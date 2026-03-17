@@ -1,0 +1,66 @@
+<style>
+    #dcAdv{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #dcAdv div{
+        /*display: inline-flex;
+        align-items: center;*/
+        text-align: center;
+        margin-top: 10px;
+    }
+    #dcAdv div span{
+        width: 10%;
+        text-align: right;
+        margin-right: 10px;
+    }
+    #dcAdv div select{
+        width: 10%;
+    }
+    #dcAdv div input{
+        width: 30%;
+    }
+    #dcAdv div button{
+        margin-left: 10px;
+    }
+</style>
+<div id="dcAdv">
+    <div>
+        <span data-locale="popup-device-dc-adv-show">显示:</span>
+        <select id="dcAdvDir" onchange="deviceControl.SetCCDImageMirror($(this).get(0).selectedIndex)">
+            <option data-locale="popup-device-dc-adv-Vf">正向</option>
+            <option data-locale="popup-device-dc-adv-rd">反向</option>
+        </select>
+        <span data-locale="popup-device-dc-adv-bad">坏点修正:</span>
+        <input type="text" placeholder="添加位置以,隔开" id="badPoints">
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-device-dc-adv-btn" onclick="processBadPoints()">处理</button>
+    </div>
+    <div id="badPointsShow" style="height: 95%;"></div>
+</div>
+<script>
+
+	$.getScript('js/algorithm/algorithm.js',()=>{
+        algorithm.initAlgorithm('badPointsShow',0)
+        lines = algorithm.lineMap
+        algorithmChart = algorithm.chart
+       
+    })
+    $(function () {
+        $("#badPoints").attr("placeholder",$.i18n.prop('popup-device-dc-adv-badMsg'))
+        websocket.send(funcCode.GetMirrorBadpoints,{})
+        main.setCallbacks(funcCode.GetMirrorBadpoints,rev=>{
+            fConfig.ccdConf.ccdMirror = rev.getBhmirror()
+            $("#dcAdvDir").get(0).selectedIndex = fConfig.ccdConf.ccdMirror
+            $("#badPoints").val(rev.getBadpointsList())
+        })
+    })
+
+    function processBadPoints() {
+        let dir = $("#dcAdvDir").get(0).selectedIndex
+        let str = $("#badPoints").val()
+        let badPoints = str.split(',').map(Number)
+        websocket.send(funcCode.ProCcdBadPoints,{badPoints:badPoints,dir:dir})
+    }
+</script>

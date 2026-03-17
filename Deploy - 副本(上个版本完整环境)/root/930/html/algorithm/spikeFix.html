@@ -1,0 +1,139 @@
+<style>
+    #fix{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #fix div{
+        height: 8%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #fix div select{
+        width: 150px;
+        margin-left: 10px;
+    }
+    #fix div button {
+        margin-left: 10px;
+    }
+    #fixChart{
+        border: 3px ridge #555555;
+    }
+</style>
+<div id="fix">
+    <div>
+        <span data-locale="popup-algorithm-lineSelect">选择曲线</span>
+        <select >
+        </select>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-algorithm-executeBtn" onclick="algorithm.perform(this)">执行</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-algorithm-abolitionBtn" disabled onclick="algorithm.restore(this,'_Fix')">撤销</button>
+    </div>
+    <div id="fixChart" style="height: 95%;">
+
+    </div>
+</div>
+<script>
+    let [lines,fixChart,spikeFix,xStart,xEnd] = [new Map(),"",$("#fix div select"),0,0];
+    $.getScript('js/algorithm/algorithm.js',()=>{
+        algorithm.initAlgorithm('fixChart')
+        lines = algorithm.lineMap
+        fixChart = algorithm.chart
+        algorithm.lines.forEach(cur=>{spikeFix.append("<option>"+cur.name()+"</option>")})
+        spikeFix.change()
+        fixChart.base().setMouseInteractionRectangleZoom(false)
+        fixChart.base().onSeriesBackgroundMouseDown((obj,event)=>{
+        	let nearest= obj.solveNearest(event)
+            if (nearest === undefined)return
+            xStart = nearest.location['x']; //鼠标点击位置
+        });
+        fixChart.base().onSeriesBackgroundMouseUp((obj,event)=>{
+        	let nearest= obj.solveNearest(event)
+            if (nearest === undefined)return
+            xEnd = nearest.location['x']; //鼠标点击位置
+            if (xStart>=xEnd) return
+            let length = fixChart.active_series().length
+            let temp = $("#fix div select").val()
+            let name = length>1?temp+'_Fix':temp
+            let line = fixChart.series(name);
+            var xDatas = line.get_data().x;
+            var yDatas = line.get_data().y;
+            let newYArray = new Array();
+            let endIndex = 0;
+            for(var i = 0;i<xDatas.length;i++){
+            	if(xDatas[i]>xStart){
+            		if(newYArray.length===0){
+            			newYArray.push(yDatas[i-7]);
+            			newYArray.push(yDatas[i-6]);
+            			newYArray.push(yDatas[i-5]);
+            			newYArray.push(yDatas[i-4]);
+            			newYArray.push(yDatas[i-3]);
+            			newYArray.push(yDatas[i-2]);
+            			newYArray.push(yDatas[i-1]);
+            		}
+            		newYArray.push(yDatas[i]);
+            		if(xDatas[i]>xEnd){
+            			endIndex = i;
+            			break;
+            		}
+            	}            
+            }
+			
+			let maxY = Math.max(...newYArray);
+			let index = newYArray.indexOf(maxY);
+			let idx = endIndex-newYArray.length+index+1;
+			algorithm.swipe(idx,yDatas,name)
+			
+//          yDatas.splice(idx,1);
+//          xDatas.splice(idx,1);
+//			if(length>1){
+//				fixChart.series(name).add_array(xDatas,yDatas);
+//			}else{
+//				let line = fixChart.add_series(name+"_Fix",0);
+//				line.add_array(xDatas,yDatas);
+//			}
+        })
+    })
+    spikeFix.change(function () {
+        fixChart.remove_all();
+        let name = $("#fix div select").val();
+        if(lines.get(name) === undefined)return
+        let data = lines.get(name).get_data();
+        let color = lines.get(name).get_color()
+        let line =  fixChart.add_series(name,0)
+        line.add_array(data.x,data.y)
+        line.set_color(color)
+        fixChart.axis_x().setInterval({start:Math.min(...data.x),end:Math.max(...data.x),stopAxisAfter: false})
+        fixChart.axis_y().setInterval({start:Math.min(...data.y),end:Math.max(...data.y),stopAxisAfter: false})
+
+    })
+    $("a.jeBox-close").click(function(){
+        let flag = $("div#fix button").first().prop('disabled');
+        if (flag) {
+            let lines = algorithm.chart.active_series()
+            algorithm.addToMainLine(lines[lines.length-1].name(),lines[lines.length-1].get_data().x,lines[lines.length-1].get_data().y,'_Fix')
+
+            // for (let i = 0; i <lines.length ; i++) {
+            //     if (lines[i].name().indexOf('_Fix') > 0) {
+            //         console.log(lines[i].get_data());
+            //         algorithm.addToMainLine(lines[i].name(),lines[i].get_data().x,lines[i].get_data().y,'_Fix')
+            //         // let name = lines[i].name().replace('_Fix',"")
+            //         // algorithm.updateMainLine(name,lines[i].get_data().y)
+            //     }
+            // }
+        }
+    });
+    function reset(dom) {
+        if(!$(dom).hasClass("btn-light"))return;
+        $(dom).removeClass("btn-light");
+        $(dom).siblings("button").addClass("btn-light");
+        let lines = fixChart.active_series()
+        for (let i = 0; i <lines.length ; i++) {
+            console.log(lines[i].name().indexOf('_Fix'));
+            if (lines[i].name().indexOf('_Fix') > 0) {
+                fixChart.remove_line(lines[i].name())
+            }
+        }
+    }
+</script>

@@ -1,0 +1,576 @@
+<style>
+    .w-82{width: 82%!important;}
+    .w-34{width: 34%!important;}
+    .w-22{width: 22%!important;}
+    .h-22{height: 22%!important;}
+    .w-18{width: 18%!important;}
+    .w-30{width: 30%!important;}
+    .h-6{height: 6%!important;}
+    .h-94{height: 94%!important;}
+    .bg-black{background-color: #1c1b1b !important;}
+    #specAdv>.btn-group button:disabled{cursor: not-allowed}
+    .activeBtn:disabled{background-color: #01b075}
+</style>
+<div class="w-100 h-100 d-flex flex-column" id="specAdv">
+    <!--按钮组-->
+    <div class="btn-group btn-group-sm h-6" role="group">
+        <button btnType="1" type="button" class="btn btn-secondary btn-sm" onclick="specAdv.switchBtn(1)">系统信息</button>
+        <button btnType="2" type="button" class="btn btn-secondary btn-sm" onclick="specAdv.switchBtn(2)">外设</button>
+        <button btnType="3" type="button" class="btn btn-secondary btn-sm" id="AdvMirrorBtn" onclick="specAdv.switchBtn(3)">摆镜</button>
+        <button btnType="4" type="button" class="btn btn-secondary btn-sm" id="AdvFilterBtn" onclick="specAdv.switchBtn(4)">滤光片轮</button>
+        <button btnType="5" type="button" class="btn btn-secondary btn-sm" id="AdvSlitBtn" onclick="specAdv.switchBtn(5)">狭缝</button>
+        <button btnType="6" type="button" class="btn btn-secondary btn-sm" onclick="specAdv.switchBtn(6)">光栅参数</button>
+        <button btnType="7" type="button" class="btn btn-secondary btn-sm" onclick="specAdv.switchBtn(7)">校正系数</button>
+        <button btnType="8" type="button" class="btn btn-secondary btn-sm" onclick="specAdv.switchBtn(8)">初始位置</button>
+        <button btnType="9" type="button" class="btn btn-secondary btn-sm" onclick="specAdv.switchBtn(9)">光栅移动控制</button>
+    </div>
+    <!--系统信息-->
+    <div itemType="1" class="specAdvItem h-94 mt-2 bg-black rounded d-none flex-column">
+        <div class="mt-4 d-flex align-items-center">
+            <span class="w-25 text-right">制造商</span>
+            <input type="text" class="w-50 ml-2" id="advMaker" disabled>
+        </div>
+        <div class="mt-4 d-flex align-items-center">
+            <span class="w-25 text-right">设备型号</span>
+            <input type="text" class="w-50 ml-2" id="advDevType" disabled>
+        </div>
+        <div class="mt-4 d-flex align-items-center">
+            <span class="w-25 text-right">设备序列号</span>
+            <input type="text" class="w-50 ml-2" id="advDevNum" disabled>
+        </div>
+        <div class="mt-4 d-flex align-items-center">
+            <span class="w-25 text-right">制作日期</span>
+            <input type="text" class="w-50 ml-2" id="advMakeDate" disabled>
+        </div>
+        <div class="mt-4 d-flex align-items-center">
+            <span class="w-25 text-right">固件版本</span>
+            <input type="text" class="w-50 ml-2" id="advVersion" disabled>
+        </div>
+    </div>
+    <!--外设-->
+    <div itemType="2" class="specAdvItem h-94 mt-2 bg-black rounded d-none flex-column px-4 py-2 justify-content-around">
+        <div class="d-flex align-items-center">
+            <input type="checkbox" class="custom-checkbox mr-2" id="isFilter" onchange="specAdv.Peripherals().setPeripheralsSetup(1,0,this)">
+            <span>滤光片轮</span>
+        </div>
+        <div class="d-flex align-items-center">
+            <input type="checkbox" class="custom-checkbox mr-2" id="isMirrorEx" onchange="specAdv.Peripherals().setPeripheralsSetup(2,0,this)">
+            <span>摆镜-出口</span>
+        </div>
+        <div class="d-flex align-items-center">
+            <input type="checkbox" class="custom-checkbox mr-2" id="isMirrorEN" onchange="specAdv.Peripherals().setPeripheralsSetup(2,1,this)">
+            <span>摆镜-入口</span>
+        </div>
+        <div class="d-flex align-items-center">
+            <input type="checkbox" class="custom-checkbox mr-2" id="isSlitSideEN" onchange="specAdv.Peripherals().setPeripheralsSetup(3,0,this)">
+            <span>狭缝-侧入</span>
+        </div>
+        <div class="d-flex align-items-center">
+            <input type="checkbox" class="custom-checkbox mr-2" id="isSlitSideEx" onchange="specAdv.Peripherals().setPeripheralsSetup(3,1,this)">
+            <span>狭缝-侧出</span>
+        </div>
+        <div class="d-flex align-items-center">
+            <input type="checkbox" class="custom-checkbox mr-2" id="isSlitFrontEx" onchange="specAdv.Peripherals().setPeripheralsSetup(3,2,this)">
+            <span>狭缝-直出</span>
+        </div>
+        <div class="d-flex align-items-center">
+            <input type="checkbox" class="custom-checkbox mr-2" id="isSlitFrontEN" onchange="specAdv.Peripherals().setPeripheralsSetup(3,3,this)">
+            <span>狭缝-直入</span>
+        </div>
+        <div class="d-flex align-items-center">
+            <input type="checkbox" class="custom-checkbox mr-2" id="isShutter" onchange="specAdv.Peripherals().setPeripheralsSetup(4,0,this)">
+            <span>快门</span>
+        </div>
+    </div>
+    <!--摆镜-->
+    <div itemType="3" class="specAdvItem h-94 mt-2 bg-black rounded d-none">
+        <div class="w-25 d-flex flex-column  pb-4 px-2">
+            <div class="mt-2 ">摆镜</div>
+            <div class="mt-4 d-flex justify-content-center">
+                <select class="w-75" id="advMirrorType" onchange="specAdv.mirrorAdv().mirrorTypeSwitch()">
+                    <option>出口摆镜</option>
+                    <option>入口摆镜</option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.mirrorAdv().mirrorHome()">归零</button>
+            </div>
+            <div class="mt-4 d-flex align-items-center justify-content-center">
+                <select class="w-50 mr-2" id="advMirrorDir">
+                    <option>直</option>
+                    <option>侧</option>
+                </select>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.mirrorAdv().mirrorSwitch()">设置</button>
+            </div>
+        </div>
+        <div class="w-75 d-flex flex-column px-4 border-left border-secondary">
+            <div class="mt-2">摆镜基数设置</div>
+            <div class="mt-4 d-flex align-items-center">
+                <div class="text-right w-25">归零方向</div>
+                <div class="ml-5">
+                    <input type="radio" name="mirrorDir" id="mirrorDirReverse" onchange="specAdv.mirrorAdv().mirrorHomePosSet(0)" class="custom-radio" checked>
+                    <span>反向</span>
+                </div>
+                <div class="ml-5">
+                    <input type="radio" name="mirrorDir" id="mirrorDirPositive" onchange="specAdv.mirrorAdv().mirrorHomePosSet(1)" class="custom-radio" >
+                    <span>正向</span>
+                </div>
+            </div>
+            <div class="mt-4 d-flex align-items-center">
+                <div class="text-right w-25">总步数(p)</div>
+                <div>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.mirrorAdv().mirrorTotalStepRead()">读取</button>
+                    <input type="text" class="w-50 mx-2" id="mirrorTotalSteps" value="0" >
+                    <button type="button" class="btn btn-secondary btn-sm"  onclick="specAdv.mirrorAdv().mirrorTotalStepSet()">设置</button>
+                </div>
+            </div>
+            <div class="mt-4 d-flex align-items-center">
+                <div class="text-right w-25">速度(pps)</div>
+                <div>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.mirrorAdv().mirrorSpeedRead()">读取</button>
+                    <input type="text" class="w-50 mx-2" value="0" id="mirrorSpeed">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.mirrorAdv().mirrorSpeedSet()">设置</button>
+                </div>
+            </div>
+            <div class="mt-4 d-flex align-items-center">
+                <div class="text-right w-25">位置(p)</div>
+                <div>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.mirrorAdv().mirrorPosRead()">读取</button>
+                    <input type="text" class="w-50 mx-2" value="0" id="mirrorSteps">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.mirrorAdv().mirrorPosSet()">设置</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--滤光片轮-->
+    <div itemType="4" class="specAdvItem h-94 mt-2 bg-black rounded d-none">
+        <div class="w-25 d-flex flex-column  pb-4 px-2">
+            <div class="mt-2">滤光片轮</div>
+            <div class="mt-4">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.filterAdv().filterHome()">归零</button>
+            </div>
+            <div class="mt-4 d-flex align-items-center justify-content-center">
+                <select class="w-75 mr-2" id="advFilterPos" onchange="specAdv.filterAdv().filterPosSet()">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <div class="text-left ml-2">型号</div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <input type="text" class="w-50 mr-2" id="advFilterMode">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.filterAdv().filterModelSet()">设置</button>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="text-left ml-2">总步数</div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <input type="text" class="w-50 mr-2" id="advFilterTotalSteps">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.filterAdv().filterTotalStepsSet()">设置</button>
+                </div>
+            </div>
+        </div>
+        <div class="w-75 d-flex flex-column px-4 border-left border-secondary" id="advFilterLimit">
+            <div class="mt-2">滤光片轮波长范围</div>
+            <div class="mt-4 d-flex align-items-center">
+                <div class="w-25"></div>
+                <div class="w-25">#1 光栅</div>
+                <div class="w-25 mx-2">#2 光栅</div>
+                <div class="w-25">#3 光栅</div>
+            </div>
+            <div class="mt-2 d-flex align-items-center">
+                <div class="w-25">1</div>
+                <input type="text" class="w-25" id="advFLG1W1" value="0" oldV="0">
+                <input type="text" class="w-25 mx-2" id="advFLG2W1" value="1" oldV="1">
+                <input type="text" class="w-25" id="advFLG3W1">
+            </div>
+            <div class="mt-2 d-flex align-items-center">
+                <div class="w-25">2</div>
+                <input type="text" class="w-25" id="advFLG1W2">
+                <input type="text" class="w-25 mx-2" id="advFLG2W2">
+                <input type="text" class="w-25" id="advFLG3W2">
+            </div>
+            <div class="mt-2 d-flex align-items-center">
+                <div class="w-25">3</div>
+                <input type="text" class="w-25" id="advFLG1W3">
+                <input type="text" class="w-25 mx-2" id="advFLG2W3">
+                <input type="text" class="w-25" id="advFLG3W3">
+            </div>
+            <div class="mt-2 d-flex align-items-center">
+                <div class="w-25">4</div>
+                <input type="text" class="w-25" id="advFLG1W4">
+                <input type="text" class="w-25 mx-2" id="advFLG2W4">
+                <input type="text" class="w-25" id="advFLG3W4">
+            </div>
+            <div class="mt-2 d-flex align-items-center">
+                <div class="w-25">5</div>
+                <input type="text" class="w-25" id="advFLG1W5">
+                <input type="text" class="w-25 mx-2" id="advFLG2W5">
+                <input type="text" class="w-25" id="advFLG3W5">
+            </div>
+            <div class="mt-2 d-flex align-items-center">
+                <div class="w-25">6</div>
+                <input type="text" class="w-25" id="advFLG1W6">
+                <input type="text" class="w-25 mx-2" id="advFLG2W6">
+                <input type="text" class="w-25" id="advFLG3W6">
+            </div>
+            <div class="mt-4 text-right">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.filterAdv().filterLimitSet()">设置</button>
+            </div>
+        </div>
+    </div>
+    <!--狭缝-->
+    <div itemType="5" class="specAdvItem h-94 mt-2 bg-black rounded d-none">
+        <div class="w-25 d-flex flex-column  pb-4 px-2">
+            <div class="mt-2">狭缝</div>
+            <div class="mt-4">
+                <select id="advSlitType" onchange="specAdv.slitAdv().slitSwitch()">
+                    <option slitType="4">侧入狭缝</option>
+                    <option slitType="5">侧出狭缝</option>
+                    <option slitType="6">直出狭缝</option>
+                    <option slitType="7">直入狭缝</option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.slitAdv().slitHome()">归零</button>
+            </div>
+            <div class="mt-4">
+                <div class="text-left ml-2">狭缝型号</div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <input type="text" class="w-50 mr-2" id="advSlitModel">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.slitAdv().slitModelSet()">设置</button>
+                </div>
+            </div>
+            <div class="mt-4" hidden>
+                <div class="text-left ml-2">偏置(um)</div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <input type="text" class="w-50 mr-2" id="advSlitOffset">
+                    <button type="button" class="btn btn-secondary btn-sm">设置</button>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="text-left ml-2">宽度(um)</div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <input type="text" class="w-50 mr-2" id="advSlitWidth">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.slitAdv().slitWidthSet()">设置</button>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="text-left ml-2">带宽(nm)</div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <input type="text" class="w-50 mr-2" id="advSlitBandWidth">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.slitAdv().sliBandwidthSet()">设置</button>
+                </div>
+            </div>
+        </div>
+        <div class="w-75 d-flex flex-column px-4 border-left border-secondary">
+            <div class="mt-2">狭缝基数设置</div>
+            <div class="mt-4 d-flex align-items-center">
+                <div class="text-right w-25">归零方向</div>
+                <div class="ml-5">
+                    <input type="radio" name="slitDir" class="custom-radio" id="advSlitReverse" onchange="specAdv.slitAdv().slitHomeDirSet(0)" checked>
+                    <span>反向</span>
+                </div>
+                <div class="ml-5">
+                    <input type="radio" name="slitDir" class="custom-radio" id="advSlitPositive" onchange="specAdv.slitAdv().slitHomeDirSet(1)">
+                    <span>正向</span>
+                </div>
+            </div>
+            <div class="mt-4 d-flex align-items-center">
+                <div class="text-right w-25">总步数(p)</div>
+                <div>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.slitAdv().slitTotalStepsRead()">读取</button>
+                    <input type="text" class="w-50 mx-2" id="advSlitTotalSteps">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.slitAdv().slitTotalStepsSet()">设置</button>
+                </div>
+            </div>
+            <div class="mt-4 d-flex align-items-center">
+                <div class="text-right w-25">速度(pps)</div>
+                <div>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.slitAdv().slitSpeedRead()">读取</button>
+                    <input type="text" class="w-50 mx-2" id="advSlitSpeed">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.slitAdv().slitSpeedSet()">设置</button>
+                </div>
+            </div>
+            <div class="mt-4 d-flex align-items-center">
+                <div class="text-right w-25">位置(p)</div>
+                <div>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.slitAdv().slitPosRead()">读取</button>
+                    <input type="text" class="w-50 mx-2" id="advSlitPos">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.slitAdv().slitPosSet()">设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--光栅参数-->
+    <div itemType="6" class="specAdvItem h-94 mt-2 bg-black rounded d-none flex-column px-4">
+        <div class="mt-2 d-flex flex-column border-bottom border-secondary py-2">
+            <div class="text-left ml-2">塔台</div>
+            <div class="d-flex align-items-center justify-content-center">
+                <span class="w-25 text-right">当前塔台</span>
+                <select class="w-25 mx-2" id="advTurret">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                </select>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.gratingParameter().turretSet()">设置</button>
+            </div>
+        </div>
+        <div class="mt-2">
+            <div class="text-left ml-2">光栅参数</div>
+            <div class="d-flex align-items-center mt-2">
+                <div class="d-flex align-items-center w-82">
+                    <div class="w-34"></div>
+                    <div class="w-22">#1</div>
+                    <div class="w-22">#2</div>
+                    <div class="w-22">#3</div>
+                </div>
+
+            </div>
+            <div class="d-flex align-items-center mt-2">
+                <div class="d-flex align-items-center w-82" id="adVInitWave">
+                    <div class="w-34 text-right">初始波长(nm)</div>
+                    <input type="text" class="w-22 ml-1" id="initWaveG1">
+                    <input type="text" class="w-22 mx-1" id="initWaveG2">
+                    <input type="text" class="w-22 mr-1" id="initWaveG3">
+                </div>
+                <div class="d-flex align-items-center w-18">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.gratingParameter().initWaveSet()">设置</button>
+                    <button type="button" class="btn btn-secondary btn-sm ml-1" onclick="specAdv.gratingParameter().initWaveRead()">读取</button>
+                </div>
+
+            </div>
+            <div class="d-flex align-items-center mt-2 h-22">
+                <div class="d-flex flex-column align-items-center w-82" id="advGratingInfo">
+                    <div class="d-flex align-items-center">
+                        <div class="w-34 text-right">光栅刻线(nm)</div>
+                        <input type="text" class="w-22 ml-1" id="grooveG1">
+                        <input type="text" class="w-22 mx-1" id="grooveG2">
+                        <input type="text" class="w-22 mr-1" id="grooveG3">
+                    </div>
+                    <div class="d-flex align-items-center mt-2">
+                        <div class="w-34 text-right">闪耀波长(nm)</div>
+                        <input type="text" class="w-22 ml-1" id="blazeG1">
+                        <input type="text" class="w-22 mx-1" id="blazeG2">
+                        <input type="text" class="w-22 mr-1" id="blazeG3">
+                    </div>
+                </div>
+                <div class="d-flex align-items-center w-18 h-100">
+                    <button type="button" class="btn btn-secondary btn-sm h-100" onclick="specAdv.gratingParameter().grooveAndBlazeSet()">设置</button>
+                    <button type="button" class="btn btn-secondary btn-sm h-100 ml-1" onclick="specAdv.gratingParameter().grooveAndBlazeRead()">读取</button>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mt-2">
+                <div class="d-flex align-items-center w-82" id="advZeroPos">
+                    <div class="w-34 text-right">零点位置(nm)</div>
+                    <input type="text" class="w-22 ml-1" id="zeroPosG1">
+                    <input type="text" class="w-22 mx-1" id="zeroPosG2">
+                    <input type="text" class="w-22 mr-1" id="zeroPosG3">
+                </div>
+                <div class="d-flex align-items-center w-18">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.gratingParameter().zeroPosSet()">设置</button>
+                    <button type="button" class="btn btn-secondary btn-sm ml-1" onclick="specAdv.gratingParameter().zeroPosRead()">读取</button>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mt-2">
+                <div class="d-flex align-items-center w-82">
+                    <div class="w-34 text-right">校正系数(nm)</div>
+                    <input type="text" class="w-22 ml-1" id="CorrectCoffeG1">
+                    <input type="text" class="w-22 mx-1" id="CorrectCoffeG2">
+                    <input type="text" class="w-22 mr-1" id="CorrectCoffeG3">
+                </div>
+                <div class="d-flex align-items-center w-18">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.gratingParameter().correctFactorSet()">设置</button>
+                    <button type="button" class="btn btn-secondary btn-sm ml-1" onclick="specAdv.gratingParameter().correctFactorRead()">读取</button>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mt-2">
+                <div class="d-flex align-items-center w-82">
+                    <div class="w-34 text-right">最大扫描范围(nm)</div>
+                    <input type="text" class="w-22 ml-1" id="maxRangeG1" disabled>
+                    <input type="text" class="w-22 mx-1" id="maxRangeG2" disabled>
+                    <input type="text" class="w-22 mr-1" id="maxRangeG3" disabled>
+                </div>
+                <div class="d-flex align-items-center w-18">
+                    <button type="button" class="btn btn-secondary btn-sm btn-block mr-1" onclick="specAdv.gratingParameter().maxScanRangeRead()">读取</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--校正系数-->
+    <div itemType="7" class="specAdvItem h-94 mt-2 bg-black rounded d-none">
+        <div class="w-50 px-2 border-right border-secondary">
+            <div class="text-left mt-2">系数计算</div>
+            <div class="d-flex align-items-center mt-4" id="coeffGrating">
+                <div class="w-30 d-flex align-items-center ml-2">
+                    <input type="radio" name="fcGrating" grating="1" class="custom-radio mr-1" checked>
+                    <span>#1光栅</span>
+                </div>
+                <div class="w-30 d-flex align-items-center mx-2">
+                    <input type="radio" name="fcGrating" grating="2" class="custom-radio mr-1">
+                    <span>#2光栅</span>
+                </div>
+                <div class="w-30 d-flex align-items-center">
+                    <input type="radio" name="fcGrating" grating="3" class="custom-radio mr-1">
+                    <span>#3光栅</span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mt-4">
+                <span class="text-left ml-2 w-50">当前波长(nm)</span>
+                <input type="text" class="w-50 ml-2" id="currentWave" disabled>
+            </div>
+            <div class="d-flex align-items-center mt-4">
+                <span class="text-left ml-2 w-50" id="standardWave">标准波长(nm)</span>
+                <input type="text" class="w-50 ml-2">
+            </div>
+            <div class="d-flex align-items-center mt-4">
+                <button type="button" class="btn btn-secondary btn-sm ml-2 w-50" onclick="specAdv.correctionFactor().calcCorrectCoeff()">计算</button>
+                <input type="text" class="w-50 ml-2" id="adjustResult">
+            </div>
+            <div class="border-top border-secondary mt-4">
+                <div class="d-flex align-items-center mt-4">
+                    <span class="text-left ml-2 w-50">校正系数</span>
+                    <input type="text" class="w-50 ml-2" id="correctCoeff">
+                </div>
+                <div class="mt-2 text-right">
+                    <button type="button" class="btn btn-secondary btn-sm w-50" onclick="specAdv.correctionFactor().correctCoeffSet()">设置</button>
+                </div>
+            </div>
+        </div>
+        <div class="w-50 px-2">
+            <div class="mt-2 text-left">数据交换</div>
+            <div class="d-flex flex-column mt-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <span class="ml-2">波</span>
+                    <span class="mr-2">波长(nm)</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <input type="text" class="w-50" value="0" id="coeffCM">
+                    <div class="d-flex flex-column mx-2">
+                        <button type="button" class="btn btn-secondary btn-sm py-0" onclick="specAdv.correctionFactor().cmToNm()"><i class="fa fa-long-arrow-right fa-lg"></i></button>
+                        <button type="button" class="btn btn-secondary btn-sm py-0 mt-1" onclick="specAdv.correctionFactor().nmToCm()"><i class="fa fa-long-arrow-left fa-lg"></i></button>
+                    </div>
+                    <input type="text" class="w-50" value="0" id="coeffNM">
+                </div>
+            </div>
+            <div class="d-flex flex-column mt-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <span class="ml-2">波长(nm)</span>
+                    <span class="mr-2">步数(p)</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <input type="text" class="w-50" value="0" id="coeffNM1">
+                    <button type="button" class="btn btn-secondary btn-sm py-0 mx-2" onclick="specAdv.correctionFactor().nmToStep()"><i class="fa fa-long-arrow-right fa-lg"></i></button>
+                    <input type="text" class="w-50" value="0" id="coeffStep">
+                </div>
+            </div>
+            <div class="d-flex flex-column mt-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <span class="ml-2">电子伏特(eV)</span>
+                    <span class="mr-2">波长(nm)</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <input type="text" class="w-50" value="0" id="coeffEV">
+                    <div class="d-flex flex-column mx-2">
+                        <button type="button" class="btn btn-secondary btn-sm py-0" onclick="specAdv.correctionFactor().eVToNm()"><i class="fa fa-long-arrow-right fa-lg"></i></button>
+                        <button type="button" class="btn btn-secondary btn-sm py-0 mt-1" onclick="specAdv.correctionFactor().nmToEV()"><i class="fa fa-long-arrow-left fa-lg"></i></button>
+                    </div>
+                    <input type="text" class="w-50" value="0" id="coeffNM2">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--初始位置-->
+    <div itemType="8" class="specAdvItem h-94 mt-2 bg-black rounded d-none flex-column px-4" id="gratingInitPos">
+        <div class="text-left mt-2">光栅初始化方式</div>
+        <div class="d-flex align-items-center ml-2 mt-4">
+            <input type="radio" name="gratingPos" gratingPos="0" class="custom-radio" checked>
+            <span>最后控制位置</span>
+        </div>
+        <div class="d-flex align-items-center ml-2 mt-4">
+            <div class="d-flex align-items-center ">
+                <input type="radio" name="gratingPos"gratingPos="1" class="custom-radio">
+                <span>#1 光栅</span>
+            </div>
+            <div class="d-flex align-items-center ml-5">
+                <input type="radio" name="gratingPos" gratingPos="2" class="custom-radio">
+                <span>#2 光栅</span>
+            </div>
+            <div class="d-flex align-items-center ml-5">
+                <input type="radio" name="gratingPos" gratingPos="3" class="custom-radio">
+                <span>#3 光栅</span>
+            </div>
+        </div>
+        <div class="d-flex align-items-center mt-4 ">
+            <button type="button" class="btn btn-secondary btn-sm ml-5 mr-2 w-25" onclick="specAdv.initialPosition().gratingInitPosRead()">读取</button>
+            <button type="button" class="btn btn-secondary btn-sm w-25" onclick="specAdv.initialPosition().gratingInitPosSet()">设置</button>
+        </div>
+    </div>
+    <!--光栅移动控制-->
+    <div itemType="9" class="specAdvItem h-94 mt-2 bg-black rounded d-none">
+        <div class="w-25 d-flex flex-column px-2" id="advGrating">
+            <div class="text-left ml-2 mt-2">光栅</div>
+            <div class="d-flex align-items-center ml-4 mt-4">
+                <button type="button" class="btn btn-secondary btn-sm w-75" onclick="specAdv.gratingMovementControl().gratingZero()">归零</button>
+            </div>
+            <div class="d-flex align-items-center ml-4 mt-4">
+                <input type="radio" name="grating" grating="1" class="custom-radio" checked>
+                <span class="ml-1">#1 光栅</span>
+            </div>
+            <div class="d-flex align-items-center ml-4 mt-4">
+                <input type="radio" name="grating" grating="2"  class="custom-radio">
+                <span class="ml-1">#2 光栅</span>
+            </div>
+            <div class="d-flex align-items-center ml-4 mt-4">
+                <input type="radio" name="grating" grating="3"  class="custom-radio">
+                <span class="ml-1">#3 光栅</span>
+            </div>
+            <div class="d-flex align-items-center ml-4 mt-4">
+                <button type="button" class="btn btn-secondary btn-sm w-75" onclick="specAdv.gratingMovementControl().currentGratingSet()">设置</button>
+            </div>
+            <div class="d-flex align-items-center ml-4 mt-4">
+                <button type="button" class="btn btn-secondary btn-sm w-75" onclick="specAdv.gratingMovementControl().currentGratingGet()">读取</button>
+            </div>
+        </div>
+        <div class="w-75 d-flex flex-column border-left border-secondary px-2">
+            <div class="h-50 py-2">
+                <div class="d-flex align-items-center mt-4 ml-4">
+                    <input type="text" class="w-50 mr-2 ml-5 text-danger" id="currentWavelength" value="0" disabled>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.gratingMovementControl().currentWavelengthGet()">刷新</button>
+                </div>
+                <div class="d-flex align-items-center mt-4 ml-5">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.gratingMovementControl().waveRelativeMove(-1)"><i class="fa fa-minus fa-lg"></i></button>
+                    <input type="number" class="w-50 mx-2" id="relativeWave" value="0">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.gratingMovementControl().waveRelativeMove(1)"><i class="fa fa-plus fa-lg"></i></button>
+                </div>
+                <div class="d-flex align-items-center mt-4 ml-5">
+                    <span>移动</span>
+                    <input type="text" class="w-50 mx-2" id="absoluteWave" value="0">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.gratingMovementControl().waveAbsoluteMove()">设置</button>
+                </div>
+            </div>
+            <div class="h-50 border-top border-secondary py-2">
+                <div class="text-left ml-2 mt-4">速度(nm/s)</div>
+                <div class="d-flex align-items-center mt-4 ml-5">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.gratingMovementControl().gratingSpeedRead()">读取</button>
+                    <input type="text" class="w-50 mx-2" id="gratingSpeed">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.gratingMovementControl().gratingSpeedSet()">设置</button>
+                </div>
+                <div class="text-left ml-2 mt-4">总步数(p)</div>
+                <div class="d-flex align-items-center mt-4 ml-5">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.gratingMovementControl().gratingTotalStepsRead()">读取</button>
+                    <input type="text" class="w-50 mx-2" id="gratingTotalSteps">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="specAdv.gratingMovementControl().gratingTotalStepsSet()">设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $.getScript("js/control/spec/specAdvSet.js",()=>specAdv.initSpecAdv())
+</script>

@@ -1,0 +1,92 @@
+<style>
+    #fit{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #fit div{
+        height: 8%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #fit div select{
+        width: 150px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    #fit div input[type=text]{
+        width: 50px;
+        margin-left: 10px;
+    }
+    #fit div input[type=range]{
+        margin-left: 5px;
+    }
+    #fit div button {
+        margin-left: 10px;
+    }
+    #fitChart{
+        border: 3px ridge #555555;
+    }
+</style>
+<div id="fit">
+    <div>
+        <span data-locale="popup-algorithm-lineSelect">曲线选择:</span>
+        <select id="fitLines"></select>
+        <span>Lambda(10~30)</span>
+        <input type="text" value="25" disabled>
+        <input type="range"  min="10" max="30" value="25" step="1" id="fitValue">
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-algorithm-executeBtn" onclick="algorithm.fit(algorithm.baseY,this)">执行</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-algorithm-abolitionBtn" disabled onclick="algorithm.restore(this,'_fit')">撤销</button>
+    </div>
+    <div id="fitChart" style="height: 95%;"> </div>
+</div>
+<script>
+    let fitChart = {},fitLines = $("#fitLines"),lines = new Map()
+    $.getScript('js/algorithm/algorithm.js',()=>{
+        algorithm.initAlgorithm('fitChart')
+        fitChart = algorithm.chart
+        lines = algorithm.lineMap
+        algorithm.lines.forEach(cur=>{fitLines.append("<option>"+cur.name()+"</option>")})
+        fitLines.change()
+    })
+    $("#fit div input[type=range]").change(function () {
+        let value = $("#fit div input[type=range]").val();
+        let name = fitLines.val();
+        let data = lines.get(name).get_data();
+        $("#fit div input[type=text]").val(value)
+        websocket.send(funcCode.FitParams,{value:value,size:data.x.length,arr:data.y})
+        main.setCallbacks(funcCode.FitParams,rev => {
+            let y = algorithm.baseY =  rev.getPdList();
+            let line = algorithm.chart.add_series(name + "_base", 3)
+            line.add_array(data.x, y)
+        })
+    })
+    fitLines.change(function () {
+        fitChart.remove_all();
+        let name = fitLines.val();
+        if(lines.get(name) === undefined)return
+        let data = lines.get(name).get_data();
+        let color = lines.get(name).get_color()
+        let line =  fitChart.add_series(name,0)
+        line.add_array(data.x,data.y)
+        line.set_color(color)
+    })
+    $("a.jeBox-close").click(function(){
+        let flag = $("div#fit button").first().prop('disabled');
+        if (flag) {
+            let lines = algorithm.chart.active_series()
+            algorithm.addToMainLine(lines[lines.length-1].name(),lines[lines.length-1].get_data().x,lines[lines.length-1].get_data().y,'_fit')
+
+            // for (let i = 0; i <lines.length ; i++) {
+            //     if (lines[i].name().indexOf('_fit') > 0) {
+            //         console.log(lines[i].get_data());
+            //         algorithm.addToMainLine(lines[i].name(),lines[i].get_data().x,lines[i].get_data().y,'_fit')
+            //         // let name = lines[i].name().replace('_fit',"")
+            //         // algorithm.updateMainLine(name,lines[i].get_data().y)
+            //     }
+            // }
+        }
+    });
+</script>

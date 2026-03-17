@@ -1,0 +1,82 @@
+<style>
+    #normalization{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #normalization div{
+        height: 8%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #normalization div select{
+        width: 150px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    #normalization div button {
+        margin-left: 10px;
+    }
+    #norChart{
+        border: 3px ridge #555555;
+    }
+</style>
+<div id="normalization">
+    <div>
+        <span data-locale="popup-algorithm-lineSelect">曲线选择:</span>
+        <select id="norLines"></select>
+        <select id="norMode">
+            <option data-locale="popup-algorithm-zScore">z-score标准化</option>
+            <option data-locale="popup-algorithm-minMax">最大最小值归一化</option>
+        </select>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-algorithm-executeBtn" onclick="algorithm.normalize(this)">执行</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-algorithm-abolitionBtn" disabled onclick="algorithm.restore(this,$('#norMode').get(0).selectedIndex===0?'_Normalization':'_NormalizationMin')">撤销</button>
+    </div>
+    <div id="norChart" style="height: 95%;">
+
+    </div>
+</div>
+<script>
+    let norChart = {},norLines = $("#norLines"),lines = new Map()
+    $.getScript('js/algorithm/algorithm.js',()=>{
+        algorithm.initAlgorithm('norChart')
+        norChart = algorithm.chart
+        lines = algorithm.lineMap
+        algorithm.lines.forEach(cur=>{norLines.append("<option>"+cur.name()+"</option>")})
+        norLines.change()
+    })
+    norLines.change(function () {
+        norChart.remove_all();
+        let name = norLines.val();
+        if(lines.get(name) === undefined)return
+        let data = lines.get(name).get_data();
+        let color = lines.get(name).get_color()
+        let line =  norChart.add_series(name,0)
+        line.add_array(data.x,data.y)
+        line.set_color(color)
+    })
+    $("a.jeBox-close").click(function(){
+        let flag = $("div#normalization button").first().prop('disabled');
+        let norTp = $("#norMode").get(0).selectedIndex
+        if (flag) {
+            let lines = algorithm.chart.active_series()
+            let tag  = norTp ===0?'_Normalization':'_NormalizationMin'
+            algorithm.addToMainLine(lines[lines.length-1].name(),lines[lines.length-1].get_data().x,lines[lines.length-1].get_data().y,tag)
+            // let name = lines[i].name().replace(tag,"")
+            // algorithm.updateMainLine(name,lines[i].get_data().y)
+
+            // for (let i = 0; i <lines.length ; i++) {
+            //     if (lines[i].name().indexOf('_Normalization') > 0||lines[i].name().indexOf('_NormalizationMin') > 0) {
+            //         console.log(lines[i].get_data());
+            //         let tag  = norTp ===0?'_Normalization':'_NormalizationMin'
+            //         // let name = lines[i].name().replace(tag,"")
+            //         // algorithm.updateMainLine(name,lines[i].get_data().y)
+            //         algorithm.addToMainLine(lines[i].name(),lines[i].get_data().x,lines[i].get_data().y,tag)
+            //
+            //     }
+            // }
+        }
+    });
+</script>

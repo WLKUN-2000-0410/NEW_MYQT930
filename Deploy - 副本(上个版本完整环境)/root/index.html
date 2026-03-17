@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head >
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+        <link rel="stylesheet" href="static/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="static/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="static/layui/css/layui.css" />
+        <link rel="stylesheet" href="static/css/skin/jebox.css" />
+        <link rel="stylesheet" href="static/css/jeui.css" />
+        <link rel="stylesheet" href="static/css/main.css" />
+        <link rel="stylesheet" href="static/css/my_layui.css" />
+        <link rel="stylesheet" href="static/css/createTip.css" />
+
+        <link rel="stylesheet" href="static/css/myCss/scan.css" />
+        <link rel="stylesheet" href="static/css/myCss/spec.css" />
+        <link rel="stylesheet" href="static/css/wait.css" />
+        <title data-locale="title"></title>
+    </head>
+    <body>
+        <div id="main_head">
+            <div id="logo"><img src="static/img/logo.svg" style="width: 100%; height: 100%"  alt="Load Fail"/></div>
+            <div id="title" data-locale="title" onclick="about()"></div>
+            <div id="head_bt">
+                <button type="button" class="btn btn-secondary" hint="menu.file.open"  style="height: 70%" onclick="tools.open_file('open')">
+                    <i class="fa fa-folder-open-o fa-lg" hint="menu.file.open"></i>
+                </button>
+                <input type="file" id="open" style="display: none" accept=".txt" />
+                &nbsp;
+                <button type="button" class="btn btn-secondary" hint="menu.file.save" style="height: 70%" onclick="tools.save_file()">
+                    <i class="fa fa-save fa-lg" hint="menu.file.save"></i>
+                </button>
+                &nbsp;
+                <div class="btn-group" style="height: 70%">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" hint="tools.language">
+                        <i class="fa fa-language fa-lg" hint="tools.language"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="language">
+                        <button  class="translate dropdown-item" id="zh" onclick="tools.switch_language('zh')" data-locale="tools.language.zh">中文</button>
+                        <button  class="translate dropdown-item" id="en" onclick="tools.switch_language('en')" data-locale="tools.language.en">英文</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="main_body">
+            <div id="body_left">
+                <div class="shadow je-hide" id="left_shadow"></div>
+            </div>
+            <div id="body_mid">
+                <div id="chart"></div>
+                <!-- style="position: absolute;z-index: 2;" -->
+                <div id="movie_div" class="je-hide">
+                    <!--src = 'static/img/aise.png'  -->
+                    <img src="" id="movieImg" style="width: 100%; image-rendering: pixelated" onmousemove="movie.mousemove(event)" ondblclick="movie.m_dbclick(event)" onmousewheel="movie.m_mousewheel(event)"  alt="load fail"/>
+                </div>
+                <div id="scan">
+                    <div id="scan_shadow" class="shadow je-hide" style="width: 76%"></div>
+                    <div id="scan_panel">
+                        <div class="layui-tab layui-tab-card">
+                            <ul class="layui-tab-title" style="height: 15%">
+                                <li class="fa fa-line-chart layui-this" id="steady_scan" style="height: 100%" data-locale="steady" onclick="scan.switch_mode(_scan_._steady_)"></li>
+                                <!-- pointer-events: none; -->
+                                <li class="fa fa-area-chart" hidden style="height: 100%" id="wavelength_scan" data-locale="wavelength" onclick="scan.switch_mode(_scan_._wavelength_)"></li>
+                            </ul>
+                            <div class="layui-tab-content" style="height: 86%">
+                                <div class="layui-tab-item layui-show scan_params" id="steady_panel">
+                                    <div class="scan_params_d1" style="align-items: center">
+                                        <span style="height: 100%; width: 30%; text-align: right; padding: 0 2%" data-locale="steady.da.list">数采选择:</span>
+                                        <select id="steady_da_list" style="width: 20%; height: 100%" hint="help.da.list" onchange=" scan.steady.select_dc()">
+                                            <option selected disabled hidden data-locale="device.choice"></option>
+                                            <option data-locale="spec.null"></option>
+                                        </select>
+                                        &nbsp;
+                                        <select id="steady_detector" class="je-hide" style="height: 100%" hint="help.da.detector">
+                                            <option selected disabled hidden data-locale="da.300pa.choice.detector"></option>
+                                            <option _detector="0">PMT</option>
+                                            <option _detector="3">PMT-V</option>
+                                            <option _detector="1">Si</option>
+                                            <option _detector="2">InGaAs</option>
+                                            <option _detector="4" data-locale="da.300pa.det.ig_iv">InGaAs+IV前放</option>
+                                            <option _detector="5" data-locale="da.300pa.det.other1">其他探测器1</option>
+                                            <option _detector="6" data-locale="da.300pa.det.other2">其他探测器2</option>
+                                        </select>
+                                    </div>
+                                    <div id="steady_params" class="scan_params_d2"></div>
+                                </div>
+                                <div class="layui-tab-item scan_params" id="wavelength_panel">
+                                    <div style="width: 100%; height: 100%; display: flex">
+                                        <div style="width: 50%; height: 100%; text-align: center">
+                                            <div style="width: 100%; height: 12%; display: flex; align-items: center">
+                                                <span style="width: 40%; text-align: right; padding: 0 2%" data-locale="wavelength.spec.list">光谱仪:</span>
+                                                <select id="spec_wavelength" style="width: 40%" hint="help.wavelength.msg6" onchange="scan.wavelength.select_spec()"></select>
+                                                &nbsp;
+                                                <button type="button" class="btn btn-secondary btn-sm je-hide" id="btn_spec_set" style="padding: 0rem 0.5rem; font-size: 1rem" hint="spec.set.btn" onclick="device_config.spec_set()"><i class="fa fa-gear fa-lg" hint="spec.set.btn"></i></button>
+                                            </div>
+                                            <div class="scan_params_d2" id="spec_params"></div>
+                                        </div>
+                                        <div style="width: 50%; height: 100%; text-align: center">
+                                            <div style="width: 100%; height: 12%; display: flex; align-items: center" id="wavelength_da_div">
+                                                <span data-locale="wavelength.da.list" style="width: 40%; text-align: right; padding: 0 2%" id="wavelength_list_tit">数采选择:</span>
+                                                <select id="wavelength_da_list" style="width: 40%" hint="help.da.list" onchange="scan.wavelength.select_dc()">
+                                                    <option data-locale="spec.null"></option>
+                                                </select>
+                                                &nbsp;
+                                                <select id="wavelength_detector" class="je-hide" style="width: 36%" hint="help.da.detector">
+                                                    <option selected disabled hidden data-locale="da.300pa.choice.detector"></option>
+                                                    <option _detector="0">PMT</option>
+                                                    <option _detector="3">PMT-V</option>
+                                                    <option _detector="1">Si</option>
+                                                    <option _detector="2">InGaAs</option>
+                                                    <option _detector="4" data-locale="da.300pa.det.ig_iv">InGaAs+IV前放</option>
+                                                    <option _detector="5" data-locale="da.300pa.det.other1">其他探测器1</option>
+                                                    <option _detector="6" data-locale="da.300pa.det.other2">其他探测器2</option>
+                                                </select>
+                                            </div>
+                                            <div id="wavelength_params" class="scan_params_d2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="scan_bts">
+                        <button type="button" class="btn btn-secondary btn-lg" id="start_btn" onclick="scan.start(_scan_._steady_)">
+                            <img alt="" src="static/icon/startSc.svg" style="width: 35%" />
+                            &nbsp;
+                            <span data-locale="scan.start">开始扫描</span>
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-lg" onclick="scan.pause()" id="pause_btn" disabled>
+                            <img alt="" src="static/icon/pauseSc.svg" style="width: 35%" />
+                            &nbsp;
+                            <span data-locale="scan.pause" id="scan_pause">暂停扫描</span>
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-lg" onclick="scan.stop()" id="stop_btn" disabled>
+                            <img alt="" src="static/icon/stopSc.svg" style="width: 35%" />
+                            &nbsp;
+                            <span data-locale="scan.stop">停止扫描</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="body_right">
+                <div class="shadow je-hide" id="right_shadow"></div>
+                <div id="log">
+                    <div class="tip_header">
+                        <span data-locale="message" style="width: 93%"></span>
+                        <button type="button" class="btn btn-secondary btn-sm" hint="message.empty" style="background: transparent;border: none;height: 80%; padding: 0 0; width: 6%" onclick="tools.log_empty()">
+                            <i class="fa fa-trash-o fa-lg" hint="message.empty"></i>
+                        </button>
+                    </div>
+                    <div id="log_body" class="tip_body"></div>
+                </div>
+                <div id="tools">
+                    <div id="tool_list"></div>
+                    <div id="tool_panel" class="je-hide">
+                        <div style="width: 100%; height: 100%; display: flex; flex-direction: column">
+                            <div id="tool_btn">
+                                <button type="button" class="btn btn-secondary btn-sm themeColor" onclick="bt_tools_back_clicked()">
+                                    <i class="fa fa-reply fa-lg"></i>
+                                </button>
+                                &nbsp;
+                            </div>
+                            <div id="tool_params"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="hint">
+                    <div class="tip_header" data-locale="hint">提示</div>
+                    <div id="hint_body" class="tip_body"></div>
+                </div>
+                <div id="right_body_bottom">
+                    <div style="text-align: left">
+                        <span id="right_body_bottom_tip" data-locale="temperature"></span>
+                        <span id="right_body_bottom_val"></span>
+                    </div>
+                    <div>
+                        <span id="coords"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--遮罩层-->
+        <div id="busy" class="shadow" hidden>
+            <div class="container">
+                <div class="gearbox">
+                    <div class="overlay"></div>
+                    <div class="gear one">
+                        <div class="gear-inner">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </div>
+                    <div class="gear two">
+                        <div class="gear-inner">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </div>
+                    <div class="gear three">
+                        <div class="gear-inner">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </div>
+                    <div class="gear four large">
+                        <div class="gear-inner">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </div>
+                </div>
+                <h1>Please wait...</h1>
+            </div>
+        </div>
+    </body>
+</html>
+<script src="lib/jquery-2.1.0.js"></script>
+<script src="lib/jquery.i18n.properties.js"></script>
+<script src="lib/createTip.js"></script>
+<script src="lib/lcjs.iife_4.1.js"></script>
+<script src="lib/my_lc_4.1.js"></script>
+<script src="lib/popper.min.js"></script>
+<script src="lib/bootstrap.min.js"></script>
+<script src="lib/jeBox.js"></script>
+<script src="lib/jeui.js"></script>
+<script src="lib/download.js"></script>
+<script src="static/layui/layui.all.js"></script>
+<script src="lib/google-protobuf.js"></script>
+<script src="lib/zolix_main.js"></script>
+<script src="lib/reconnecting-websocket.min.js"></script>
+<script src="lib/base64.js"></script>
+<script src="lib/pako.min.js"></script>
+<script src="lib/layer.js"></script>
+
+<script src="js/main.js"></script>
+
+<script src="js/ws_dispatch/spec/dispatch2spec.js"></script>
+<script src="js/ws_dispatch/da/dispatch2dcs.js"></script>
+<script src="js/ws_dispatch/da/dispatch2camera.js"></script>
+<script src="js/ws_dispatch/system/dispatch2system.js"></script>
+<script src="js/ws_dispatch/system/dispatch2public.js"></script>
+
+<script src="js/other/math.js"></script>
+<script src="js/other/load.js"></script>
+<script src="js/other/webSocket.js"></script>
+<script src="js/other/tools.js"></script>
+<script src="js/config/dataType.js"></script>
+<script src="js/config/device.js"></script>
+<script src="js/other/about.js"></script>
+<script src="js/other/storage.js"></script>
+<script src="js/device_config/device_config.js"></script>
+<script src="js/scan/scan.js"></script>
+<script src="js/scan/wavelength/wavelength.js"></script>
+<script src="js/scan/steady/steady.js"></script>
+<script src="js/device/spec/spec.js"></script>
+<script src="js/device/spec/peripherals.js"></script>
+<script src="js/device/spec/spectrograph/spectrograph.js"></script>
+<script src="js/device/spec/spec_set.js"></script>
+<script src="js/device/spec/spec_select.js"></script>
+
+<script src="js/device_set/wavelength_set/wavelength_set.js"></script>
+<script src="js/device_set/da_set/da_set.js"></script>
+<script src="js/device/da/dcs/dcs.js"></script>
+<script src="js/device/da/dcs/dcs210pc.js"></script>
+<script src="js/device/da/dcs/dcs300pa.js"></script>
+<script src="js/device/da/dcs/lockin.js"></script>
+
+<script src="js/device/da/camera/camera.js"></script>
+<script src="js/device/da/camera/andor.js"></script>
+<script src="js/device/da/camera/dccd.js"></script>
+<script src="js/device/da/camera/toucan.js"></script>
+<script src="js/device/da/meter/meter_base.js"></script>
+<script src="js/device/da/meter/meter.js"></script>
+
+<script src="js/help/steady/steady_help.js"></script>
+<script src="js/help/wavelength/wavelength_help.js"></script>
+<script src="js/help/device/vph/vph_help.js"></script>
+
+<script>
+    // document.oncontextmenu = function() { //禁止鼠标右键
+    // 	return false;
+    // };
+    // document.onkeydown = function(e){//禁止F12
+    // 	if (e.keyCode == 123) return false;
+    // };
+    //console.log(navigator.onLine);
+    websocket.open();
+    window.onload = window.onresize = function () {
+        const size = (window.innerWidth / window.screen.width) * 16;
+        document.documentElement.setAttribute('style', 'font-size: ' + size + 'px !important;');
+    };
+    //监听窗口关闭事件，窗口关闭，断开webSocket
+    window.onunload = window.onbeforeunload = function () {
+        websocket.close();
+    };
+    //logo 切换
+    let src = localStorage.getItem('lg')!=='en'?'static/img/logo.svg':'static/img/logo1.svg';
+    $("#logo img").attr('src',src)
+    //悬浮提示
+    document.onmouseover = function (e) {
+        let hint = e.target.getAttribute('hint');
+        if (![undefined,null].includes(hint)) {
+            $('#hint_body').html($.i18n.prop(hint));
+        } else {
+            $('#hint_body').empty();
+        }
+    };
+    //保持滚动条在底部
+    $('#log_body').on('DOMNodeInserted', function () {
+        let log_body =  $('#log_body');
+        log_body.scrollTop(log_body[0].scrollHeight);
+    });
+
+    let mainChart = new chart_xy('chart');
+    $('#tool_list').load('html/other/tools.html');
+
+    let dev_config_ui = new CreateTip('body_left', {
+        id: 'div_dev_config',
+        title: 'device.config',
+        icon: 'static/icon/zzb.png',
+        pos: {
+            margin: '2%',
+        },
+        width: '96%',
+        group: 1,
+        btn: help_device_config,
+    });
+    dev_config_ui.load('html/device_config/device_config.html', function () {
+        main.translate('#div_dev_config');
+    });
+
+    let wavelength_set_ui = new CreateTip('body_left', {
+        id: 'div_wavelength_set',
+        title: 'wavelength.set',
+        icon: 'static/icon/zzb.png',
+        pos: {
+            margin: '2%',
+        },
+        width: '96%',
+        group: 1,
+        hide: true,
+        btn: undefined,
+    });
+    wavelength_set_ui.load('html/device_set/wavelength_set/wavelength_set.html', function () {
+        main.translate('#div_wavelength_set');
+        $('#div_wavelength_set').attr('hidden', 'hidden');
+    });
+
+    let da_set_ui = new CreateTip('body_left', {
+        id: 'div_da_set',
+        title: 'da.set',
+        icon: 'static/icon/zzb.png',
+        pos: {
+            margin: '2%',
+        },
+        width: '96%',
+        group: 1,
+        hide: true,
+        btn: undefined,
+    });
+    da_set_ui.load('html/device_set/da_set/da_set.html', function () {
+        main.translate('#div_da_set');
+        $('#div_da_set').attr('hidden', 'hidden');
+    });
+</script>

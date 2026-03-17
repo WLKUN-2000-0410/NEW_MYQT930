@@ -1,0 +1,202 @@
+<style>
+    #polarDiv {
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    #polarDiv b {
+        width: 100%;
+        font-size: 18px;
+        text-align: left;
+        margin-left: 2%;
+        margin-top: 2%;
+    }
+
+    #polarDiv div {
+        width: 100%;
+        margin-top: 2%;
+        display: inline-flex;
+        align-items: center;
+        font-size: 14px;
+    }
+
+    #polarDiv div span {
+        width: 30%;
+        text-align: right;
+        margin-right: 10px
+    }
+
+    #polarDiv div select {
+        width: 40%;
+    }
+
+    #polarDiv div input {
+        width: 40%;
+    }
+
+    .showUnit {
+        width: auto !important;
+        margin-left: 0 !important;
+    }
+</style>
+<div id="polarDiv">
+    <b data-locale="main-polarizationTest-title">偏振测试</b>
+    <div>
+        <span data-locale="main-test-excWave">激发波长:</span>
+        <select id="polarEW" onchange="deviceControl.setEW(2)"></select>
+    </div>
+    <div>
+        <span data-locale="main-test-power">功率:</span>
+        <select id="polarPower" onchange="deviceControl.setPower(2)"></select>
+        &nbsp;mw
+    </div>
+    <div>
+        <span data-locale="main-test-pinhole">针孔尺寸:</span>
+        <select id="polarPZ" onchange="deviceControl.setPZ(2)"> </select>
+        &nbsp;μm
+    </div>
+    <div>
+        <span data-locale="main-test-grating">光栅:</span>
+        <select id="polarGrating" onchange="deviceControl.setGrating(2)"> </select>
+
+    </div>
+    <div>
+        <span data-locale="main-test-slit">狭缝:</span>
+        <input type="number" id="polarSlit" step="10" onchange="deviceControl.setSlit(2)">
+        &nbsp;μm
+    </div>
+    <div>
+        <span data-locale="main-test-expTime">积分时间:</span>
+        <input type="text" id="polarExp" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')"
+               onchange="deviceControl.setExpTime(2)">
+        &nbsp;s
+    </div>
+    <div>
+        <span data-locale="main-SteadyTest-centerWave">中心波长:</span>
+        <input type="number" id="steadyCW"  step="1" min="0" max="30000" onchange="deviceControl.setPolarCW()">
+        &nbsp<span class="showUnit" id="polarUnit">nm</span>
+    </div>
+    <div>
+        <span data-locale="main-test-total">累计次数:</span>
+        <input type="text" id="polarTotalNum" value="1" onkeyup="this.value.length===1?this.value=this.value.replace(/[^1-9]/g,'')
+               :this.value=this.value.replace(/\D/g,'')">
+    </div>
+    <div>
+        <span data-locale="main-polar-selection-polarization">偏振选择:</span>
+        <select id="polarType" >
+        	<option data-locale="main-polar-stimulate-polarization">激发偏振</option>
+        	<option data-locale="main-polar-emission-polarization">发射偏振</option>
+        </select>
+    </div>
+    <div>
+        <span data-locale="main-polar-polarization-angle">偏振角度:</span>
+        <input type="text" id="polarDegrees" value="90" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')" onchange="deviceControl.updatePolarAngle()">
+        &nbsp;°
+    </div>
+    <div>
+        <span data-locale="main-wavelengthTest-step">步长:</span>
+        <input type="text" id="polarDegreesStep" value="0" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+        &nbsp;°
+    </div>
+    <div>
+        <span data-locale="main-wavelengthTest-from">起始:</span>
+        <input type="text" id="polarDegreesStart" value="0" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+        &nbsp;°
+    </div>
+    <div>
+        <span data-locale="main-wavelengthTest-To">终止:</span>
+        <input type="text" id="polarDegreesEnd" value="360" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')">
+        &nbsp;°
+    </div>
+        <b data-locale="popup-mapping-title3">显示参数</b>
+        <div>
+        	<span data-locale="main-polar-show-params-type">终止:</span>
+            <select id="mStrMode">
+                <option data-locale="popup-mapping-single" datatype="单波长强度">单波长强度</option>
+                <option data-locale="popup-mapping-expH" datatype="积分高度">积分高度</option>
+            </select>
+        </div>
+        <!--<div id="polarSingle">
+	        <input type="text" style="width: 48%;margin-left: 9%" id="dWave1" > &nbsp;<p class="showUnits" style="width: 10%">nm</p>
+	    </div>-->
+	    <div id="polarexpH">
+	        <input type="text" id="dWave0" style="margin-left: 9%">
+	        &nbsp;
+	        <input type="text" id="dWave1" style="display: none;">
+	        &nbsp;<p class="showUnits" style="width: 10%">nm</p>
+	    </div>
+	    <div>
+	        <button id="updatePolarData" type="button" style="width: 80%;margin-left: 9%;" class="btn btn-secondary btn-sm" data-locale="popup-mapping-updateBtn">更新</button>
+	    </div>
+    </div>
+    
+</div>
+<script>
+    $(function () {
+        main.translate('#polarDiv')
+        let waveDiv = $('#polarDiv')
+        waveDiv.css({'opacity': '0', ' transition': 'opacity 1s ease-in-out;'});
+        waveDiv.animate({opacity: '1', transition: 'opacity 1s ease-in-out;'}, 1000)
+        polar.updateParam()
+        
+        function updatePolar(start,step){
+        	let seriesData = main.polarLineChart.active_series();
+        	let nIndex = $(this).get(0).selectedIndex;
+        	let x = seriesData[0].get_data().x;
+        	let yList=[];
+        	let xList=[];
+        	if(step===0){
+        		x.push(start);
+        		x.sort(function(a,b){return a-b});
+        		let nStartIndex = x.indexOf(start)
+        		
+        		for(var i = 0;i<seriesData.length;i++){
+        			let y = seriesData[i].get_data().y;
+        			yList.push(y[nStartIndex]);
+        			xList.push(parseFloat($("#polarDegreesStart").val())+ parseFloat($("#polarDegreesStep").val())*i );
+        		}
+        	}else{
+        		x.push(start);
+        		x.push(start+step);
+        		x.sort(function(a,b){return a-b});
+        		let nStartIndex = x.indexOf(start)
+				let nEndIndex = x.indexOf(start+step)
+				
+				for(var i = 0;i<seriesData.length;i++){
+        			let y = seriesData[i].get_data().y;
+        			yList.push(0);
+        			xList.push(parseFloat($("#polarDegreesStart").val())+ parseFloat($("#polarDegreesStep").val())*i );
+        			for(var j =nStartIndex;j<=nEndIndex;j++){
+        				yList[i]+=y[j];
+        			}
+        		}
+        	}
+        	main.polarChart.updateData(xList,yList);
+        }
+        
+        $("select#mStrMode").change(function(){
+        	let nIndex = $(this).get(0).selectedIndex;
+        	
+			if (nIndex===0) {
+				$("input#dWave1").hide();
+			} else{
+				$("input#dWave1").show();
+			}
+        });
+        $("#updatePolarData").click(function(){
+        	let nIndex = $("select#mStrMode").get(0).selectedIndex;
+        	let dStartW = parseFloat($("#dWave0").val());
+        	let dEndW   = parseFloat($("#dWave1").val());
+        	console.log(nIndex);
+        	if(nIndex===0){
+        		updatePolar(dStartW,0);
+        	}else{
+        		updatePolar(dStartW,(dEndW-dStartW)<0?0:dEndW-dStartW);
+        	}
+        	
+        });
+    })
+    
+</script>

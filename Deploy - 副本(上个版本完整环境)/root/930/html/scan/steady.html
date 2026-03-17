@@ -1,0 +1,112 @@
+<style>
+    #steadyDiv{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #steadyDiv b{
+        width: 100%;
+        font-size: 18px;
+        text-align: left;
+        margin-left: 2%;
+        margin-top: 2%;
+    }
+    #steadyDiv div{
+        width: 100%;
+        margin-top: 2%;
+        display: inline-flex;
+        align-items: center;
+        font-size: 14px;
+    }
+    #steadyDiv div span{
+        width: 30%;
+        text-align: right;
+        margin-right: 10px
+    }
+    #steadyDiv div select{
+        width: 40%;
+    }
+    #steadyDiv div input{
+        width: 40%;
+    }
+    .showUnit{
+        width: auto !important;
+        margin-left: 0 !important;
+    }
+</style>
+<div id="steadyDiv">
+    <b data-locale="main-SteadyTest-title">稳定性测试</b>
+    <div>
+        <span data-locale="main-test-excWave">激发波长:</span>
+        <select id="steadyEW" onchange="deviceControl.setEW(0)"></select>
+    </div>
+    <div>
+        <span data-locale="main-test-power">功率:</span>
+        <select id="steadyPower" onchange="deviceControl.setPower(0)">
+        </select>
+        &nbsp;mw
+    </div>
+    <div>
+        <span data-locale="main-test-pinhole">针孔尺寸:</span>
+        <select id="steadyPZ" onchange="deviceControl.setPZ(0)"></select>
+        &nbsp;μm
+    </div>
+    <div>
+        <span data-locale="main-test-grating">光栅:</span>
+        <select id="steadyGrating" onchange="deviceControl.setGrating(0)"></select>
+    </div>
+    <div>
+        <span data-locale="main-test-slit">狭缝:</span>
+        <input type="number" id="steadySlit" step="10" onchange="deviceControl.setSlit(0)">
+        &nbsp;μm
+    </div>
+    <div>
+        <span data-locale="main-test-expTime">积分时间:</span>
+        <input type="text" id="steadyExp"  onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')" onchange="deviceControl.setExpTime(0)">
+        &nbsp;s
+    </div>
+    <div>
+        <span data-locale="main-SteadyTest-centerWave">中心波长:</span>
+        <input type="number" id="steadyCW"  step="1" min="0" max="30000" onchange="deviceControl.setCW()">
+        &nbsp<span class="showUnit" id="steadyUnit">nm</span>
+    </div>
+    <div>
+        <span data-locale="main-test-total">累计次数:</span>
+        <input type="text" id="steadyTotalNum" onkeyup="this.value.length===1?this.value=this.value.replace(/[^1-9]/g,'')
+               :this.value=this.value.replace(/\D/g,'')"/>
+    </div>
+    <div>
+        <span  data-locale="main-SteadyTest-interval">间隔</span>
+        <input type="checkbox" class="custom-checkbox" id="steadyInterval" style="width: 24px;height: 24px" onkeyup="this.value.length===1?this.value=this.value.replace(/[^1-9]/g,'')
+               :this.value=this.value.replace(/\D/g,'')" >
+    </div>
+    <div>
+        <span data-locale="main-SteadyTest-intervalTime">间隔时间:</span>
+        <input type="text"  onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')" id="steadyIntervalTime">
+        &nbsp;s
+    </div>
+    <div>
+        <span data-locale="main-SteadyTest-intervalTimes">次数:</span>
+        <input type="text"  onkeyup="this.value.length===1?this.value=this.value.replace(/[^1-9]/g,'')
+               :this.value=this.value.replace(/\D/g,'')" id="steadyIntervalNum">
+    </div>
+</div>
+<script>
+    $(function () {
+        main.translate('#steadyDiv')
+        let steadyDiv = $('#steadyDiv')
+        steadyDiv.css({'opacity': '0',' transition': 'opacity 1s ease-in-out;'});
+        steadyDiv.animate({opacity: '1',transition: 'opacity 1s ease-in-out;'}, 1000)
+        steady.updateParam()
+        $("input#steadyInterval").change(function(){
+        	fConfig.intervalflag=this.checked;
+        });
+        $("input#steadyIntervalTime").change(function(){
+        	fConfig.intervaltime=parseFloat($(this).val());
+        });
+        $("input#steadyIntervalNum").change(function(){
+        	fConfig.intervalnum=parseInt($(this).val());
+        });
+    })
+</script>

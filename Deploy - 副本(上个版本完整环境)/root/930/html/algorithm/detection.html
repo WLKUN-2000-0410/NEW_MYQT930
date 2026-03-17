@@ -1,0 +1,295 @@
+<style>
+    #detectionDiv{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #detectionDiv1{
+        width: 100%;
+        height: 30%;
+        display: inline-flex;
+    }
+    #detectionDiv1 div{
+        width: 50%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #detectionDiv1 div p{
+        display: inline-flex;
+        margin-top: 10px;
+        align-items: center;
+    }
+    #detectionDiv1 div p span{
+        width: 15%;
+        text-align: right;
+        margin-right: 10px;
+    }
+    #detectionDiv1 div p select{
+        width: 28%;
+    }
+    #detectionDiv1 div p input[type=text]{
+        width: 28%;
+    }
+    #detectionDiv1 div p b{
+       display: inline-flex;
+        align-items: center;
+    }
+    #detectionDiv1 div p b span{
+        width: auto;
+        margin-left: 5px;
+    }
+    #detectionDiv2{
+        height: 7.7%;
+        display: inline-flex;
+        align-items: center;
+        border-top: 3px ridge #555555;
+    }
+    #detectionDiv2 p{
+        width: 98%;
+        display: inline-flex;
+    }
+    #detectionDiv3{
+        height: 62%;
+    }
+    #detectionDiv3 div{
+        width: 100%;
+        height: 98%;
+        border: 3px ridge #555555;
+    }
+</style>
+<div id="detectionDiv">
+    <div id="detectionDiv1">
+        <div style="border-right: 3px ridge #555555">
+            <p>
+                <span data-locale="popup-algorithm-lineSelect">曲线选择:</span>
+                <select id="detectSec"></select>
+            </p>
+            <p>
+                <span data-locale="popup-algorithm-peakI">峰强度:</span>
+                <input type="text" id="peakI" value="5000">
+                <span data-locale="popup-algorithm-peakW">峰宽度:</span>
+                <input type="text" id="peakW" value="0">
+            </p>
+            <p>
+                <span data-locale="popup-algorithm-sensitivity">灵敏度:</span>
+                <input type="text" id="dB" value="0.0001">
+                <span data-locale="popup-algorithm-fitNum">拟合点数:</span>
+                <input type="text" id="pOF" value="7">
+            </p>
+            <p>
+                <span data-locale="popup-algorithm-smoothW">平滑宽度:</span>
+                <input type="text" id="smoothW" value="3">
+                <span data-locale="popup-algorithm-smoothT">平滑类型:</span>
+                <input type="text" id="smoothT" value="1" min="1" max="3">
+                &nbsp;
+                <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-algorithm-executeBtn" onclick="algorithm.findPeak()">执行</button>
+            </p>
+        </div>
+        <div>
+            <p style="margin-left: 15px" data-locale="popup-algorithm-showOption">显示选项</p>
+            <p style="justify-content: space-evenly;">
+                <b>
+                  <input type="checkbox" class="custom-checkbox" showType="peakPos" disabled checked><span data-locale="popup-algorithm-peakP">峰位</span>
+                </b>
+                <b>
+                    <input type="checkbox" class="custom-checkbox" showType="peakH"  ><span data-locale="popup-algorithm-peakH">峰高</span>
+                </b>
+                <b>
+                    <input type="checkbox" class="custom-checkbox" showType="halfHW" ><span data-locale="popup-algorithm-HW">半高宽</span>
+                </b>
+                <b>
+                    <input type="checkbox" class="custom-checkbox" showType="peakA"><span data-locale="popup-algorithm-pA">峰面积</span>
+                </b>
+                <b>
+                    <input type="checkbox" class="custom-checkbox" showType="peakS"><span data-locale="popup-algorithm-peakStart">峰起始位置</span>
+                </b>
+                <b>
+                    <input type="checkbox" class="custom-checkbox" showType="peakE"><span data-locale="popup-algorithm-peakEnd">峰终止位置</span>
+                </b>
+            </p>
+        </div>
+    </div>
+    <div id="detectionDiv2">
+        <p>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-algorithm-tableBtn" id="tabBtn" onclick="showTC(true)">表格</button>
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-algorithm-chartBtn" id="chartBtn" style="margin-left: 10px" onclick="showTC(false)">谱图</button>
+        </p>
+        <button type="button" class="btn btn-dark btn-sm" onclick="saveFileByContent()"><img alt="" src="source/image/saveFile.png" style="width: 30px;height: 30px"></button>
+    </div>
+    <div id="detectionDiv3">
+        <div id="detectionTab">
+        </div>
+        <div id="detectionChart">
+        </div>
+    </div>
+</div>
+<script>
+    let [lines,detectChart,des] = [new Map(),'',$("#detectSec")];
+    $.getScript('js/algorithm/algorithm.js',()=>{
+        algorithm.initAlgorithm('detectionChart')
+        lines = algorithm.lineMap
+        detectChart = algorithm.chart
+        detectChart.base().setPadding({top:45})
+        algorithm.lines.forEach(cur=>{des.append("<option>"+cur.name()+"</option>")})
+        des.change()
+        showTC(true)
+        algorithm.detectionTable = new uiduck('detectionTable', {
+            templateId: "detectionTab",
+            page: false,
+            pageOptions: {
+                limit: 10,
+                limits: ['5', '10', '15', '20', '25']
+            },
+            fieldOptions: [
+                {
+                    key: "num",
+                    title: $.i18n.prop('popup-algorithm-num'),
+                },
+                {
+                    key: "peakPos",
+                    title: $.i18n.prop('popup-algorithm-peakP'),
+                }
+            ]
+        });
+    })
+    function showTC(t){
+        $("#tabBtn").prop("disabled",t)
+        $("#chartBtn").prop("disabled",!t)
+        $("#detectionTab").prop('hidden',!t)
+        $("#detectionChart").prop('hidden',t)
+    }
+//峰强度,10000.0
+//峰宽度,0.0
+//灵敏度,1.0E-4
+//平滑宽度,3.0
+//平滑类型,1
+//拟合点数,7.0
+//
+//
+//序号,峰位,峰强,半高全宽,峰面积,起始位置,终止位置
+//1,149.82,10274.48,42.65,466558.11,-235.37,652.53
+//2,789.44,42812.37,22.19,1011443.45,652.53,1016.37
+//3,1434.11,17028.98,57.91,1049896.45,1016.37,1663.51
+//4,1715.86,15006.86,32.84,524725.22,1663.51,2613.85
+//5,2921.43,19552.05,36.83,766573.57,2613.85,3470.65
+	function saveFileByContent(){
+		let fileContent = "";
+		fileContent+=("峰强度,"+$("input#peakI").val()+"\n");
+		fileContent+=("峰宽度,"+$("input#peakW").val()+"\n");
+		fileContent+=("灵敏度,"+$("input#dB").val()+"\n");
+		fileContent+=("平滑宽度,"+$("input#smoothW").val()+"\n");
+		fileContent+=("平滑类型,"+$("input#smoothT").val()+"\n");
+		fileContent+=("拟合点数,"+$("input#pOF").val()+"\n\n\n");
+		fileContent+="序号,峰位,峰强,半高全宽,峰面积,起始位置,终止位置\n";
+		for (let i=0;i<algorithm.TableData.length;i++) {
+			let pek = algorithm.TableData[i];
+			fileContent+=(pek["num"]+",");
+			fileContent+=(pek["peakPos"]+",");
+			fileContent+=(pek["peakH"]+",");
+			fileContent+=(pek["halfHW"]+",");
+			fileContent+=(pek["peakA"]+",");
+			fileContent+=(pek["peakS"]+",");
+			fileContent+=(pek["peakE"]+"\n");
+		}
+		console.log(fileContent);
+		let suc = function () {
+            main.getSavefilePathPram()
+            $("div .fileType select option[value='.hdr']").hide()
+            $("div .fileType select option[value='.png']").hide()
+            $("div .fileType select option[value='.jpg']").hide()
+            $("div .fileType select option[value='.txt']").hide()
+            $("div.fileType select").val(".csv");
+            //默认路径
+			$("input#filePathShow").val("C:\\");
+			$("input#filePathShow").change();
+        }
+        let end = function(){
+            if (main.isOpenChecked) {
+                main.isOpenChecked=false;
+                console.log(main.saveFilePath);
+
+                let [saveData,MaxLen] = ["",0];
+                let lines = main.chart.active_series();
+                if (lines.length === 0) return;
+                let lineData = [main.chart.series(lines[0].name())]
+                let param = {name:lineData[0].name(),index:0,excwave:fConfig.excwave,expTime:fConfig.expTime,grating:fConfig.grating,intervalflag:fConfig.intervalflag,intervalnum:fConfig.intervalnum,intervaltime:fConfig.intervaltime,pinhole:fConfig.pinhole,powervalue:fConfig.powervalue,slit:fConfig.slit,totalnum:fConfig.totalnum,waveunit:fConfig.waveunit}
+                let idxNum = fConfig.grating===''?1:fConfig.grating.slice(0,1)
+                fConfig.excwaveselect.forEach((cur)=>{
+                    if(cur.name === fConfig.excwave){
+                        param.exc = cur["grating"+idxNum]
+                    }
+                })
+                if (fConfig.funnm === 0) {
+                    param.centerwave = fConfig.centerwave
+                } else {
+                    param.spectrumfrom = fConfig.spectrumfrom
+                    param.spectrumto = fConfig.spectrumto
+                }
+                //'[{"name"'+":"+'"'+lineData[0].name()+'"'+","+'"index"'+":"+0+'}]\r\n'
+                let info = '[Info]\n'+'['+JSON.stringify(param)+']\n'+'[Data]\r\n'
+                saveData+=info
+                for (let i = 0; i < lineData.length; i++) {
+                    MaxLen= Math.max(MaxLen, lineData[i].get_length());
+                }
+                for (let i = 0; i < MaxLen; i++) {
+                    let data = '';
+                    lineData.reduce((pre,cur) =>{
+                        //避免第一次就追加
+                        if (data.length > 0) {
+                            // data = data + '\t';
+                            data = data + ' ';
+                        }
+                        if (i < cur.get_length()) {
+                            if(!isNaN(cur.get_data().x[i])&&!isNaN(cur.get_data().y[i])){
+                                // data = data + (cur.get_data().x[i] + '\t');
+                                data = data + (cur.get_data().x[i] + ' ');
+                                data = data + cur.get_data().y[i];
+                            }
+                        } else {
+                            // data = data + '\t';
+                            data = data + ' ';
+                        }
+                    },0)
+                    data = data + '\n';
+                    saveData+=data;
+                }
+
+                websocket.send(funcCode.SaveLineDataPram, {path:main.saveFilePath,content:fileContent},false)
+                main.setSaveFilePathPram(main.saveFilePath.substring(0,main.saveFilePath.lastIndexOf("\\")+1));
+            }
+        }
+        main.saveFileByPath(suc,end);
+	}
+    function addTab(k,t){
+        algorithm.detectionTable.getOptions().fieldOptions.push({"key":k,"title":t})
+        algorithm.detectionTable.refresh();
+    }
+    function removeTab(k) {
+        let arr = algorithm.detectionTable.getOptions().fieldOptions
+        for (let i = 0; i < arr.length; i++) {
+            if(arr[i].key===k){
+                arr.splice(i,1)
+                algorithm.detectionTable.refresh();
+            }
+        }
+    }
+    
+    $("#detectionDiv1 input[type=checkbox]").click(function () {
+        let key = $(this).attr("showType")
+        let t  = $(this).next("span").text()
+        let  ck = $(this).prop("checked")
+        ck?addTab(key,t):removeTab(key)
+    })
+    des.change(function () {
+        detectChart.remove_all();
+        let name = des.val();
+        if(lines.get(name) === undefined)return
+        let data = lines.get(name).get_data();
+        let color = lines.get(name).get_color()
+        let line =  detectChart.add_series(name,0)
+        line.add_array(data.x,data.y)
+        line.set_color(color)
+    })
+</script>

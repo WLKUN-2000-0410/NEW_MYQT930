@@ -1,0 +1,689 @@
+<style>
+    #databaseManger{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #databaseBtn {
+        height: 7%;
+        display: inline-flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+    #databaseBtn button{
+        width: 33%;
+    }
+    #databaseBtn button:disabled{
+        background-color: #01b075;
+        border-color: #01b075;;
+    }
+    #databaseDiv{
+        height: 93%;
+        /*display: inline-flex;*/
+        border: 3px ridge #555555;
+    }
+    #databaseCalc{
+        height: 93%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    #calcChart{
+        width: 65%;
+        border: 3px ridge #555555;
+    }
+    #calcParams{
+        height: 7%;
+        display: inline-flex;
+        align-items: center;
+        border-bottom: 3px ridge #555555;
+        border-top: 3px ridge #555555;
+        justify-content: right;
+    }
+    #calcParams p{
+        display: inline-flex;
+        align-items: center;
+        margin-left: 10px;
+    }
+    #calcParams p input[type=checkbox]{
+        margin-right: 10px;
+    }
+    #calcParams p select{
+        width: 120px;
+        margin-left: 10px;
+    }
+    #calcParams span{
+        width: auto;
+    }
+    #calcParams select{
+        width: 10%;
+    }
+    #calcParams input[type=text]{
+        width: 10%;
+    }
+    #calcTable{
+        width: 34%;
+        border: 3px ridge #555555;
+        margin-left: 10px;
+    }
+    #calcDashboard{
+        height: 92.8%;
+        margin-top: 0.2%;
+        display: inline-flex;
+    }
+    #databaseAdd{
+        height: 93%;
+        display: inline-flex;
+        flex-direction: column;
+        border: 3px ridge #555555;
+    }
+    #databaseAdd div{
+        width: 100%;
+        height: 74%;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+        border-bottom: 3px ridge #555555;
+    }
+    #databaseAdd div b{
+        font-size: 20px;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    #databaseAdd div p{
+        display: inline-flex;
+        align-items: center;
+        margin-top: 10px;
+        width: 100%;
+    }
+    #dbAddChart{
+        height: 90%;
+        border-top: 3px ridge #555555;
+    }
+    #testMsg span{
+        width: 10%;
+        text-align: right;
+        margin-right: 10px;
+    }
+    #testMsg input{
+        width: 15%;
+    }
+    #testFunc span{
+        width: 6%;
+        text-align: right;
+        margin-right: 10px;
+    }
+    #testFunc input,select{
+        width: 10%;
+    }
+    #dbTopBar{
+        width: 100%;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        padding-left: 1%;
+    }
+    #dbTopBar input[type=radio]{
+        width: 24px;
+        height: 24px;
+        margin-left: 20px;
+    }
+    #dbTopBar input[type=checkbox]{
+        margin-left: 10px;
+    }
+    #dbTopBar span{
+        margin-left: 5px;
+    }
+    #dbTopBar button{
+        margin-left: 10px;
+    }
+    #dbPage{
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #dbPage p{
+        margin-left: 10px;
+    }
+    #dbPage button:disabled{
+        cursor: not-allowed;
+    }
+</style>
+<div id="databaseManger">
+    <div id="databaseBtn">
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-db-btn-db" id="dbBtn" onclick="showDb(0)">数据库</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-db-btn-calc" id="calcBtn" onclick="showDb(1)">计算</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-db-btn-add" id="addBtn" onclick="showDb(2)">添加</button>
+    </div>
+    <div id="databaseDiv">
+        <script type="text/html" id="option">
+            <button class="btn btn-secondary btn-sm py-0" data-locale="popup-db-table-btn" onClick=showDbAdv(dbTab,this);>查看</button>
+        </script>
+        <div id="dbTopBar">
+            <input type="text" id="dbFilterTxt">
+         <!--  <input type="radio" class="custom-radio" name="db" dbMode="0" checked>-->
+            <input type="checkbox" class="custom-checkbox" dbmode="0" id="localDB" checked>
+            <span data-locale="popup-db-search-local">本地数据库</span>
+           <!-- <input type="radio" class="custom-radio" dbMode="1" name="db">-->
+            <input type="checkbox" class="custom-checkbox" dbmode="1" id="selfDB">
+            <span data-locale="popup-db-search-self">自建数据库</span>
+            <!--数据分类-->
+            <div id="dbDataType" class="ml-2"></div>
+            <button type="button" class="btn btn-secondary btn-sm py-0" data-locale="popup-db-search-btn" onclick="selectToDB(1)">查询</button>
+        </div>
+        <div id="dbTable"></div>
+        <div id="dbPage" hidden>
+            <p style="margin-right: 10px;margin-left: 0" >
+                <b data-locale="popup-db-page-cur">当前第</b>
+                <span id="dbNowPage"></span>
+                <b data-locale="popup-db-page-p">页</b>
+            </p>
+
+            <button id="prevPageBtn" type="button" class="btn btn-outline-secondary btn-sm text-white border-0 py-0" data-locale="popup-db-page-prev" onclick="prevPage()">上一页</button>
+            <button id="nextPageBtn" type="button" class="btn btn-outline-secondary btn-sm text-white border-0 py-0 ml-2" data-locale="popup-db-page-next"  onclick="nextPage()">下一页</button>
+
+            <P >
+                <b data-locale="popup-db-page-count">共</b>
+                <span id="dbPageCount"></span>
+                <b data-locale="popup-db-page-p">页</b>
+            </P>
+            <p >
+                <b data-locale="popup-db-page-count">共</b>
+                <span id="dbDataCount"></span>
+                <b data-locale="popup-db-page-data">条数据</b>
+            </p>
+        </div>
+    </div>
+    <div  id="databaseCalc" >
+        <div id="calcParams" >
+            <p>
+                <input type="checkbox" class="custom-checkbox" id="calcLocalDb" checked>
+                <span data-locale="popup-db-search-local">本地数据库</span>
+            </p>
+            <P>
+                <input type="checkbox" class="custom-checkbox" id="calcSelfDb">
+                <span data-locale="popup-db-search-self">自建数据库</span>
+            </P>
+            <p>
+                <span data-locale="popup-db-selectLine">选择曲线:</span>
+                <select id="calcLines"></select>
+            </p>
+
+        <!--    <span>选择样库:</span>
+            <select ></select>
+            <span>最小相似度</span>
+            <input type="text">
+            <span style="width: 2%">%</span>
+            <span>返回结果数量:</span>
+            <input type="text">-->
+            <p>
+                <input type="checkbox" class="custom-checkbox" id="pure" checked>
+                <span data-locale="popup-db-calc-ps">纯净物</span>
+            </p>
+            <P>
+                <input type="checkbox" class="custom-checkbox" id="mixture">
+                <span data-locale="popup-db-calc-mixtures">混合物</span>
+            </P>
+
+            <button type="button" class="btn btn-secondary btn-sm" data-locale="popup-db-btn-calc" style="margin-left: 10px" onclick="dbCalc()">计算</button>
+        </div>
+        <div id="calcDashboard">
+            <script type="text/html" id="CalcOption">
+                <button class="btn btn-secondary btn-sm py-0" data-locale="popup-db-table-btn" onClick=showDbAdv(calcTable,this);>查看</button>
+            </script>
+            <div style="height: 99%" id="calcChart"></div>
+            <div style="height: 100%; margin-top: 0;" id="calcTable">
+            </div>
+        </div>
+    </div>
+    <div id="databaseAdd"  >
+        <div style="height: 13%" id="testMsg">
+            <b data-locale="popup-db-add-title1">一、测试基本信息</b>
+            <p>
+                <span data-locale="popup-db-add-zhName">中文名</span>
+                <input type="text" id="dbZhName">
+                <span data-locale="popup-db-add-enName">英文名</span>
+                <input type="text" id="dbEnName">
+<!--                <span data-locale="popup-db-add-num">样品编号</span>-->
+<!--                <input type="text" id="dbSampleNum">-->
+            </p>
+        </div>
+        <div >
+            <b style="height: 5%" data-locale="popup-db-add-title2">二、谱图</b>
+            <p id="dbAddChart"></p>
+        </div>
+        <div id="testFunc" style="height: 13%;border-bottom: 0">
+            <b data-locale="popup-db-add-title3">三、测试方法</b>
+            <p>
+                <span data-locale="popup-db-add-excWave">激发波长</span>
+                <input type="text" id="dbExCWave" disabled>
+                <span data-locale="popup-db-add-pinhole">针孔尺寸</span>
+                <input type="text" id="dbPinhole" disabled>
+                <span data-locale="popup-db-add-power">功率</span>
+                <input type="text" id="dbPw" disabled>
+                <span data-locale="popup-db-add-expTime">积分时间</span>
+                <input type="text" id="dbTime" disabled>
+                <span data-locale="popup-db-selectLine">选择曲线</span>
+                <select id="dbLines"></select>
+                <button type="button" class="btn btn-secondary btn-sm" style="margin-left: 10px;" data-locale="popup-db-btn-add" onclick="addDataToDB()">添加</button>
+            </p>
+        </div>
+    </div>
+</div>
+<script>
+    let [calcChart,addChart,lines,dbAddLines,dbCalcLines,lineInfo,dbType,calcType,calcDbType,page,pageCount,dataCount] = ["","",main.chart.active_series(),$("#dbLines"),$("#calcLines"),'',0,0,0,1,1,20];
+    let dbData = [
+        {'id':'0','num':"012445",'cName':'测试45645645645644645644654564','eName':'testafagagagagagagagaga','sampleCode':"0000000000"},
+        {'id':'1','num':"1",'cName':'测试','eName':'test','sampleCode':"111"},
+        {'id':'2','num':"2",'cName':'测试','eName':'test','sampleCode':"222"},
+        {'id':'3','num':"3",'cName':'测试','eName':'test','sampleCode':"333"},
+        {'id':'4','num':"4",'cName':'测试','eName':'test','sampleCode':"444"},
+        {'id':'5','num':"5",'cName':'测试','eName':'test','sampleCode':"555"},
+        {'id':'6','num':"6",'cName':'测试','eName':'test','sampleCode':"666"},
+        {'id':'7','num':"7",'cName':'测试','eName':'test','sampleCode':"777"},
+        {'id':'8','num':"8",'cName':'测试','eName':'test','sampleCode':"888"},
+        {'id':'9','num':"9",'cName':'测试','eName':'test','sampleCode':"999"},
+     /*   {'num':"10",'cName':'测试','eName':'test','sampleCode':"100"},
+        {'num':"11",'cName':'测试','eName':'test','sampleCode':"101"},
+        {'num':"12",'cName':'测试','eName':'test','sampleCode':"102"},
+        {'num':"13",'cName':'测试','eName':'test','sampleCode':"103"},
+        {'num':"14",'cName':'测试','eName':'test','sampleCode':"104"},
+        {'num':"15",'cName':'测试','eName':'test','sampleCode':"105"},*/
+    ]
+    var dbTab = new uiduck('dbTab', {
+        templateId: "dbTable",
+        page: false,
+        pageOptions: {
+            limit: 10,
+            limits:[],
+            layout:[],
+        },
+        rightTool:{
+            templateId: "option",
+            title:$.i18n.prop('popup-db-table-option'),
+            width:'100px'
+        },
+        fieldOptions: [
+            {
+                key: "id",
+                title: $.i18n.prop('popup-db-table-num'),
+                width:'125px',
+                hide:true
+            },
+            {
+                key: "num",
+                title: $.i18n.prop('popup-db-table-num'),
+                width:'125px'
+            },
+            {
+                key: "cName",
+                title: $.i18n.prop('popup-db-table-name'),
+            }, {
+                key: "eName",
+                title: $.i18n.prop('popup-db-table-enName'),
+            },
+            {
+                key: "sampleCode",
+                title: $.i18n.prop('popup-db-table-code'),
+                width: "120px"
+            }
+        ]
+    });
+    let calcData = [
+        {'num':"0",'id':'18888', 'name':"testfafafafafafafafafafafafa",'md':"0.6066"},
+        {'num':"1",'id':'测试', 'name':"test",'md':"111"},
+        {'num':"2",'id':'测试', 'name':"test",'md':"222"},
+        {'num':"3",'id':'测试', 'name':"test",'md':"333"},
+        {'num':"4",'id':'测试', 'name':"test",'md':"444"},
+        {'num':"5",'id':'测试', 'name':"test",'md':"555"},
+        {'num':"6",'id':'测试', 'name':"test",'md':"666"},
+        {'num':"7",'id':'测试', 'name':"test",'md':"777"},
+        {'num':"8",'id':'测试', 'name':"test",'md':"888"},
+        {'num':"9124",'id':'测试', 'name':"test",'md':"999"},
+        // {'num':"10",'id':'测试','name':"test",'md':"100"},
+        // {'num':"11",'id':'测试','name':"test",'md':"101"},
+        // {'num':"12",'id':'测试','name':"test",'md':"102"},
+        // {'num':"13",'id':'测试','name':"test",'md':"103"},
+        // {'num':"14",'id':'测试','name':"test",'md':"104"},
+        // {'num':"15",'id':'测试','name':"test",'md':"105"},
+    ]
+    var calcTable = new uiduck('calcTable', {
+        templateId: "calcTable",
+        language: {tag:localStorage.getItem('lg') === 'zh' ?'Chinese':'English'},
+        page: true,
+        pageOptions: {
+            limit: 5,
+            limits: ['10'],
+            layout:["total", "home", "prev", "next", "last"],
+        },
+        rightTool:{
+            templateId: "CalcOption",
+            title:$.i18n.prop('popup-db-table-option'),
+            width:'100px'
+        },
+        fieldOptions: [
+            {
+                key: "num",
+                title:$.i18n.prop('popup-db-table-num1'),
+                width: "75px"
+            },
+            {
+                key: "id",
+                title: "ID",
+                width:'75px'
+            },
+            {
+                key: "name",
+                title: $.i18n.prop('popup-db-table-name'),
+                width:'180px'
+            },
+            {
+                key: "md",
+                title: $.i18n.prop('popup-db-table-mr'),
+                width:'75px'
+
+            },
+        ]
+    });
+    var dbDataType = new verjs_select();
+    $(function () {
+        showDb(0)
+        getDbDataType()
+        calcChart = new chart_xy("calcChart")
+        addChart = new chart_xy("dbAddChart")
+    })
+
+    function showDb(t) {
+        $("#dbBtn").prop("disabled",t===0)
+        $("#calcBtn").prop("disabled",t===1)
+        $("#addBtn").prop("disabled",t===2)
+        $("#databaseCalc").prop("hidden",t!==1)
+        $("#databaseDiv").prop("hidden",t!==0)
+        $("#databaseAdd").prop("hidden",t!==2)
+        switch (t) {
+            case 0:{
+            }break;
+            case 1:{
+                updateCalcParam()
+            }break;
+            case 2:{
+                updateAddParam()
+            }break;
+        }
+    }
+
+    // dbTab.setData(data,false)
+    //dbTab.nextPage()
+    //addData(dbData)
+    function addData(data){
+        dbTab.setData(data,false)
+    }
+    function getDbDataType() {
+        $('#dbDataType').empty()
+        if(dbType ===0){
+            websocket.send(funcCode.getSampleTypess,{},false)
+            main.setCallbacks(funcCode.getSampleTypess,rev=>{
+                let lg = localStorage.getItem("lg")
+                let result = JSON.parse(rev.getStrsampletype())
+                console.log(result)
+                let TList = []
+                for (let i = 0; i <result.length ; i++) {
+                    let temp = {id:result[i]['classType'],name:result[i][lg]}
+                    TList.push(temp)
+                }
+                dbDataType.render({
+                    elem: "#dbDataType",
+                    data: TList,
+                    init_value: [TList[0].id],
+                    width:'250px',
+                    height:'28px',
+                    body_height: 300,
+                    checkbox: true,
+                    name: "test",
+                    search_text: $.i18n.prop('popup-db-type-searchTxt'),//搜索框提示文字
+                    empty_search: $.i18n.prop('popup-db-type-emptyTxt'),//空数据提示文字
+                    placeholder: $.i18n.prop('popup-db-type-placeholder'),//默认显示文字
+                    btn: [{name:$.i18n.prop('legend-btn-selectAll'),icon:"verJsFont verJsFont-quanxuan",callfun:"changeAll"},{name:$.i18n.prop('legend-btn-inverse'),icon:"verJsFont verJsFont-tubiaozhizuomoban",callfun:"rechangeAll"},{name:$.i18n.prop('popup-db-type-empty'),icon:"verJsFont verJsFont-cancel",callfun:"clearChange"}]
+                });
+            })
+        }else {
+            let TList = [{id:'1',name:$.i18n.prop('popup-db-type-self')}]
+            dbDataType.render({
+                elem: "#dbDataType",
+                data: TList,
+                init_value: [TList[0].id],
+                width:'250px',
+                height:'28px',
+                body_height: 300,
+                checkbox: true,
+                name: "test",
+                search_text: $.i18n.prop('popup-db-type-searchTxt'),//搜索框提示文字
+                empty_search: $.i18n.prop('popup-db-type-emptyTxt'),//空数据提示文字
+                placeholder: $.i18n.prop('popup-db-type-placeholder'),//默认显示文字
+                btn: [{name:$.i18n.prop('legend-btn-selectAll'),icon:"verJsFont verJsFont-quanxuan",callfun:"changeAll"},{name:$.i18n.prop('legend-btn-inverse'),icon:"verJsFont verJsFont-tubiaozhizuomoban",callfun:"rechangeAll"},{name:$.i18n.prop('popup-db-type-empty'),icon:"verJsFont verJsFont-cancel",callfun:"clearChange"}]
+            });
+        }
+    }
+    function showDbAdv(e,index) {
+        let flag = e.base.templateId === "calcTable"
+        let msg = e.getRow(index)
+        let url = flag?"html/db/dbCalcAdv.html?":"html/db/dbAdv.html?"
+        let chart = flag?calcChart:''
+        let title =$.i18n.prop('popup-db-view-title'+(flag?2:1))
+        let data = {}
+        data.dbMode = flag?calcDbType:dbType
+        data.id = parseInt(msg.id)
+        websocket.send(funcCode.DBView_Show,data)
+        main.setCallbacks(funcCode.DBView_Show,rev=>{
+            msg.powervalue = rev.getPowervalue()
+            msg.ExpTime = rev.getExptime()
+            msg.xPd = rev.getXpdList()
+            msg.yPd = rev.getYpdList()
+            $.get(url+new Date().getTime(), function (str) {
+                jeBox.open({
+                    title: [title, {
+                        'text-align': 'center',
+                        'font-size': '1.5em'
+                    }],
+                    type: 'dialog',
+                    maskLock: true, //是否遮罩
+                    maskClose: false,
+                    isDrag: true,
+                    shadow: true,
+                    closeBtn: true,
+                    boxSize: ['60%', 540],
+                    zIndex: 1,
+                    content: str,
+                    success: function () {
+                        initDbAdv(msg,chart)
+                    }
+                })
+            })
+        })
+    }
+    //查询数据库
+    function selectToDB(pageIndex) {
+        let fTxt = $('#dbFilterTxt').val()
+        let fType = dbDataType.get_value('dbDataType')
+        let sampleType = []
+        fType.forEach(cur=>sampleType.push(cur.id))
+        if(sampleType.length===0) return jeBox.msg($.i18n.prop('tips-db-typeNull'),{icon:1})
+        let data = {}
+        data.dbMode = dbType
+        data.stritemNm ='10'
+        data.pageIndex = pageIndex
+        data.searchString=fTxt
+        data.sampleTypes = sampleType
+        websocket.send(funcCode.SelectToDBVague,data,false)
+        main.setCallbacks(funcCode.SelectToDBVague,rev=>{
+            addData([])//清空表格
+            let infos = rev.getTableinfosList()
+            if(infos.length===0) return jeBox.msg($.i18n.prop('tips-db-noSelect'),{icon:1})
+            dataCount = rev.getItems()
+            pageCount = Math.ceil(dataCount/10)
+
+            $('#dbPage').prop('hidden',false)
+            $("#dbNowPage").text(pageIndex)
+            $("#dbDataCount").text(dataCount)
+            $("#dbPageCount").text(pageCount)
+            currentPage()
+
+            let result = []
+            for (let i = 0; i < infos.length; i++) {
+                //let info = proto.Inter930.TableInfo.deserializeBinary(infos[i])
+                let temp = {id:infos[i].getId(),num:i+1,cName:infos[i].getNamecn(),eName:infos[i].getNameen(),sampleCode:infos[i].getCode()}
+                result.push(temp)
+            }
+            addData(result)
+        })
+    }
+    //添加数据到数据库
+    function addDataToDB() {
+        if (lineInfo === '') return jeBox.msg($.i18n.prop('tips-db-add'),{icon:1})
+        let data = {}
+        let name = dbAddLines.val()
+        let lineData = main.chart.series(name).get_data()
+        data.zhName = $("#dbZhName").val()
+        data.enName = $("#dbEnName").val()
+        data.strSample_Code = ''
+        data.strScanMode = lineInfo.strScanMode
+        data.strWave = lineInfo.strWave
+        data.powerValue = lineInfo.powervalue
+        data.grating = lineInfo.grating
+        data.Pinhole = lineInfo.pinhole
+        data.slit = lineInfo.slit
+        data.expTime = lineInfo.ExpTime
+        data.unit = lineInfo.unit
+        data.strCenterWave = lineInfo.strCenterWave
+        data.strStartWave = lineInfo.strStartWave
+        data.strEndWave = lineInfo.strEndWave
+        data.totalnum = lineInfo.totalnum
+        data.strInterFlg = lineInfo.strInterFlg
+        data.intervaltime =lineInfo.strIntervaltime
+        data.intervalnum =lineInfo.intervalnum
+        data.pdX = lineData.x
+        data.pdY = lineData.y
+        websocket.send(funcCode.addDataToDB,data,false)
+        main.setCallbacks(funcCode.addDataToDB,rev=>{jeBox.msg($.i18n.prop('funCode-'+funcCode.addDataToDB)+$.i18n.prop('state-'+rev.getBstatus()),{icon:rev.getBstatus()?2:3})})
+        main.setCallbacks(funcCode.dbAddRepetition,rev=>{if(rev.getBstatus())jeBox.msg($.i18n.prop('tips-db-code'),{icon:1})})
+    }
+    //更新添加界面
+    function updateAddParam() {
+        dbAddLines.empty()
+        lines.forEach(cur=>{
+            dbAddLines.append('<option>'+cur.name())
+        })
+        dbAddLines.change()
+    }
+    dbAddLines.change(function () {
+        let name = $(this).val();
+        websocket.send(funcCode.getLineTitleByName, {lineName:name},false)
+        main.setCallbacks(funcCode.getLineTitleByName,rev=>{
+            let result =  rev.getTiptitle();
+            console.log(result)
+            if(result!==''){
+                 lineInfo = JSON.parse(rev.getTiptitle())
+                $("#dbPw").val(lineInfo.powervalue)
+                $("#dbExCWave").val(lineInfo.strWave)
+                $("#dbPinhole").val(lineInfo.pinhole)
+                $("#dbTime").val(lineInfo.ExpTime)
+            }
+            addChart.remove_all();
+            let data = main.chart.series(name).get_data()
+            let line =  addChart.add_series(name,0)
+            line.add_array(data.x,data.y)
+        })
+
+    })
+    //数据库计算
+    function dbCalc() {
+        let name = dbCalcLines.val()
+        if(name===null) return jeBox.msg($.i18n.prop('tips-choseOneCur'),{icon:1})
+        let org = calcChart.series(name).get_data()
+        let data = {}
+        data.calType = calcType
+        data.dbClassType = calcDbType
+        data.pdX = org.x
+        data.pdY = org.y
+        websocket.send(funcCode.Cal_DataToDB,data)
+        calcTable.setData([])
+        main.setCallbacks(funcCode.Cal_DataToDB,rev=>{
+            let lg = localStorage.getItem("lg")
+            let idArr = rev.getIdList()
+            let temp = rev.getFilenamsList()
+            let names = temp.slice(lg==="zh"?0:temp.length/2,lg==="zh"?temp.length/2:temp.length)
+            let pdy = rev.getPdyList()
+            let result = []
+            for (let i = 0; i < idArr.length; i++) {
+                let temp = {num:i+1,id:idArr[i],name:names[i],md:pdy[i].toFixed(4)}
+                result.push(temp)
+            }
+            calcTable.setData(result)
+        })
+    }
+    //更新计算界面
+    function updateCalcParam(){
+        //calcTable.setData(calcData)
+        main.translate()
+        dbCalcLines.empty()
+        lines.forEach(cur=>{dbCalcLines.append('<option>'+cur.name())})
+        dbCalcLines.change()
+    }
+    dbCalcLines.change(function () {
+        let name = $(this).val();
+        if(name ===null) return jeBox.msg($.i18n.prop('tips-choseOneCur'),{icon:1})
+        calcChart.remove_all();
+        let data = main.chart.series(name).get_data()
+        let line =  calcChart.add_series(name,0)
+        line.add_array(data.x,data.y)
+    })
+
+    $("#localDB").change(function () {
+        $("#selfDB").prop('checked',false)
+        dbType = 0
+        page = 1
+        getDbDataType()
+    })
+    $("#selfDB").change(function () {
+        $("#localDB").prop('checked',false)
+        dbType = 1
+        page = 1
+        getDbDataType()
+    })
+
+
+    $("#calcLocalDb").change(function () {
+        $("#calcSelfDb").prop('checked',false)
+        calcDbType = 0
+    })
+    $("#calcSelfDb").change(function () {
+        $("#calcLocalDb").prop('checked',false)
+        calcDbType = 1
+    })
+    $("#pure").change(function () {
+        $("#mixture").prop('checked',false)
+        calcType = 0
+    })
+    $("#mixture").change(function () {
+        $("#pure").prop('checked',false)
+        calcType = 1
+    })
+    //监听当前页数
+    function currentPage() {
+        let nowPage = parseInt($("#dbNowPage").text())
+        $('#prevPageBtn').prop("disabled",nowPage===1)
+        $('#nextPageBtn').prop('disabled',nowPage===pageCount)
+    }
+    //上一页
+    function prevPage(){
+        page--
+        selectToDB(page)
+    }
+    //下一页
+    function nextPage() {
+        page++
+        selectToDB(page)
+    }
+
+</script>

@@ -1,0 +1,409 @@
+<!--   <link rel="stylesheet" href="css/jeui/jeui.css" />-->
+    <link rel="stylesheet" href="source/font/iconfont.css" />
+    <style>
+    	div#saveFilePath{
+    		width: 945px;
+    		height: 615px;
+    		-webkit-user-select: none;
+    		user-select:none;
+    		-moz-user-select: none;
+    		-ms-user-select: none;
+    		text-align: left;
+    		color: #000000;
+    		overflow: hidden;
+    	}
+    	div#saveFilePath>div.file-title{
+    		width: 100%;
+    		height: 25px;
+    	}
+    	div#saveFilePath>div.file-title>button{
+    		height: 22px;
+    		line-height: 22px;
+    	}
+    	div#saveFilePath>div.file-title>input{
+    		width: 840px; 
+    		height: 22px; 
+    		line-height: 22px; 
+    		font-size: 12px;
+    	}
+    	div#saveFilePath>div.file-content{
+    		width: 100%;
+    		height: 495px;
+    	}
+    	div#saveFilePath>div.file-content>div.file-content-left{
+    		width: 175px;
+    		height: 100%;
+    		left: 5px;
+    		background: #FFFFFF;
+    		font-size: 12px;
+    		padding-left: 5px;
+    	}
+    	div#saveFilePath>div.file-content>div.file-content-left>div{
+    		cursor: pointer;
+    		margin-top: 5px;
+    	}
+    	div#saveFilePath>div.file-content>div.file-content-left>div i{
+    		width: 20px;
+    		display: inline-block;
+    		text-align: center;
+    	}
+    	div#saveFilePath>div.file-content>div.file-content-right{
+    		width: 750px;
+    		height: 100%;
+    		right: 5px;
+    		background: #FFFFFF;
+  			overflow-x: auto;
+  			overflow-y: auto;
+    	}
+    	div#saveFilePath>div.file-content>div.file-content-right>div{
+    		margin-left: 10px;
+    		cursor: pointer;
+    	}
+    	div#saveFilePath>div.file-content>div.file-content-right i{
+    		font-size: 20px;
+    		width: 20px;
+    		display: inline-block;
+    		text-align: center;
+    	}
+    	div#saveFilePath>div.file-content>div.file-content-right span{
+    		font-size: 20px;
+    		margin-left: 5px;
+    	}
+    	div#saveFilePath>div.file-content>div.file-hide{
+    		width: 100%;
+    		height: 100%;
+    	}
+    	div#saveFilePath div.file-show-iteam{
+    		border: 1px solid #666666;
+    	}
+    	div#saveFilePath div.file-show-iteam>div{
+    		width: 90px;
+    		height: 30px;
+    		line-height: 30px;
+    		border: 1px solid #666666;
+    		color: #FFFFFF;
+    		text-align: center;
+    		cursor: pointer;
+    		background:linear-gradient(#2274d9ff, #2274d988,#2274d9ff); 
+    	}
+    	div#saveFilePath>div.file-bottom>div{
+    		margin-top: 5px;
+    		line-height: 22px;
+    	}
+    	div#saveFilePath>div.file-bottom span{
+    		display: inline-block;
+    		width: 65px;
+    		text-align: right;
+    		margin-left: 50px;
+    		
+    	}
+    	div#saveFilePath>div.file-bottom input{
+    		width: 750px; 
+    		height: 22px; 
+    		line-height: 22px; 
+    		font-size: 12px;
+    	}
+    	div#saveFilePath>div.file-bottom select{
+    		width: 750px; 
+    		height: 22px; 
+    		line-height: 22px; 
+    		font-size: 12px;
+    	}
+    	div#saveFilePath>div.file-bottom>div.btSaveFile{
+    		text-align: right;
+    	}
+    	div#saveFilePath>div.file-bottom>div.btSaveFile>button{
+    		width: 90px;
+    		margin-right: 20px;
+    		
+    	}
+    </style>
+    <div id="saveFilePath">
+    	<div class="file-title" style="margin-left: 10px;">
+    		<button class="je-btn"><i class="je-icon je-f18">&#xe613;</i></button>
+    		<button class="je-btn"><i class="je-icon je-f18">&#xe627;</i></button>
+    		<input id="filePathShow" class="je-input" style="" disabled="disabled" />
+    	</div>
+    	<div class="file-content je-por">
+    		<div class="file-content-left je-poa"></div>
+    		<div class="file-content-right je-poa"></div>
+    		<div class="file-hide je-hide je-poa"></div>
+    		<div class="file-show-iteam je-poa je-hide">
+    			<div data-locale="popup-file-newFile">新建文件夹</div>
+    		</div>
+    	</div>
+    	<div class="file-bottom">
+    		<div class="fileName">
+    			<span class="je-ga" data-locale="popup-file-name">文件名</span>
+    			<input class="je-input" />
+    		</div>
+    		<div class="fileType">
+    			<span class="je-ga" data-locale="popup-file-saveType">保存类型</span>
+    			<select class="je-select">
+    				<option value=".txt" data-locale="popup-file-type1">文本文档(*.txt)</option>
+    				<option value=".png" data-locale="popup-file-type6">PNG文件(*.png)</option>
+    				<option value=".jpg" data-locale="popup-file-type7">JPG文件(*.jpg)</option>
+    				<option value=".csv" data-locale="popup-file-type8">CSV(逗号分割)(*.csv)</option>
+    				<option value=".hdr" data-locale="popup-file-type2">ENVI文件(*.hdr,*.raw)</option>
+<!--    				<option value=".sysp">SYSP文件(*.sysp)</option>-->
+    			</select>
+    		</div>
+    		<div class="btSaveFile">
+    			<button class="je-btn saveFile je" data-locale="popup-file-save">保存</button>
+    			<button class="je-btn cancelFile" data-locale="popup-file-cancel">取消</button>
+    		</div>
+    	</div>
+    </div>
+<script>
+	
+	// var strJson = ["C:\\Users\\Administrator\\Desktop\\","C:\\Users\\Administrator\\Downloads\\",
+	// "C:\\Users\\Administrator\\Documents\\","C:\\Users\\Administrator\\Pictures\\"];
+	var strJson = ["C:\\Users\\Lenovo\\Desktop\\","C:\\Users\\Lenovo\\Downloads\\",
+		"C:\\Users\\Lenovo\\Documents\\","C:\\Users\\Lenovo\\Pictures\\"];
+	let fileList = []
+	//---------请求根目录盘符----------------------------------------------------------
+	websocket.send(funcCode.GetDrivers,{},false)
+    main.setCallbacks(funcCode.GetDrivers,rev=>{
+		let user = rev.getStrusername()
+		strJson = strJson.map(cur=>{return cur.replace('Lenovo',user)})
+    	for (var i = 0; i < rev.getDriversList().length; i++) {
+    		strJson.push(rev.getDriversList()[i]); 
+    	}
+        updateRoot(strJson);
+    	main.translate(undefined)
+    })	
+	/**
+	 * 根文件目录
+	 * @param {Array} rootPath 根文件目录
+	 */
+	function updateRoot(rootPath){
+		for (var i = 0; i < rootPath.length; i++) {
+			var itemhtml="";
+			if (rootPath[i].indexOf("Desktop")>0) {
+				itemhtml ="<div fileUrl='"+rootPath[i]
+				+"'><i class='icon iconfont icon-shouzhuomian je-blue'></i><span data-locale='popup-file-desktop' class='je-g0'>"+
+				"桌面"+"</span></div>";
+			}else if (rootPath[i].indexOf("Downloads")>0) {
+				itemhtml ="<div fileUrl='"+rootPath[i]
+				+"'><i class='icon iconfont icon-download-1-copy je-blue'></i><span data-locale='popup-file-download' class='je-g0'>"+
+				"下载"+"</span></div>";
+			}else if (rootPath[i].indexOf("Documents")>0) {
+				itemhtml ="<div fileUrl='"+rootPath[i]
+				+"'><i class='icon iconfont icon-shiyongwendang je-yellow'></i><span data-locale='popup-file-document' class='je-g0'>"+
+				"文档"+"</span></div>";
+			}else if (rootPath[i].indexOf("Pictures")>0) {
+				itemhtml ="<div fileUrl='"+strJson[i]
+				+"'><i class='icon iconfont icon-tupian je-blue'></i><span data-locale='popup-file-image' class='je-g0'>"+
+				"图片"+"</span></div>";
+			}else{
+				itemhtml ="<div fileUrl='"+rootPath[i]
+				+"'><i class='icon iconfont icon-a-23Ecipan je-g9'></i><span class='je-g0'>"+
+				rootPath[i]+"</span></div>";
+			}
+			$("div.file-content-left").append(itemhtml); 
+		}
+		$("div.file-content-left>div").click(function(){
+			$("input#filePathShow").val($(this).attr("fileUrl"));
+			$("input#filePathShow").change();
+		});
+	}
+	/**
+	 * 
+	 * @param {Array} filePaths   文件夹数组
+	 * @param {Array} files       文件数组
+	 * @param {Boolean} isAddFile 是否更新加载文件到界面
+	 */
+	function updateFilePath(filePaths,files,isAddFile){
+		//加载文件夹
+		$("div.file-content-right").html("");
+		var itemhtml ="";
+		for (var i = 0; i < filePaths.length; i++) {
+			itemhtml ="<div fileUrl='"+filePaths[i]
+				+"'><i class='icon iconfont icon-wenjianjia je-yellow'></i><span>"+
+				filePaths[i]+"</span></div>";
+			$("div.file-content-right").append(itemhtml);
+		}
+		//加载文件
+		if(isAddFile){
+			for (var i = 0; i < files.length; i++) {
+				var iconClass ="";
+				if(files[i].lastIndexOf(".txt")>0){
+					iconClass = "icon-Txt je-blue";
+				}else if(files[i].lastIndexOf(".hdr")>0){
+					iconClass = "icon-hdr je-blue";
+				}else if(files[i].lastIndexOf(".raw")>0){
+					iconClass = "icon-raw je-blue";
+				}else if(files[i].lastIndexOf(".csv")>0){
+					iconClass = "icon-csv je-green";
+				}else if(files[i].lastIndexOf(".png")>0){
+					iconClass = "icon-tupian je-blue";
+				}else if(files[i].lastIndexOf(".jpg")>0){
+					iconClass = "icon-tupain je-blue";
+				}else{
+					iconClass = "icon-shiyongwendang je-blue";
+				}
+				itemhtml ="<div fileUrl='"+files[i]
+					+"'><i class='icon iconfont "+iconClass+"'></i><span>"+
+					files[i]+"</span></div>";
+				$("div.file-content-right").append(itemhtml);
+			}
+		}
+		$("div.file-content-right>div").dblclick(function(){
+			if ($(this).children("i").hasClass("icon-wenjianjia")) {
+				$("input#filePathShow").val($("input#filePathShow").val()+$(this).attr("fileUrl")+"\\");
+				$("input#filePathShow").change();
+			}
+		});
+		$("div.file-content-right>div").click(function(){
+			if (!$(this).children("i").hasClass("icon-wenjianjia")) {
+				$("div.fileName>input").val($(this).attr("fileUrl").split(".")[0]+"_副本");
+			}
+		});
+	}
+	
+
+	$("input#filePathShow").change(function(){
+		var fileUrl = this.value;
+		let fileType = [];
+		$(".je-select option").each(function () {
+			if ($(this).css('display') !== 'none') {
+				let idx = $(this).val().indexOf('.');
+				let temp = $(this).val().substring(idx + 1);
+				fileType.push(temp)
+				if(temp === 'hdr') fileType.push('raw')
+			}
+		})
+		//获取文件夹
+//-----------------------------------------------------------------------------
+		websocket.send(funcCode.GetDirsFiles,{path:fileUrl,suffix:fileType},false)
+        main.setCallbacks(funcCode.GetDirsFiles,rev=>{
+        	// console.log(rev);
+        	// var data = JSON.parse(rev.getTiptitle());
+        	// console.log(data);
+			// updateFilePath(data.Dirs,data.files,true);
+			fileList = rev.getFilesList()
+			updateFilePath(rev.getDirsList(),rev.getFilesList(),true);
+		})
+	});
+
+	$("div#saveFilePath").get(0).oncontextmenu=function(event){
+		event.preventDefault();	
+	}
+	$("div.file-content-right").on("mousedown",function(e){
+		if (e.button==2) {
+			$("div.file-hide").removeClass("je-hide");
+		}else{
+			$("div.file-show-iteam").addClass("je-hide");
+		}
+	});
+	
+	$("div.file-hide").on("mouseup",function(e){
+		
+		if (e.button==2) {
+			
+			$("div.file-show-iteam").removeClass("je-hide");
+			console.log(e);
+			$("div.file-show-iteam").css("top",e.offsetY);
+			$("div.file-show-iteam").css("left",e.offsetX);
+			event.stopPropagation();
+		}else{
+			$("div.file-show-iteam").addClass("je-hide");
+		}
+		$("div.file-hide").addClass("je-hide");
+	});
+	$("div.file-title>button").click(function(event){
+		var indexButton = $(this).index("div.file-title>button");
+		switch (indexButton){
+			case 0:
+				var filePathName = $("input#filePathShow").val();
+				filePathName = filePathName.substr(0,filePathName.length-1);
+				if (filePathName.lastIndexOf("\\")>=0) {
+					filePathName = filePathName.substring(0,filePathName.lastIndexOf("\\")+1);
+					$("input#filePathShow").val(filePathName);
+				}
+				
+				break;
+			case 1:
+				$($("div.file-content-left>div").get(0)).click();
+				break;
+		}
+		$("input#filePathShow").change();
+		event.stopPropagation();
+	});
+	$("div.file-show-iteam>div").click(function(){
+		$("div.file-show-iteam").addClass("je-hide");
+		switch ($(this).html()){
+			case "新建文件夹":
+				var itemhtml ="<div fileUrl='新建文件夹'>"+
+				"<i class='icon iconfont icon-wenjianjia je-yellow'></i>"+
+				"<input class='je-ga' value='新建文件夹'/></div>";
+				$(itemhtml).appendTo("div.file-content-right");
+				$(itemhtml)
+				$("div.file-content-right input").change(function(){
+					var fileName = $(this).val();
+					$(this).parent().append("<span>"+fileName+"</span>");
+					$(this).parent().attr("fileUrl",fileName);
+					$(this).parent().dblclick(function(){
+						if ($(this).children("i").hasClass("icon-wenjianjia")) {
+							$("input#filePathShow").val($("input#filePathShow").val()+$(this).attr("fileUrl")+"\\");
+							$("input#filePathShow").change();
+						}
+					});
+					$(this).detach();
+					//新建文件夹
+					var filePath = $("input#filePathShow").val()+fileName;
+					console.log(filePath);
+//--------------------------------------------------------------------------------------------------------------					
+					websocket.send(funcCode.MakeDir,{path:filePath},false);
+					main.setCallbacks(funcCode.MakeDir,rev=>{
+						console.log(rev.getBstatus());
+			        })
+				});
+				break;
+		}
+	});
+	$("div.btSaveFile>button").click(function(){
+		if ($(this).index("div.btSaveFile>button")==0) {
+			var filePath = $("input#filePathShow").val();
+			var fileType = $("div.fileType select").val();
+			var fileName = $("div.fileName>input").val();
+			if(fileName=="")return;
+			if (fileName.indexOf(' ')!==(-1))return jeBox.msg($.i18n.prop('tips-openFile-empty'),{icon:1})
+			if (fileName.indexOf('.')!==(-1))return jeBox.msg($.i18n.prop('tips-openFile-point'),{icon:1})
+			if (fileList.includes(fileName + '.txt'))  return  jeBox.open({
+				title:' ',
+				content: $.i18n.prop('tips-saveFile-isExist'),
+				boxSize:['270px','100px'],
+				maskClose: false,
+				closeBtn:false,
+				btnAlign:"center",
+				button: [ {
+					name: $.i18n.prop('popup-confirm'),
+					callback: function(index, id){
+						fileName = fileName.replace(fileType,"").replace(/\s*/g,"")+fileType;
+						//保存文件
+						main.saveFilePath=filePath+fileName;
+						main.isOpenChecked = true;
+						jeBox.close(index);
+						//关闭窗口
+						$('#saveFilePath').parents("div.jeBox-anim").find("a.jeBox-close").click();
+					}
+				},{
+					name: $.i18n.prop('popup-cancel'),
+					callback: function(index, id){
+					  return  jeBox.close(index);
+					}
+				}
+				]
+			});
+
+			fileName = fileName.replace(fileType,"").replace(/\s*/g,"")+fileType;
+			//保存文件
+			main.saveFilePath=filePath+fileName;
+			main.isOpenChecked = true;
+				
+		}
+		//关闭窗口
+		$(this).parents("div.jeBox-anim").find("a.jeBox-close").click();
+	});
+</script>

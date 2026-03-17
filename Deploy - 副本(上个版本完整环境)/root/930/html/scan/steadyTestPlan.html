@@ -1,0 +1,155 @@
+<style>
+    #sTPDiv{
+        width: 100%;
+        height: 100%;
+        display: inline-flex;
+    }
+    .sTPDiv1{
+        width: 50%;
+        display: inline-flex;
+        flex-direction: column;
+    }
+    .sTPDiv1 b{
+        font-size: 18px;
+    }
+    .sTPDiv1 div{
+        display: inline-flex;
+        margin-top: 10px;
+    }
+    .sTPDiv1 div  span{
+        width: 40%;
+        text-align: right;
+        margin-right: 10px;
+    }
+    .sTPDiv1 div  select{
+        width: 40%;
+    }
+    .sTPDiv1 div  input[type=text]{
+        width: 40%;
+    }
+    .sTPDiv1 div button{
+        width: 80%;
+    }
+</style>
+<div id="sTPDiv">
+    <div class="sTPDiv1">
+        <b data-locale="main-tools-steadyScan">稳定性测试</b>
+        <div>
+            <span data-locale="main-test-excWave">激发波长:</span>
+            <input type="text" id="sTPExCWave" disabled>
+        </div>
+        <div>
+            <span data-locale="main-test-pinhole">针孔尺寸:</span>
+            <input type="text" id="sTPPinhole" disabled>
+            &nbsp;μm
+        </div>
+        <div>
+            <span data-locale="main-test-slit">狭缝:</span>
+            <input type="text" id="sTPSlit" disabled>
+            &nbsp;μm
+        </div>
+        <div>
+            <span data-locale="main-SteadyTest-interval">间隔</span>
+            <input type="checkbox" id="sTPInterval" class="custom-checkbox" style="width: 24px;height: 24px" disabled>
+        </div>
+        <div>
+            <span data-locale="main-SteadyTest-intervalTime">间隔时间:</span>
+            <input type="text" id="sTPIt" disabled>
+            &nbsp;s
+        </div>
+        <div>
+            <span data-locale="main-SteadyTest-intervalTimes">次数:</span>
+            <input type="text" id="sTPIn" disabled>
+        </div>
+        <div>
+            <span data-locale="main-test-total">累计次数:</span>
+            <input type="text" id="sTPCn" disabled>
+        </div>
+    </div>
+    <div class="sTPDiv1">
+        <b>A2</b>
+        <div>
+            <span data-locale="main-test-power">功率:</span>
+            <input type="text" id="sTPPowerValue"  disabled>
+            &nbsp;mw
+        </div>
+        <div>
+            <span data-locale="main-test-grating">光栅:</span>
+            <input type="text" id="sTPGrating" disabled>
+        </div>
+        <div>
+            <span data-locale="main-test-expTime">积分时间:</span>
+            <input type="text" id="sTPExp" disabled>
+            &nbsp;s
+        </div>
+        <div>
+            <span data-locale="main-SteadyTest-centerWave">中心波长:</span>
+            <input type="text" id="sTPCw" disabled>
+            <span id="sWaveUnit" style="width: auto;margin-right: 0;margin-left: 4px;">nm</span>
+        </div>
+        <div style="justify-content: center">
+            <button data-locale="popup-testPlan-apply" type="button" class="btn btn-secondary btn-sm" onclick="applySteadyPlan()">应用</button>
+        </div>
+    </div>
+</div>
+<script>
+    function initTestBox(tag) {
+        let name = $(tag).text()
+        console.log(name);
+        deviceControl.getTestScheme({'funnm':0,"name":name})
+        main.setCallbacks(funcCode.GetTestScheme,updateSTPParam)
+    }
+    function applySteadyPlan() {
+        let unit = $("#sWaveUnit").text()
+        if (fConfig.waveunit !== unit) return jeBox.msg($.i18n.prop('tips-testPlan-msg'), {icon: 1})
+        let data = {
+            funNm:0,
+            excWave: "空",
+            powerValue:'',
+            pinhole:0,
+            grating:"grating",
+            slit:0,
+            expTime:'',
+            centerWave:0,
+            waveUnit:"nm",
+            intervalFlag:false,
+            intervalTime:0,
+            intervalNum:0,
+            spectrumFrom:'',
+            spectrumTo:'',
+            totalNum:0
+        }
+        data.excWave = fConfig.excwave =  $("#sTPExCWave").val()
+        data.powerValue = fConfig.powervalue = $("#sTPPowerValue").val()
+        data.pinhole = fConfig.pinhole = Number($("#sTPPinhole").val())
+        data.grating = fConfig.grating = $("#sTPGrating").val()
+        data.slit = fConfig.slit = Number($("#sTPSlit").val())
+        data.expTime = fConfig.expTime = $("#sTPExp").val()
+        data.intervalFlag = fConfig.intervalflag = $("#sTPInterval").prop('checked')
+        data.intervalTime = fConfig.intervaltime = Number($("#sTPIt").val())
+        data.intervalNum = fConfig.intervalnum = Number($("#sTPIn").val())
+        data.centerWave = fConfig.centerwave = Number($("#sTPCw").val())
+        fConfig.steadyUnit= unit
+        fConfig.steadyCenter = Number($("#sTPCw").val())
+        data.waveUnit = fConfig.waveunit = unit
+        data.totalNum = fConfig.totalnum = Number($("#sTPCn").val())
+        deviceControl.applyTestPlan(data)
+        
+        
+       // $("#steadyEW").val($("#sTPExCWave").val());
+    }
+    function updateSTPParam(rev) {
+        $("#sTPExCWave").val(rev.getExcwave())
+        $("#sTPPowerValue").val(rev.getPowervalue())
+        $("#sTPPinhole").val(rev.getPinholenm())
+        $("#sTPGrating").val(rev.getGrating())
+        $("#sTPSlit").val(rev.getSlit())
+        $("#sTPExp").val(rev.getExptime())
+        $("#sTPCw").val(rev.getCenterwave().toFixed(2))
+        $("#sWaveUnit").text(rev.getWaveunit())
+        $("#sTPInterval").prop("checked",rev.getIntervalflag())
+        $("#sTPIt").val(rev.getIntervaltime())
+        $("#sTPIn").val(rev.getIntervalnum())
+        $("#sTPCn").val(rev.getTotalnum())
+    }
+</script>
