@@ -1,9 +1,11 @@
 #pragma once
 #include <windows.h>
 #include <QtWidgets/QMainWindow>
+#include <QString>
 #include "ui_Finder930QTMYV2.h"
 
 class ConnectDialog;
+class QTimer;
 
 class Finder930QTMYV2 : public QMainWindow
 {
@@ -44,9 +46,16 @@ public:
 
 public:
     void log(const QString& msg);
+    void onCcdConnectionChanged(bool connected);
 private slots:
     void onConnect();
+    void updateCcdTemperature();
 
 private:
+    bool readCcdTemperature(double& outTempC) const;
+    void resetTitle();
+
     Ui::Finder930QTMYV2Class ui;
+    QString m_baseTitle;
+    QTimer* m_ccdTempTimer = nullptr;
 };

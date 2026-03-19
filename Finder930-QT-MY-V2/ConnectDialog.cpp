@@ -185,6 +185,7 @@ void ConnectDialog::onCcdConnect()
         m_ccdConnBtn->setEnabled(false);
         m_ccdDiscBtn->setEnabled(true);
         m_main->log("CCD (A4) connected");
+        m_main->onCcdConnectionChanged(true);
     }
     else {
         m_main->log("CCD (A4) connect FAILED");
@@ -209,6 +210,7 @@ void ConnectDialog::onCcdDisconnect()
     m_ccdConnBtn->setEnabled(true);
     m_ccdDiscBtn->setEnabled(false);
     m_main->log("CCD (A4) disconnected");
+    m_main->onCcdConnectionChanged(false);
 }
 void ConnectDialog::onLaserConnect()
 {
@@ -499,30 +501,55 @@ void ConnectDialog::onMotorConnect()
         }
     }
 
+    // 按旧930脚本 BussiNumber=23 顺序执行：
+    // FunNum=4(连接) -> FunNum=2(激光器切换,0) -> FunNum=7(反射镜角度,1)
     typedef bool (*Fn_InitDll)(int&, const char*);
     typedef bool (*Fn_Connect)(char*);
+    typedef bool (*Fn_SetLaserMotor)(int);
+    typedef bool (*Fn_SetRefMotor)(int);
+    typedef bool (*Fn_Disconnect)();
 
     auto InitDll = (Fn_InitDll)GetProcAddress(m_main->m_hMotorDll, "zl_InitDll");
-    auto MotorConnect = (Fn_Connect)GetProcAddress(m_main->m_hMotorDll,
-        "zl_enum_connect");
+    auto MotorConnect = (Fn_Connect)GetProcAddress(m_main->m_hMotorDll, "zl_enum_connect");
+    auto SetLaserMotor = (Fn_SetLaserMotor)GetProcAddress(m_main->m_hMotorDll, "zl_set_laser_motor");
+    auto SetRefMotor = (Fn_SetRefMotor)GetProcAddress(m_main->m_hMotorDll, "zl_set_ref_motor");
+    auto MotorDisconnect = (Fn_Disconnect)GetProcAddress(m_main->m_hMotorDll, "zl_enum_disconnect");
 
-    if (!InitDll || !MotorConnect) {
+    if (!InitDll || !MotorConnect || !SetLaserMotor || !SetRefMotor || !MotorDisconnect) {
         m_main->log("Motor GetProcAddress FAILED");
         return;
     }
 
     int nVer = 0;
-    InitDll(nVer, "");
+    if (!InitDll(nVer, "")) {
+        m_main->log("Motor InitDll FAILED");
+        return;
+    }
 
-    if (MotorConnect((char*)"123456")) {
-        m_main->m_motorConnected = true;
-        m_motorConnBtn->setEnabled(false);
-        m_motorDiscBtn->setEnabled(true);
-        m_main->log("Motor connected (SN:123456)");
+    char sn[] = "123456";
+    if (!MotorConnect(sn)) {
+        m_main->log("Motor connect FAILED (SN:123456)");
+        return;
     }
-    else {
-        m_main->log("Motor connect FAILED");
+
+    // FunNum=2: 控制激光器切换，旧脚本固定传0
+    if (!SetLaserMotor(0)) {
+        m_main->log("Motor init FAILED at set_laser_motor(0)");
+        MotorDisconnect();
+        return;
     }
+
+    // FunNum=7: 设置反射镜角度，旧脚本固定传1
+    if (!SetRefMotor(1)) {
+        m_main->log("Motor init FAILED at set_ref_motor(1)");
+        MotorDisconnect();
+        return;
+    }
+
+    m_main->m_motorConnected = true;
+    m_motorConnBtn->setEnabled(false);
+    m_motorDiscBtn->setEnabled(true);
+    m_main->log("Motor connected and initialized (SN:123456, laserMode=0, refMode=1)");
 }
 void ConnectDialog::onMotorDisconnect()
 {
@@ -532,14 +559,20 @@ void ConnectDialog::onMotorDisconnect()
     }
 
     typedef bool (*Fn_Disconnect)();
-    auto MotorDisconnect = (Fn_Disconnect)GetProcAddress(m_main->m_hMotorDll,
-        "zl_enum_disconnect");
-    if (MotorDisconnect) MotorDisconnect();
+    auto MotorDisconnect = (Fn_Disconnect)GetProcAddress(m_main->m_hMotorDll, "zl_enum_disconnect");
+    if (MotorDisconnect) {
+        if (MotorDisconnect()) {
+            m_main->log("Motor disconnected");
+        } else {
+            m_main->log("Motor disconnect FAILED");
+        }
+    } else {
+        m_main->log("Motor disconnect: API not ready");
+    }
 
     m_main->m_motorConnected = false;
     m_motorConnBtn->setEnabled(true);
     m_motorDiscBtn->setEnabled(false);
-    m_main->log("Motor disconnected");
 }
 
 void ConnectDialog::onCameraConnect()
