@@ -2,6 +2,8 @@
 #include <windows.h>
 #include <QtWidgets/QMainWindow>
 #include <QString>
+#include <QStringList>
+#include <QVector>
 #include "ui_Finder930QTMYV2.h"
 
 class ConnectDialog;
@@ -18,6 +20,11 @@ public:
     // Spectrometer
     HMODULE m_hSpecDll = nullptr;
     int m_specHandle = -1;
+    QString m_slitType;         // 狭缝型号, 如 "SR-SLIT" / "SLIT-I24"
+    int m_slitMaxWidth = 3000;  // 狭缝最大宽度(um), 由型号决定
+    QVector<int> m_slitIndices; // 已安装狭缝索引列表
+    QStringList m_gratings;     // 光栅列表, 如 "1-G1800B500", "2-G600B500"
+    int m_currentGrating = 0;   // 当前光栅序号(从1起)
 
     // CCD (Andor)
     HMODULE m_hDfieldDll = nullptr;

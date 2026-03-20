@@ -117,6 +117,7 @@ void ConnectDialog::onSpecConnect()
     typedef bool (*Fn_spec_move_to_wave)(int, float);
     typedef bool (*Fn_spec_is_setup_slit)(int, int, bool*);
     typedef bool (*Fn_spec_set_slit_width)(int, int, int);
+    typedef bool (*Fn_spec_get_slit_model)(int, int, char*);
 
     auto specOpen = (Fn_spec_open)GetProcAddress(m_main->m_hSpecDll, "spec_open");
     auto specClose = (Fn_spec_close)GetProcAddress(m_main->m_hSpecDll, "spec_close");
@@ -132,10 +133,11 @@ void ConnectDialog::onSpecConnect()
     auto moveToWave = (Fn_spec_move_to_wave)GetProcAddress(m_main->m_hSpecDll, "spec_move_to_wave");
     auto isSetupSlit = (Fn_spec_is_setup_slit)GetProcAddress(m_main->m_hSpecDll, "spec_is_setup_slit");
     auto setSlitWidth = (Fn_spec_set_slit_width)GetProcAddress(m_main->m_hSpecDll, "spec_set_slit_width");
+    auto getSlitModel = (Fn_spec_get_slit_model)GetProcAddress(m_main->m_hSpecDll, "spec_get_slit_model");
 
     if (!specOpen || !specClose || !isSetupShutter || !getShutterStatus || !isSetupMirror ||
         !getEntrancePort || !setCcdMode || !getGratingCount || !getGratingInfo || !getGrating ||
-        !getMaxWavelength || !moveToWave || !isSetupSlit || !setSlitWidth) {
+        !getMaxWavelength || !moveToWave || !isSetupSlit || !setSlitWidth || !getSlitModel) {
         m_main->log("Spectrometer GetProcAddress FAILED");
         return;
     }
@@ -203,6 +205,7 @@ void ConnectDialog::onSpecConnect()
     }
 
     // 3.4 读取光栅信息 -> 当前光栅 -> 当前光栅最大波长
+    m_main->m_gratings.clear();
     short gratingCount = 0;
     if (getGratingCount(m_main->m_specHandle, &gratingCount) && gratingCount > 0) {
         m_main->log(QString("Spectrometer get_grating_count SUCCESS: %1").arg(gratingCount));
@@ -210,6 +213,7 @@ void ConnectDialog::onSpecConnect()
             int groove = 0;
             long blaze = 0;
             if (getGratingInfo(m_main->m_specHandle, g, &groove, &blaze)) {
+                m_main->m_gratings.append(QString("%1-G%2B%3").arg(g).arg(groove).arg(blaze));
                 m_main->log(QString("Grating %1: groove=%2, blaze=%3").arg(g).arg(groove).arg(blaze));
             }
         }
@@ -225,6 +229,7 @@ void ConnectDialog::onSpecConnect()
         m_main->log("Spectrometer init FAILED at get_grating");
     }
     else {
+        m_main->m_currentGrating = currentGrating;
         m_main->log(QString("Spectrometer get_grating SUCCESS: %1").arg(currentGrating));
     }
 
@@ -249,7 +254,7 @@ void ConnectDialog::onSpecConnect()
         m_main->log(QString("Spectrometer move_to_wave SUCCESS: %1").arg(centerWave));
     }
 
-    // 3.6 查询狭缝安装（0~3），已安装狭缝设置默认宽度
+    // 3.6 查询狭缝安装（0~3）
     std::vector<int> slits;
     for (int idx = 0; idx <= 3; ++idx) {
         bool installed = false;
@@ -257,6 +262,32 @@ void ConnectDialog::onSpecConnect()
             slits.push_back(idx);
         }
     }
+    m_main->m_slitIndices.clear();
+    for (int s : slits) {
+        m_main->m_slitIndices.append(s);
+    }
+    if (slits.empty()) {
+        m_main->log("Slit query OK: installed=0");
+    }
+
+    // 3.7 读取狭缝型号（用第一个已安装狭缝的型号决定最大宽度）
+    if (!slits.empty()) {
+        char model[64] = { 0 };
+        if (getSlitModel(m_main->m_specHandle, slits[0], model)) {
+            m_main->m_slitType = QString::fromLocal8Bit(model).trimmed();
+            if (m_main->m_slitType == "SLIT-I24") {
+                m_main->m_slitMaxWidth = 24000;
+            } else {
+                m_main->m_slitMaxWidth = 3000;
+            }
+            m_main->log(QString("Slit model: \"%1\", maxWidth=%2um")
+                .arg(m_main->m_slitType).arg(m_main->m_slitMaxWidth));
+        } else {
+            m_main->log("Slit model query FAILED, using default maxWidth=3000um");
+        }
+    }
+
+    // 3.8 已安装狭缝设置默认宽度
     const int defaultSlitWidthUm = 100;
     for (int idx : slits) {
         if (!(setSlitWidth(m_main->m_specHandle, idx, defaultSlitWidthUm) ||
@@ -268,9 +299,6 @@ void ConnectDialog::onSpecConnect()
             m_main->log(QString("Spectrometer set_slit_width SUCCESS: idx=%1, width=%2um")
                 .arg(idx).arg(defaultSlitWidthUm));
         }
-    }
-    if (slits.empty()) {
-        m_main->log("Slit query OK: installed=0");
     }
 
     if (!initOk) {

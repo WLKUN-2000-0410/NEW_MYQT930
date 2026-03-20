@@ -109,9 +109,7 @@
   <ItemGroup>
     <QtMoc Include="ConnectDialog.h" />
     <QtMoc Include="qcustomplot.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="StabilityTestDialog.h" />
+    <QtMoc Include="StabilityTestDialog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

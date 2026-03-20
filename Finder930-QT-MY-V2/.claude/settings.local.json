@@ -12,7 +12,11 @@
       "Bash(ls -lh \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/New-Test-903-V2/Finder930-QT-MY-V2/Release/\" | grep \"\\\\.dll$\")",
       "Bash(ls \"C:/Users/18769/Pictures/Snipaste\"* 2>/dev/null; ls \"C:/Users/18769/Desktop/Snipaste\"* 2>/dev/null; ls \"C:/Users/18769/Documents/Snipaste\"* 2>/dev/null)",
       "Bash(find \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/Finder930_20260317/finder930v2/alt_service\" -name \"*.js\" -type f | xargs grep -l \"deviceControl\\\\|setEW\\\\|setPower\" | head -10)",
-      "Bash(find \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/Finder930_20260317/finder930v2/alt_service\" -name \"*.js\" | xargs grep -l \"eWS\\\\s*:\" | head -5)"
+      "Bash(find \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/Finder930_20260317/finder930v2/alt_service\" -name \"*.js\" | xargs grep -l \"eWS\\\\s*:\" | head -5)",
+      "Bash(grep -r \"getPinholeInfos\\\\|g_map_pinholeInfos\" \"D:\\\\01_PROJECT\\\\01_VS\\\\01_WORK\\\\16-Finder930\\\\Finder930_20260317\" --include=\"*.h\" --include=\"*.cpp\" 2>/dev/null | head -20)",
+      "Bash(find \"D:\\\\01_PROJECT\\\\01_VS\\\\01_WORK\\\\16-Finder930\\\\Finder930_20260317\" -name \"*.h\" -o -name \"*.cpp\" 2>/dev/null | xargs grep -l \"g_map_pinholeInfos\" 2>/dev/null)",
+      "Bash(grep -r \"g_map_pinholeInfos\" \"D:\\\\01_PROJECT\\\\01_VS\\\\01_WORK\\\\16-Finder930\\\\Finder930_20260317\" --include=\"*.h\" 2>/dev/null | head -5)",
+      "Bash(find \"D:\\\\01_PROJECT\\\\01_VS\\\\01_WORK\\\\16-Finder930\\\\Finder930_20260317/finder930v2/alt_service/bin/root/930/js\" -name \"*.js\" -type f 2>/dev/null | head -20)"
     ]
   }
 }
