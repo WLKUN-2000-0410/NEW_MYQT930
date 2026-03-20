@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/Finder930_20260317/finder930v2/engine\" -type f \\\\\\( -name \"*.h\" -o -name \"*.hpp\" -o -name \"*.cpp\" -o -name \"*.proto\" \\\\\\) 2>/dev/null | grep -v \"^\\\\.\" | sort)",
+      "Bash(find \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/Finder930_20260317/finder930v2/app\" -type f \\\\\\( -name \"*.h\" -o -name \"*.cpp\" \\\\\\) 2>/dev/null | head -20)",
+      "Bash(grep -r \"revWebStr\\\\|on_local_message\\\\|on_message_cb\" \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/Finder930_20260317/finder930v2\" --include=\"*.cpp\" --include=\"*.h\" 2>/dev/null | head -20)",
+      "Bash(grep -r \"set_on_message_callback\\\\|_on_msg_cb\" \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/Finder930_20260317/finder930v2\" --include=\"*.cpp\" --include=\"*.h\" 2>/dev/null | head -20)",
+      "Bash(find \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/Finder930_20260317/finder930v2\" -name \"README*\" -o -name \"*.md\" -o -name \"*.txt\" 2>/dev/null | head -10)",
+      "Bash(cat << 'EOF'\n# FINDER930 HARDWARE DEVICE AND DLL MAPPING - COMPLETE INVENTORY\n\n## DIRECTORY STRUCTURE\nEngine Device Directory: D:/01_PROJECT/01_VS/01_WORK/16-Finder930/Finder930_20260317/finder930v2/engine/device/\nAlternative Service Directory: D:/01_PROJECT/01_VS/01_WORK/16-Finder930/Finder930_20260317/finder930v2/alt_service/\n\nDevice Categories:\n├── DA \\(Data Acquisition\\): Cameras, DCS \\(Lock-in Amplifiers\\), Meters, Power Meters\n└── SPEC \\(Spectrometer\\): Omni, VPH\n\nAll DLL loading uses:\n- LoadLibraryA\\(dll_path\\) for manual loading\n- GetProcAddress\\(\\) to get function pointers\n- FreeLibrary\\(\\) for cleanup\nEOF)",
+      "Bash(find \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/New-Test-903-V2/\" -maxdepth 2 -type f \\\\\\( -name \"*.dll\" -o -name \"*.ini\" -o -name \"*.cfg\" -o -name \"*.conf\" \\\\\\) 2>/dev/null | sort)",
+      "Bash(ls -la \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/New-Test-903-V2/Finder930-QT-MY-V2/Release/\" | grep -E \"\\\\.\\(dll|ini|cfg\\)$\")",
+      "Bash(ls -lh \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/New-Test-903-V2/Finder930-QT-MY-V2/Release/\" | grep \"\\\\.dll$\")",
+      "Bash(ls \"C:/Users/18769/Pictures/Snipaste\"* 2>/dev/null; ls \"C:/Users/18769/Desktop/Snipaste\"* 2>/dev/null; ls \"C:/Users/18769/Documents/Snipaste\"* 2>/dev/null)",
+      "Bash(find \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/Finder930_20260317/finder930v2/alt_service\" -name \"*.js\" -type f | xargs grep -l \"deviceControl\\\\|setEW\\\\|setPower\" | head -10)",
+      "Bash(find \"D:/01_PROJECT/01_VS/01_WORK/16-Finder930/Finder930_20260317/finder930v2/alt_service\" -name \"*.js\" | xargs grep -l \"eWS\\\\s*:\" | head -5)"
+    ]
+  }
+}

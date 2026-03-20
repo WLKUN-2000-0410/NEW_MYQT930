@@ -1,8 +1,11 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QDialog>
+#include <QString>
 
 class QCustomPlot;
+class QComboBox;
+class Finder930QTMYV2;
 
 class StabilityTestDialog : public QDialog
 {
@@ -10,6 +13,12 @@ public:
     explicit StabilityTestDialog(QWidget* parent = nullptr);
 
 private:
-    QCustomPlot* m_plot = nullptr;  //Í¼±ê¿Ø¼þ
-    void initSpectrumPlot();        //³õÊ¼»¯Í¼±í
+    void onExcitationWaveChanged(const QString& waveText);
+private:
+    Finder930QTMYV2* m_main = nullptr;
+    QCustomPlot* m_plot = nullptr;  // chart widget
+    QComboBox* m_excCombo = nullptr;
+    QComboBox* m_powerCombo = nullptr;
+    QString m_lastExcWave = "none";
+    void initSpectrumPlot();
 };
