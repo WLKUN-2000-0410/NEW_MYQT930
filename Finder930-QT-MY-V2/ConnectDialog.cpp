@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QCoreApplication>
 #include <QMessageBox>
+#include <vector>
 
 ConnectDialog::ConnectDialog(Finder930QTMYV2* mainWin, QWidget* parent)
     : QDialog(parent), m_main(mainWin)
@@ -87,6 +88,11 @@ ConnectDialog::ConnectDialog(Finder930QTMYV2* mainWin, QWidget* parent)
 
 void ConnectDialog::onSpecConnect()
 {
+    if (m_main->m_specHandle >= 0) {
+        m_main->log("Spectrometer already connected");
+        return;
+    }
+
     if (!m_main->m_hSpecDll) {
         QString path = QCoreApplication::applicationDirPath() + "/spectrometer_x86.dll";
         m_main->m_hSpecDll = LoadLibraryA(path.toLocal8Bit().constData());
@@ -96,26 +102,204 @@ void ConnectDialog::onSpecConnect()
         }
     }
 
+    // 1) 谱仪初始化用到的最小接口集合（按旧930连接脚本顺序）
     typedef int (*Fn_spec_open)(const char*);
-    auto specOpen = (Fn_spec_open)GetProcAddress(m_main->m_hSpecDll, "spec_open");
-    if (!specOpen) { m_main->log("GetProcAddress spec_open FAILED"); return; }
+    typedef bool (*Fn_spec_close)(int);
+    typedef bool (*Fn_spec_is_setup_shutter)(int, int, bool*);
+    typedef bool (*Fn_spec_get_shutter_status)(int, int, bool*);
+    typedef bool (*Fn_spec_is_setup_mirror)(int, int, bool*);
+    typedef bool (*Fn_spec_get_entrance_port)(int, bool*);
+    typedef bool (*Fn_spec_set_ccd_mode)(int, bool);
+    typedef bool (*Fn_spec_get_grating_count)(int, short*);
+    typedef bool (*Fn_spec_get_grating_info)(int, int, int*, long*);
+    typedef bool (*Fn_spec_get_grating)(int, int*);
+    typedef bool (*Fn_spec_get_max_wavelength)(int, int, float*);
+    typedef bool (*Fn_spec_move_to_wave)(int, float);
+    typedef bool (*Fn_spec_is_setup_slit)(int, int, bool*);
+    typedef bool (*Fn_spec_set_slit_width)(int, int, int);
 
+    auto specOpen = (Fn_spec_open)GetProcAddress(m_main->m_hSpecDll, "spec_open");
+    auto specClose = (Fn_spec_close)GetProcAddress(m_main->m_hSpecDll, "spec_close");
+    auto isSetupShutter = (Fn_spec_is_setup_shutter)GetProcAddress(m_main->m_hSpecDll, "spec_is_setup_shutter");
+    auto getShutterStatus = (Fn_spec_get_shutter_status)GetProcAddress(m_main->m_hSpecDll, "spec_get_shutter_status");
+    auto isSetupMirror = (Fn_spec_is_setup_mirror)GetProcAddress(m_main->m_hSpecDll, "spec_is_setup_mirror");
+    auto getEntrancePort = (Fn_spec_get_entrance_port)GetProcAddress(m_main->m_hSpecDll, "spec_get_entrance_port");
+    auto setCcdMode = (Fn_spec_set_ccd_mode)GetProcAddress(m_main->m_hSpecDll, "spec_set_ccd_mode");
+    auto getGratingCount = (Fn_spec_get_grating_count)GetProcAddress(m_main->m_hSpecDll, "spec_get_grating_count");
+    auto getGratingInfo = (Fn_spec_get_grating_info)GetProcAddress(m_main->m_hSpecDll, "spec_get_grating_info");
+    auto getGrating = (Fn_spec_get_grating)GetProcAddress(m_main->m_hSpecDll, "spec_get_grating");
+    auto getMaxWavelength = (Fn_spec_get_max_wavelength)GetProcAddress(m_main->m_hSpecDll, "spec_get_max_wavelength");
+    auto moveToWave = (Fn_spec_move_to_wave)GetProcAddress(m_main->m_hSpecDll, "spec_move_to_wave");
+    auto isSetupSlit = (Fn_spec_is_setup_slit)GetProcAddress(m_main->m_hSpecDll, "spec_is_setup_slit");
+    auto setSlitWidth = (Fn_spec_set_slit_width)GetProcAddress(m_main->m_hSpecDll, "spec_set_slit_width");
+
+    if (!specOpen || !specClose || !isSetupShutter || !getShutterStatus || !isSetupMirror ||
+        !getEntrancePort || !setCcdMode || !getGratingCount || !getGratingInfo || !getGrating ||
+        !getMaxWavelength || !moveToWave || !isSetupSlit || !setSlitWidth) {
+        m_main->log("Spectrometer GetProcAddress FAILED");
+        return;
+    }
+
+    // 打印当前实际加载DLL路径，便于确认运行环境
+    char dllPath[MAX_PATH] = { 0 };
+    if (GetModuleFileNameA(m_main->m_hSpecDll, dllPath, MAX_PATH) > 0) {
+        m_main->log(QString("Spectrometer DLL loaded: %1").arg(QString::fromLocal8Bit(dllPath)));
+    }
+
+    // 2) 连接谱仪（旧软件设备选择：SR-5801）
     m_main->m_specHandle = specOpen("SR-5801");
-    if (m_main->m_specHandle >= 0) {
-        m_specConnBtn->setEnabled(false);
-        m_specDiscBtn->setEnabled(true);
-        m_main->log("Spectrometer connected (SR-5801)");
+    if (m_main->m_specHandle < 0) {
+        m_main->log("Spectrometer open FAILED");
+        return;
+    }
+    m_main->log("Spectrometer connected (SR-5801)");
+
+    // 3) 初始化流程（复刻旧930 BussiNumber=19的关键动作）
+    bool initOk = true;
+
+    // 3.1 查询快门安装（0~3），并读取已安装快门状态
+    std::vector<int> shutters;
+    for (int idx = 0; idx <= 3; ++idx) {
+        bool installed = false;
+        if (isSetupShutter(m_main->m_specHandle, idx, &installed) && installed) {
+            shutters.push_back(idx);
+        }
+    }
+    for (int idx : shutters) {
+        bool opened = false;
+        if (getShutterStatus(m_main->m_specHandle, idx, &opened)) {
+            m_main->log(QString("Shutter idx=%1 status=%2").arg(idx).arg(opened ? "OPEN" : "CLOSE"));
+        }
+    }
+    if (shutters.empty()) {
+        m_main->log("Shutter query OK: installed=0");
+    }
+
+    // 3.2 查询摆镜安装（旧脚本固定查0、1），读取当前入口直/侧
+    std::vector<int> mirrors;
+    for (int idx = 0; idx <= 1; ++idx) {
+        bool installed = false;
+        if (isSetupMirror(m_main->m_specHandle, idx, &installed) && installed) {
+            mirrors.push_back(idx);
+        }
+    }
+    if (!mirrors.empty()) {
+        bool entranceIsSide = false;
+        if (getEntrancePort(m_main->m_specHandle, &entranceIsSide)) {
+            m_main->log(QString("Mirror entrance port: %1").arg(entranceIsSide ? "SIDE" : "STRAIGHT"));
+        }
     }
     else {
-        m_main->log("Spectrometer open FAILED");
+        m_main->log("Mirror query OK: installed=0");
+    }
+
+    // 3.3 设置谱仪为CCD搭配模式（失败重试一次）
+    if (!(setCcdMode(m_main->m_specHandle, true) || (Sleep(120), setCcdMode(m_main->m_specHandle, true)))) {
+        initOk = false;
+        m_main->log("Spectrometer init FAILED at set_ccd_mode(true)");
+    }
+    else {
+        m_main->log("Spectrometer set_ccd_mode(true) SUCCESS");
+    }
+
+    // 3.4 读取光栅信息 -> 当前光栅 -> 当前光栅最大波长
+    short gratingCount = 0;
+    if (getGratingCount(m_main->m_specHandle, &gratingCount) && gratingCount > 0) {
+        m_main->log(QString("Spectrometer get_grating_count SUCCESS: %1").arg(gratingCount));
+        for (int g = 1; g <= gratingCount; ++g) {
+            int groove = 0;
+            long blaze = 0;
+            if (getGratingInfo(m_main->m_specHandle, g, &groove, &blaze)) {
+                m_main->log(QString("Grating %1: groove=%2, blaze=%3").arg(g).arg(groove).arg(blaze));
+            }
+        }
+    }
+    else {
+        initOk = false;
+        m_main->log("Spectrometer init FAILED at get_grating_count");
+    }
+
+    int currentGrating = 0;
+    if (!getGrating(m_main->m_specHandle, &currentGrating) || currentGrating <= 0) {
+        initOk = false;
+        m_main->log("Spectrometer init FAILED at get_grating");
+    }
+    else {
+        m_main->log(QString("Spectrometer get_grating SUCCESS: %1").arg(currentGrating));
+    }
+
+    float maxWave = 0.0f;
+    if (currentGrating > 0) {
+        if (!getMaxWavelength(m_main->m_specHandle, currentGrating, &maxWave) || maxWave <= 0.0f) {
+            initOk = false;
+            m_main->log("Spectrometer init FAILED at get_max_wavelength");
+        }
+        else {
+            m_main->log(QString("Spectrometer get_max_wavelength SUCCESS: %1").arg(maxWave));
+        }
+    }
+
+    // 3.5 单色仪绝对移动（旧逻辑是移到配置中心波长；这里用 maxWave*0.5 作为稳妥默认）
+    float centerWave = (maxWave > 1.0f) ? (maxWave * 0.5f) : 532.0f;
+    if (!(moveToWave(m_main->m_specHandle, centerWave) || (Sleep(150), moveToWave(m_main->m_specHandle, centerWave)))) {
+        initOk = false;
+        m_main->log("Spectrometer init FAILED at move_to_wave");
+    }
+    else {
+        m_main->log(QString("Spectrometer move_to_wave SUCCESS: %1").arg(centerWave));
+    }
+
+    // 3.6 查询狭缝安装（0~3），已安装狭缝设置默认宽度
+    std::vector<int> slits;
+    for (int idx = 0; idx <= 3; ++idx) {
+        bool installed = false;
+        if (isSetupSlit(m_main->m_specHandle, idx, &installed) && installed) {
+            slits.push_back(idx);
+        }
+    }
+    const int defaultSlitWidthUm = 100;
+    for (int idx : slits) {
+        if (!(setSlitWidth(m_main->m_specHandle, idx, defaultSlitWidthUm) ||
+            (Sleep(100), setSlitWidth(m_main->m_specHandle, idx, defaultSlitWidthUm)))) {
+            initOk = false;
+            m_main->log(QString("Spectrometer slit init FAILED at idx=%1").arg(idx));
+        }
+        else {
+            m_main->log(QString("Spectrometer set_slit_width SUCCESS: idx=%1, width=%2um")
+                .arg(idx).arg(defaultSlitWidthUm));
+        }
+    }
+    if (slits.empty()) {
+        m_main->log("Slit query OK: installed=0");
+    }
+
+    if (!initOk) {
+        specClose(m_main->m_specHandle);
+        m_main->m_specHandle = -1;
+        m_main->log("Spectrometer connect FAILED (init not complete)");
+    }
+    else {
+        m_specConnBtn->setEnabled(false);
+        m_specDiscBtn->setEnabled(true);
+        m_main->log(QString("Spectrometer initialized: grating=%1, maxWave=%2, centerWave=%3, slits=%4")
+            .arg(currentGrating).arg(maxWave).arg(centerWave).arg(slits.size()));
     }
 }
 
 void ConnectDialog::onSpecDisconnect()
 {
+    if (m_main->m_specHandle < 0) {
+        m_main->log("Spectrometer not connected");
+        return;
+    }
+
     typedef bool (*Fn_spec_close)(int);
     auto specClose = (Fn_spec_close)GetProcAddress(m_main->m_hSpecDll, "spec_close");
-    if (specClose) specClose(m_main->m_specHandle);
+    if (specClose) {
+        if (!specClose(m_main->m_specHandle)) {
+            m_main->log("Spectrometer close FAILED");
+        }
+    }
     m_main->m_specHandle = -1;
     m_specConnBtn->setEnabled(true);
     m_specDiscBtn->setEnabled(false);
@@ -653,5 +837,3 @@ void ConnectDialog::onCameraDisconnect()
     m_cameraDiscBtn->setEnabled(false);
     m_main->log("Camera disconnected");
 }
-
-

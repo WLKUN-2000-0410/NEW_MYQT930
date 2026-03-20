@@ -30,6 +30,7 @@ public:
     QWidget *centralWidget;
     QTextEdit *logTextEdit;
     QPushButton *connectBtn;
+    QPushButton *StableTest;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -38,19 +39,22 @@ public:
     {
         if (Finder930QTMYV2Class->objectName().isEmpty())
             Finder930QTMYV2Class->setObjectName(QStringLiteral("Finder930QTMYV2Class"));
-        Finder930QTMYV2Class->resize(886, 673);
+        Finder930QTMYV2Class->resize(942, 787);
         centralWidget = new QWidget(Finder930QTMYV2Class);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         logTextEdit = new QTextEdit(centralWidget);
         logTextEdit->setObjectName(QStringLiteral("logTextEdit"));
-        logTextEdit->setGeometry(QRect(30, 330, 831, 281));
+        logTextEdit->setGeometry(QRect(60, 420, 831, 281));
         connectBtn = new QPushButton(centralWidget);
         connectBtn->setObjectName(QStringLiteral("connectBtn"));
-        connectBtn->setGeometry(QRect(50, 70, 80, 20));
+        connectBtn->setGeometry(QRect(70, 30, 821, 51));
+        StableTest = new QPushButton(centralWidget);
+        StableTest->setObjectName(QStringLiteral("StableTest"));
+        StableTest->setGeometry(QRect(70, 100, 141, 61));
         Finder930QTMYV2Class->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(Finder930QTMYV2Class);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 886, 25));
+        menuBar->setGeometry(QRect(0, 0, 942, 29));
         Finder930QTMYV2Class->setMenuBar(menuBar);
         mainToolBar = new QToolBar(Finder930QTMYV2Class);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -68,6 +72,7 @@ public:
     {
         Finder930QTMYV2Class->setWindowTitle(QApplication::translate("Finder930QTMYV2Class", "Finder930QTMYV2", Q_NULLPTR));
         connectBtn->setText(QApplication::translate("Finder930QTMYV2Class", "Connect", Q_NULLPTR));
+        StableTest->setText(QApplication::translate("Finder930QTMYV2Class", "StableTest", Q_NULLPTR));
     } // retranslateUi
 
 };

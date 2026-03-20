@@ -103,9 +103,15 @@
     <ClCompile Include="ConnectDialog.cpp" />
     <ClCompile Include="Finder930QTMYV2.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="qcustomplot.cpp" />
+    <ClCompile Include="StabilityTestDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ConnectDialog.h" />
+    <QtMoc Include="qcustomplot.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="StabilityTestDialog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

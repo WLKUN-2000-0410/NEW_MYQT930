@@ -1,5 +1,6 @@
 #include "Finder930QTMYV2.h"
 #include "ConnectDialog.h"
+#include "StabilityTestDialog.h"
 #include <QTimer>
 #include <cmath>
 
@@ -11,6 +12,10 @@ Finder930QTMYV2::Finder930QTMYV2(QWidget* parent) : QMainWindow(parent)
     m_ccdTempTimer->setInterval(1000);
     connect(m_ccdTempTimer, &QTimer::timeout, this, &Finder930QTMYV2::updateCcdTemperature);
     connect(ui.connectBtn, &QPushButton::clicked, this, &Finder930QTMYV2::onConnect);
+    connect(ui.StableTest, &QPushButton::clicked, this, [this]() {
+        StabilityTestDialog dlg(this);
+        dlg.exec();
+    });
 }
 
 Finder930QTMYV2::~Finder930QTMYV2()

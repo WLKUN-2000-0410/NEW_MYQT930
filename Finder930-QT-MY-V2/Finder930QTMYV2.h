@@ -26,6 +26,7 @@ public:
     // Laser
     HMODULE m_hLaserDll = nullptr;
     bool m_laserConnected = false;
+    QString m_excWave = "none";
 
     // Stage
     HMODULE m_hStageDll = nullptr;
