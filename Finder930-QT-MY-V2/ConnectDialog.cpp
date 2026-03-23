@@ -56,6 +56,13 @@ ConnectDialog::ConnectDialog(Finder930QTMYV2* mainWin, QWidget* parent)
     layout->addWidget(m_cameraConnBtn, 5, 1);
     layout->addWidget(m_cameraDiscBtn, 5, 2);
 
+    // Row 6: All devices
+    layout->addWidget(new QLabel("All Devices"), 6, 0);
+    m_allConnBtn = new QPushButton("Connect All");
+    m_allDiscBtn = new QPushButton("Disconnect All");
+    layout->addWidget(m_allConnBtn, 6, 1);
+    layout->addWidget(m_allDiscBtn, 6, 2);
+
 
     // Set initial button states based on current connection
     m_specConnBtn->setEnabled(m_main->m_specHandle < 0);
@@ -84,6 +91,28 @@ ConnectDialog::ConnectDialog(Finder930QTMYV2* mainWin, QWidget* parent)
     connect(m_motorDiscBtn, &QPushButton::clicked, this, &ConnectDialog::onMotorDisconnect);
     connect(m_cameraConnBtn, &QPushButton::clicked, this,&ConnectDialog::onCameraConnect);
     connect(m_cameraDiscBtn, &QPushButton::clicked, this,&ConnectDialog::onCameraDisconnect);
+    connect(m_allConnBtn, &QPushButton::clicked, this, &ConnectDialog::onConnectAll);
+    connect(m_allDiscBtn, &QPushButton::clicked, this, &ConnectDialog::onDisconnectAll);
+}
+
+void ConnectDialog::onConnectAll()
+{
+    onSpecConnect();
+    onCcdConnect();
+    onLaserConnect();
+    onStageConnect();
+    onMotorConnect();
+    onCameraConnect();
+}
+
+void ConnectDialog::onDisconnectAll()
+{
+    onCameraDisconnect();
+    onMotorDisconnect();
+    onStageDisconnect();
+    onLaserDisconnect();
+    onCcdDisconnect();
+    onSpecDisconnect();
 }
 
 void ConnectDialog::onSpecConnect()

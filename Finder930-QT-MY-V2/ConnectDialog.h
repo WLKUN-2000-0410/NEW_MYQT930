@@ -25,6 +25,8 @@ private slots:
     void onMotorDisconnect();
     void onCameraConnect();
     void onCameraDisconnect();
+    void onConnectAll();
+    void onDisconnectAll();
 
 
 private:
@@ -42,4 +44,6 @@ private:
        QPushButton* m_motorDiscBtn;
        QPushButton* m_cameraConnBtn;
        QPushButton* m_cameraDiscBtn;
+       QPushButton* m_allConnBtn;
+       QPushButton* m_allDiscBtn;
 };
