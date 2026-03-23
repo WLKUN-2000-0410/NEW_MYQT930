@@ -1,4 +1,4 @@
-#include "Finder930QTMYV2.h"
+﻿#include "Finder930QTMYV2.h"
 #include "ConnectDialog.h"
 #include "StabilityTestDialog.h"
 #include <QTimer>
@@ -92,6 +92,18 @@ void Finder930QTMYV2::onCcdConnectionChanged(bool connected)
     else {
         m_ccdTempTimer->stop();
         resetTitle();
+    }
+}
+
+void Finder930QTMYV2::setCcdTempPollingEnabled(bool enabled)
+{
+    if (!m_ccdTempTimer) return;
+    if (enabled) {
+        if (m_ccdId > 0 && m_hDfieldDll && !m_ccdTempTimer->isActive()) {
+            m_ccdTempTimer->start();
+        }
+    } else {
+        m_ccdTempTimer->stop();
     }
 }
 

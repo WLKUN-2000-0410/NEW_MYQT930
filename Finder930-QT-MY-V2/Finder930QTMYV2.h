@@ -55,6 +55,7 @@ public:
 public:
     void log(const QString& msg);
     void onCcdConnectionChanged(bool connected);
+    void setCcdTempPollingEnabled(bool enabled);
 private slots:
     void onConnect();
     void updateCcdTemperature();

@@ -13,12 +13,15 @@
 #include <QTimer>
 #include <QVBoxLayout>
 #include <cmath>
+#include <chrono>
+#include <algorithm>
 #include "Finder930QTMYV2.h"
 #include "qcustomplot.h"
 
 StabilityTestDialog::StabilityTestDialog(QWidget* parent)
     : QDialog(parent), m_main(qobject_cast<Finder930QTMYV2*>(parent))
 {
+    qRegisterMetaType<QVector<double>>("QVector<double>");
     setWindowTitle("Stability Test");
     setModal(true);
     resize(1260, 760);
@@ -201,6 +204,48 @@ StabilityTestDialog::StabilityTestDialog(QWidget* parent)
     connect(m_slitEdit, &QLineEdit::editingFinished, this, &StabilityTestDialog::onSlitEditFinished);
     connect(m_expTimeEdit, &QLineEdit::editingFinished, this, &StabilityTestDialog::onExpTimeEditFinished);
     connect(m_centerWaveEdit, &QLineEdit::editingFinished, this, &StabilityTestDialog::onCenterWaveEditFinished);
+    connect(m_startBtn, &QPushButton::clicked, this, &StabilityTestDialog::onStartClicked);
+    connect(m_stopBtn, &QPushButton::clicked, this, &StabilityTestDialog::onStopClicked);
+
+    // 子线程通过信号把数据送回主线程画图
+    connect(this, &StabilityTestDialog::acqResultReady, this, [this](QVector<double> xData, QVector<double> yData, int round) {
+        if (!m_plot || xData.isEmpty() || yData.isEmpty() || xData.size() != yData.size()) {
+            return;
+        }
+        if (m_plot->graphCount() == 0) {
+            m_plot->addGraph();
+            m_plot->graph(0)->setPen(QPen(QColor(31, 119, 180), 1.6));
+        }
+        m_plot->graph(0)->setData(xData, yData);
+
+        m_plot->xAxis->setRange(xData.first(), xData.last());
+        auto mm = std::minmax_element(yData.constBegin(), yData.constEnd());
+        if (mm.first != yData.constEnd() && mm.second != yData.constEnd()) {
+            double yMin = *mm.first;
+            double yMax = *mm.second;
+            if (!(yMax > yMin)) {
+                yMax = yMin + 1.0;
+            }
+            const double pad = (yMax - yMin) * 0.08;
+            m_plot->yAxis->setRange(yMin - pad, yMax + pad);
+        }
+
+        m_plot->replot(QCustomPlot::rpQueuedReplot);
+        if (m_main && ((round + 1) % 20 == 0)) {
+            m_main->log(QString("Round %1: plotted %2 points").arg(round + 1).arg(yData.size()));
+        }
+    }, Qt::QueuedConnection);
+}
+
+StabilityTestDialog::~StabilityTestDialog()
+{
+    m_running = false;
+    if (m_acqThread.joinable()) {
+        m_acqThread.join();
+    }
+    if (m_main) {
+        m_main->setCcdTempPollingEnabled(true);
+    }
 }
 
 void StabilityTestDialog::onExcitationWaveChanged(const QString& waveText)
@@ -818,3 +863,222 @@ void StabilityTestDialog::initSpectrumPlot()
     m_plot->replot();
 }
 
+void StabilityTestDialog::onStartClicked()
+{
+    const float centerWave    = m_centerWaveEdit->text().trimmed().toFloat();
+    const float expSec        = m_expTimeEdit->text().trimmed().toFloat();
+    const int   avgCount      = m_avgCountEdit->text().trimmed().toInt();
+    const bool  interval      = m_intervalCheck->isChecked();
+    const float intervalTime  = m_intervalTimeEdit->text().trimmed().toFloat();
+    const int   intervalCount = m_intervalCountEdit->text().trimmed().toInt();
+
+    if (!m_main) return;
+    if (!m_main->m_hSpecDll || !m_main->m_hDfieldDll) {
+        m_main->log("Start failed: DLL not loaded");
+        return;
+    }
+
+    m_main->log(QString("=== Start: centerWave=%1, expTime=%2s, avg=%3, interval=%4, iTime=%5s, iCount=%6 ===")
+        .arg(centerWave).arg(expSec).arg(avgCount)
+        .arg(interval ? "ON" : "OFF").arg(intervalTime).arg(intervalCount));
+
+    const int specH = m_main->m_specHandle;
+
+    // --- 获取DLL函数指针 ---
+    typedef bool (*Fn_MoveToWave)(int, float);
+    typedef bool (*Fn_GetPixSize)(float&);
+    typedef bool (*Fn_GetDevSize)(int&, int&);
+    typedef bool (*Fn_PixelsToWaves)(int, int, int, float, int, int, int, float*);
+    typedef bool (*Fn_GetTurret)(int, int*);
+    typedef bool (*Fn_GetGrating)(int, int*);
+    typedef bool (*Fn_SetExpTime)(float);
+    typedef bool (*Fn_DataAcqOneShot)(double*, int);
+    typedef bool (*Fn_GetExpTime)(float&);
+
+    auto fnMoveToWave    = (Fn_MoveToWave)GetProcAddress(m_main->m_hSpecDll, "spec_move_to_wave");
+    auto fnGetPixSize    = (Fn_GetPixSize)GetProcAddress(m_main->m_hDfieldDll, "GetPixSize");
+    auto fnGetDevSize    = (Fn_GetDevSize)GetProcAddress(m_main->m_hDfieldDll, "GetDevSize");
+    auto fnPixelsToWaves = (Fn_PixelsToWaves)GetProcAddress(m_main->m_hSpecDll, "spec_pixels_to_waves");
+    auto fnGetTurret     = (Fn_GetTurret)GetProcAddress(m_main->m_hSpecDll, "spec_get_turret");
+    auto fnGetGrating    = (Fn_GetGrating)GetProcAddress(m_main->m_hSpecDll, "spec_get_grating");
+    auto fnSetExpTime    = (Fn_SetExpTime)GetProcAddress(m_main->m_hDfieldDll, "SetExpTime");
+    auto fnDataAcqOneShot = (Fn_DataAcqOneShot)GetProcAddress(m_main->m_hDfieldDll, "DataAcqOneShot");
+    auto fnGetExpTime    = (Fn_GetExpTime)GetProcAddress(m_main->m_hDfieldDll, "GetExpTime");
+
+    if (!fnMoveToWave || !fnGetPixSize || !fnGetDevSize || !fnPixelsToWaves ||
+        !fnGetTurret || !fnGetGrating || !fnSetExpTime || !fnDataAcqOneShot) {
+        m_main->log("Start failed: GetProcAddress failed");
+        return;
+    }
+
+    // === Step1: 移动到中心波长 ===
+    bool ret = fnMoveToWave(specH, centerWave);
+    m_main->log(QString("1501/Step1 spec_move_to_wave(%1) => %2")
+        .arg(centerWave).arg(ret ? "OK" : "FAILED"));
+    if (!ret) return;
+
+    // === Step2: 获取X轴波长数据 ===
+    float pixSize = 0;
+    ret = fnGetPixSize(pixSize);
+    m_main->log(QString("1501/Step2a GetPixSize => %1, pixSize=%2")
+        .arg(ret ? "OK" : "FAILED").arg(pixSize));
+    if (!ret) return;
+
+    int xSize = 2048, ySize = 128;
+    ret = fnGetDevSize(xSize, ySize);
+    m_main->log(QString("1501/Step2b GetDevSize => %1, x=%2, y=%3")
+        .arg(ret ? "OK" : "FAILED").arg(xSize).arg(ySize));
+    if (!ret || xSize <= 0) return;
+    m_xPixels = xSize;
+
+    int turret = 0, grating = 0;
+    if (!fnGetTurret(specH, &turret)) return;
+    if (!fnGetGrating(specH, &grating)) return;
+
+    int pixelWidth = (int)std::lround((double)pixSize);
+    if (pixelWidth <= 0 && pixSize > 0.0f && pixSize < 1.0f) {
+        // 某些驱动可能返回 mm，这里转成 um
+        pixelWidth = (int)std::lround((double)pixSize * 1000.0);
+    }
+    if (pixelWidth <= 0) {
+        // 兜底值：避免 width=0 导致整条X轴塌成中心波长
+        pixelWidth = 14;
+    }
+
+    m_xWavelengths.resize(xSize);
+    ret = fnPixelsToWaves(specH, turret, grating, centerWave, pixelWidth, xSize, 1, m_xWavelengths.data());
+    m_main->log(QString("1501/Step2c pixels_to_waves(turret=%1, grating=%2, center=%3, pixW=%4, count=%5) => %6")
+        .arg(turret).arg(grating).arg(centerWave).arg(pixelWidth).arg(xSize).arg(ret ? "OK" : "FAILED"));
+    if (!ret) return;
+    m_main->log(QString("1501/Step2c waveRange: [%1 ~ %2]")
+        .arg(m_xWavelengths.first()).arg(m_xWavelengths.last()));
+
+    if (m_xWavelengths.size() >= 3) {
+        const double x0 = m_xWavelengths.front();
+        const double x2 = m_xWavelengths.back();
+        if (!(x2 > x0)) {
+            const double step = 0.0125;
+            for (int i = 0; i < m_xPixels; ++i) {
+                m_xWavelengths[i] = (float)(centerWave + (i - m_xPixels / 2) * step);
+            }
+        }
+    }
+
+    // === Step3: 设置积分时间（先清缓存再设真值） ===
+    fnSetExpTime(200.0f);
+    m_main->log("1501/Step3a SetExpTime(200ms) cache clear");
+
+    QVector<double> dummy(m_xPixels, 0.0);
+    fnDataAcqOneShot(dummy.data(), m_xPixels);
+    m_main->log("1501/Step3b DataAcqOneShot (discard)");
+
+    ret = fnSetExpTime(expSec * 1000.0f);
+    m_main->log(QString("1501/Step3c SetExpTime(%1ms) => %2")
+        .arg(expSec * 1000.0f).arg(ret ? "OK" : "FAILED"));
+    if (!ret) return;
+    if (fnGetExpTime) {
+        float readbackMs = 0.0f;
+        if (fnGetExpTime(readbackMs)) {
+            m_main->log(QString("1501/Step3c GetExpTime readback: %1ms (%2s)")
+                .arg(readbackMs).arg(readbackMs / 1000.0f));
+        }
+    }
+
+    m_main->log("=== Init (1501) done ===");
+
+    // === 1502 循环采集（子线程） ===
+    m_plot->clearGraphs();
+    m_plot->replot();
+    m_main->setCcdTempPollingEnabled(false);
+    m_running = true;
+    m_startBtn->setEnabled(false);
+    m_stopBtn->setEnabled(true);
+
+    if (m_acqThread.joinable()) {
+        m_acqThread.join();
+    }
+    m_acqThread = std::thread([this, fnDataAcqOneShot, avgCount, interval, intervalCount, intervalTime]() {
+        const int n = (avgCount > 0) ? avgCount : 1;
+        int round = 0;
+        QVector<double> xData(m_xPixels);
+        for (int j = 0; j < m_xPixels; ++j) {
+            xData[j] = m_xWavelengths[j];
+        }
+
+        auto doOneRound = [&]() -> bool {
+            const auto roundBegin = std::chrono::steady_clock::now();
+            QVector<double> sumData(m_xPixels, 0.0);
+            for (int i = 0; i < n; ++i) {
+                if (!m_running) return false;
+                QVector<double> tmp(m_xPixels, 0.0);
+                const auto shotBegin = std::chrono::steady_clock::now();
+                fnDataAcqOneShot(tmp.data(), m_xPixels);
+                const auto shotCostMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::steady_clock::now() - shotBegin).count();
+                if (!m_running) return false;
+                for (int j = 0; j < m_xPixels; ++j)
+                    sumData[j] += tmp[j];
+                if (m_main && round < 2) {
+                    m_main->log(QString("1502 round=%1 shot=%2/%3 cost=%4ms")
+                        .arg(round + 1).arg(i + 1).arg(n).arg((qlonglong)shotCostMs));
+                }
+            }
+            for (int j = 0; j < m_xPixels; ++j) {
+                sumData[j] /= n;
+            }
+            emit acqResultReady(xData, sumData, round);
+            if (m_main && round < 5) {
+                const auto roundCostMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::steady_clock::now() - roundBegin).count();
+                m_main->log(QString("1502 round=%1 total=%2ms (avgCount=%3)")
+                    .arg(round + 1).arg((qlonglong)roundCostMs).arg(n));
+            }
+            ++round;
+
+            return true;
+        };
+
+        if (interval) {
+            const int rounds = (intervalCount > 0) ? intervalCount : 1;
+            for (int r = 0; r < rounds && m_running; ++r) {
+                if (!doOneRound()) break;
+                if (r < rounds - 1 && m_running) {
+                    const int waitMs = (int)(intervalTime * 1000);
+                    for (int w = 0; w < waitMs && m_running; w += 100)
+                        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                }
+            }
+        } else {
+            while (m_running) {
+                if (!doOneRound()) break;
+            }
+        }
+
+        m_running = false;
+        QTimer::singleShot(0, this, [this]() {
+            m_startBtn->setEnabled(true);
+            m_stopBtn->setEnabled(false);
+            if (m_main) {
+                m_main->setCcdTempPollingEnabled(true);
+            }
+        });
+    });
+}
+
+void StabilityTestDialog::onStopClicked()
+{
+    m_running = false;
+    if (m_main && m_main->m_hDfieldDll) {
+        typedef bool (*Fn_TerminateData)();
+        auto fnTerminateData = (Fn_TerminateData)GetProcAddress(m_main->m_hDfieldDll, "TerminateData");
+        if (fnTerminateData) {
+            const bool ok = fnTerminateData();
+            m_main->log(QString("1503/FunNum=27 TerminateData() => %1").arg(ok ? "OK" : "FAILED"));
+        } else {
+            m_main->log("1503/FunNum=27 TerminateData not found");
+        }
+    }
+    m_startBtn->setEnabled(true);
+    m_stopBtn->setEnabled(false);
+    if (m_main) m_main->log("=== Stop requested ===");
+}

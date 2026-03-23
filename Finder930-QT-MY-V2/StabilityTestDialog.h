@@ -2,6 +2,9 @@
 
 #include <QDialog>
 #include <QString>
+#include <QVector>
+#include <atomic>
+#include <thread>
 
 class QCustomPlot;
 class QComboBox;
@@ -15,6 +18,10 @@ class StabilityTestDialog : public QDialog
     Q_OBJECT
 public:
     explicit StabilityTestDialog(QWidget* parent = nullptr);
+    ~StabilityTestDialog();
+
+signals:
+    void acqResultReady(QVector<double> xData, QVector<double> yData, int round);
 
 private slots:
     void onExcitationWaveChanged(const QString& waveText);
@@ -24,6 +31,8 @@ private slots:
     void onSlitEditFinished();
     void onExpTimeEditFinished();
     void onCenterWaveEditFinished();
+    void onStartClicked();
+    void onStopClicked();
 
 private:
     Finder930QTMYV2* m_main = nullptr;
@@ -42,5 +51,11 @@ private:
     QPushButton* m_startBtn = nullptr;
     QPushButton* m_stopBtn = nullptr;
     QString m_lastExcWave = "none";
+
+    int m_xPixels = 0;
+    QVector<float> m_xWavelengths;
+    std::atomic<bool> m_running{ false };
+    std::thread m_acqThread;
+
     void initSpectrumPlot();
 };

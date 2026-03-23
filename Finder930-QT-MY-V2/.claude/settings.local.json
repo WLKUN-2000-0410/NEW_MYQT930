@@ -16,7 +16,9 @@
       "Bash(grep -r \"getPinholeInfos\\\\|g_map_pinholeInfos\" \"D:\\\\01_PROJECT\\\\01_VS\\\\01_WORK\\\\16-Finder930\\\\Finder930_20260317\" --include=\"*.h\" --include=\"*.cpp\" 2>/dev/null | head -20)",
       "Bash(find \"D:\\\\01_PROJECT\\\\01_VS\\\\01_WORK\\\\16-Finder930\\\\Finder930_20260317\" -name \"*.h\" -o -name \"*.cpp\" 2>/dev/null | xargs grep -l \"g_map_pinholeInfos\" 2>/dev/null)",
       "Bash(grep -r \"g_map_pinholeInfos\" \"D:\\\\01_PROJECT\\\\01_VS\\\\01_WORK\\\\16-Finder930\\\\Finder930_20260317\" --include=\"*.h\" 2>/dev/null | head -5)",
-      "Bash(find \"D:\\\\01_PROJECT\\\\01_VS\\\\01_WORK\\\\16-Finder930\\\\Finder930_20260317/finder930v2/alt_service/bin/root/930/js\" -name \"*.js\" -type f 2>/dev/null | head -20)"
+      "Bash(find \"D:\\\\01_PROJECT\\\\01_VS\\\\01_WORK\\\\16-Finder930\\\\Finder930_20260317/finder930v2/alt_service/bin/root/930/js\" -name \"*.js\" -type f 2>/dev/null | head -20)",
+      "Bash(ls ~/Desktop/Snipaste_2026-03-22* 2>/dev/null; ls ~/Pictures/Snipaste_2026-03-22* 2>/dev/null; ls /c/Users/18769/Desktop/Snipaste_2026-03-22* 2>/dev/null; ls /c/Users/18769/Pictures/Snipaste_2026-03-22* 2>/dev/null)",
+      "Bash(find \"D:\\\\01_PROJECT\\\\01_VS\\\\01_WORK\\\\16-Finder930\\\\Finder930_20260317\\\\finder930v2\\\\system\\\\Finder930Dll\\\\Finder930Dll\" -name \"*.cpp\" -o -name \"*.h\" | xargs grep -l \"sendCmd_darray\\\\|xAxisData\")"
     ]
   }
 }
