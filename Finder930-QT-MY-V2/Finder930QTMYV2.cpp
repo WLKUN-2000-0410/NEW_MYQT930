@@ -2,6 +2,7 @@
 #include "ConnectDialog.h"
 #include "StabilityTestDialog.h"
 #include "LaserTestDialog.h"
+#include "MappingScanDialog.h"
 #include <QTimer>
 #include <cmath>
 
@@ -19,6 +20,10 @@ Finder930QTMYV2::Finder930QTMYV2(QWidget* parent) : QMainWindow(parent)
     });
     connect(ui.LaserTest, &QPushButton::clicked, this, [this]() {
         LaserTestDialog dlg(this);
+        dlg.exec();
+    });
+    connect(ui.MappingScan, &QPushButton::clicked, this, [this]() {
+        MappingScanDialog dlg(this);
         dlg.exec();
     });
 }

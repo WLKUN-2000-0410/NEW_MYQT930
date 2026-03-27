@@ -63,6 +63,19 @@
      <string>LaserTest</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="MappingScan">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>100</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>MappingScan</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

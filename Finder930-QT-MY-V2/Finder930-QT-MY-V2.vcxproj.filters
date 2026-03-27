@@ -43,6 +43,9 @@
     <ClCompile Include="LaserTestDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MappingScanDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="StabilityTestDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -58,6 +61,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="LaserTestDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MappingScanDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
