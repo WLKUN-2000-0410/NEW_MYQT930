@@ -50,6 +50,19 @@
      <string>StableTest</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="LaserTest">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>100</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>LaserTest</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

@@ -102,6 +102,7 @@
     <QtMoc Include="Finder930QTMYV2.h" />
     <ClCompile Include="ConnectDialog.cpp" />
     <ClCompile Include="Finder930QTMYV2.cpp" />
+    <ClCompile Include="LaserTestDialog.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="qcustomplot.cpp" />
     <ClCompile Include="StabilityTestDialog.cpp" />
@@ -109,6 +110,7 @@
   <ItemGroup>
     <QtMoc Include="ConnectDialog.h" />
     <QtMoc Include="qcustomplot.h" />
+    <QtMoc Include="LaserTestDialog.h" />
     <QtMoc Include="StabilityTestDialog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

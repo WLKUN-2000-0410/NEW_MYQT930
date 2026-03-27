@@ -22,7 +22,7 @@ StabilityTestDialog::StabilityTestDialog(QWidget* parent)
     : QDialog(parent), m_main(qobject_cast<Finder930QTMYV2*>(parent))
 {
     qRegisterMetaType<QVector<double>>("QVector<double>");
-    setWindowTitle("Stability Test");
+    setWindowTitle("Stability / Spectrum Test");
     setModal(true);
     resize(1260, 760);
 
@@ -37,19 +37,25 @@ StabilityTestDialog::StabilityTestDialog(QWidget* parent)
     leftLayout->setContentsMargins(12, 12, 12, 12);
     leftLayout->setSpacing(8);
 
-    auto* title = new QLabel("Stability Test", leftPanel);
+    auto* title = new QLabel("Stability / Spectrum Test", leftPanel);
     title->setStyleSheet("QLabel{color:#222222;font-size:20px;font-weight:600;}");
     leftLayout->addWidget(title);
 
-    auto addField = [&](const char* name, const char* val) {
-        auto* lb = new QLabel(name, leftPanel);
-        lb->setStyleSheet("QLabel{color:#333333;font-size:14px;}");
-        auto* edit = new QLineEdit(val, leftPanel);
-        edit->setReadOnly(true);
-        edit->setStyleSheet("QLineEdit{background:#ffffff;color:#222222;border:1px solid #cfd3d9;border-radius:4px;padding:4px 6px;}");
-        leftLayout->addWidget(lb);
-        leftLayout->addWidget(edit);
-    };
+    auto* modeLabel = new QLabel("Test Mode", leftPanel);
+    modeLabel->setStyleSheet("QLabel{color:#333333;font-size:14px;}");
+    m_modeCombo = new QComboBox(leftPanel);
+    m_modeCombo->addItems(QStringList{ "Stability Test", "Spectrum Test" });
+    m_modeCombo->setCurrentIndex(0);
+    m_modeCombo->setStyleSheet(
+        "QComboBox{background:#ffffff;color:#222222;border:1px solid #cfd3d9;border-radius:4px;padding:4px 6px;}"
+        "QComboBox::drop-down{border:0;}"
+        "QComboBox QAbstractItemView{background:#ffffff;color:#222222;selection-background-color:#dfe8ff;}");
+    leftLayout->addWidget(modeLabel);
+    leftLayout->addWidget(m_modeCombo);
+
+    auto* commonHeader = new QLabel("Common Parameters", leftPanel);
+    commonHeader->setStyleSheet("QLabel{color:#2f6fed;font-size:13px;font-weight:600;}");
+    leftLayout->addWidget(commonHeader);
 
     auto* excLabel = new QLabel("Excitation Wave", leftPanel);
     excLabel->setStyleSheet("QLabel{color:#333333;font-size:14px;}");
@@ -133,12 +139,6 @@ StabilityTestDialog::StabilityTestDialog(QWidget* parent)
     m_expTimeEdit->setStyleSheet("QLineEdit{background:#ffffff;color:#222222;border:1px solid #cfd3d9;border-radius:4px;padding:4px 6px;}");
     leftLayout->addWidget(expLabel);
     leftLayout->addWidget(m_expTimeEdit);
-    auto* cwLabel = new QLabel("Center Wave (nm)", leftPanel);
-    cwLabel->setStyleSheet("QLabel{color:#333333;font-size:14px;}");
-    m_centerWaveEdit = new QLineEdit("550", leftPanel);
-    m_centerWaveEdit->setStyleSheet("QLineEdit{background:#ffffff;color:#222222;border:1px solid #cfd3d9;border-radius:4px;padding:4px 6px;}");
-    leftLayout->addWidget(cwLabel);
-    leftLayout->addWidget(m_centerWaveEdit);
     auto* avgLabel = new QLabel("Average Count", leftPanel);
     avgLabel->setStyleSheet("QLabel{color:#333333;font-size:14px;}");
     m_avgCountEdit = new QLineEdit("1", leftPanel);
@@ -146,24 +146,65 @@ StabilityTestDialog::StabilityTestDialog(QWidget* parent)
     leftLayout->addWidget(avgLabel);
     leftLayout->addWidget(m_avgCountEdit);
 
-    m_intervalCheck = new QCheckBox("Interval", leftPanel);
+    m_stabilitySection = new QFrame(leftPanel);
+    auto* stabilityLayout = new QVBoxLayout(m_stabilitySection);
+    stabilityLayout->setContentsMargins(0, 0, 0, 0);
+    stabilityLayout->setSpacing(8);
+
+    auto* stabHeader = new QLabel("Stability-Only Parameters", m_stabilitySection);
+    stabHeader->setStyleSheet("QLabel{color:#2f6fed;font-size:13px;font-weight:600;margin-top:2px;}");
+    stabilityLayout->addWidget(stabHeader);
+
+    auto* cwLabel = new QLabel("Center Wave (nm)", m_stabilitySection);
+    cwLabel->setStyleSheet("QLabel{color:#333333;font-size:14px;}");
+    m_centerWaveEdit = new QLineEdit("550", m_stabilitySection);
+    m_centerWaveEdit->setStyleSheet("QLineEdit{background:#ffffff;color:#222222;border:1px solid #cfd3d9;border-radius:4px;padding:4px 6px;}");
+    stabilityLayout->addWidget(cwLabel);
+    stabilityLayout->addWidget(m_centerWaveEdit);
+
+    m_intervalCheck = new QCheckBox("Interval", m_stabilitySection);
     m_intervalCheck->setStyleSheet("QCheckBox{color:#333333;font-size:14px;}");
     m_intervalCheck->setChecked(false);
-    leftLayout->addWidget(m_intervalCheck);
+    stabilityLayout->addWidget(m_intervalCheck);
 
-    auto* itLabel = new QLabel("Interval Time (s)", leftPanel);
+    auto* itLabel = new QLabel("Interval Time (s)", m_stabilitySection);
     itLabel->setStyleSheet("QLabel{color:#333333;font-size:14px;}");
-    m_intervalTimeEdit = new QLineEdit("5", leftPanel);
+    m_intervalTimeEdit = new QLineEdit("5", m_stabilitySection);
     m_intervalTimeEdit->setStyleSheet("QLineEdit{background:#ffffff;color:#222222;border:1px solid #cfd3d9;border-radius:4px;padding:4px 6px;}");
-    leftLayout->addWidget(itLabel);
-    leftLayout->addWidget(m_intervalTimeEdit);
+    stabilityLayout->addWidget(itLabel);
+    stabilityLayout->addWidget(m_intervalTimeEdit);
 
-    auto* icLabel = new QLabel("Interval Count", leftPanel);
+    auto* icLabel = new QLabel("Interval Count", m_stabilitySection);
     icLabel->setStyleSheet("QLabel{color:#333333;font-size:14px;}");
-    m_intervalCountEdit = new QLineEdit("1", leftPanel);
+    m_intervalCountEdit = new QLineEdit("1", m_stabilitySection);
     m_intervalCountEdit->setStyleSheet("QLineEdit{background:#ffffff;color:#222222;border:1px solid #cfd3d9;border-radius:4px;padding:4px 6px;}");
-    leftLayout->addWidget(icLabel);
-    leftLayout->addWidget(m_intervalCountEdit);
+    stabilityLayout->addWidget(icLabel);
+    stabilityLayout->addWidget(m_intervalCountEdit);
+    leftLayout->addWidget(m_stabilitySection);
+
+    m_spectrumSection = new QFrame(leftPanel);
+    auto* spectrumLayout = new QVBoxLayout(m_spectrumSection);
+    spectrumLayout->setContentsMargins(0, 0, 0, 0);
+    spectrumLayout->setSpacing(8);
+
+    auto* specHeader = new QLabel("Spectrum-Only Parameters", m_spectrumSection);
+    specHeader->setStyleSheet("QLabel{color:#2f6fed;font-size:13px;font-weight:600;margin-top:2px;}");
+    spectrumLayout->addWidget(specHeader);
+
+    auto* fromLabel = new QLabel("Start (nm)", m_spectrumSection);
+    fromLabel->setStyleSheet("QLabel{color:#333333;font-size:14px;}");
+    m_specFromEdit = new QLineEdit("0.00", m_spectrumSection);
+    m_specFromEdit->setStyleSheet("QLineEdit{background:#ffffff;color:#222222;border:1px solid #cfd3d9;border-radius:4px;padding:4px 6px;}");
+    spectrumLayout->addWidget(fromLabel);
+    spectrumLayout->addWidget(m_specFromEdit);
+
+    auto* toLabel = new QLabel("End (nm)", m_spectrumSection);
+    toLabel->setStyleSheet("QLabel{color:#333333;font-size:14px;}");
+    m_specToEdit = new QLineEdit("0.00", m_spectrumSection);
+    m_specToEdit->setStyleSheet("QLineEdit{background:#ffffff;color:#222222;border:1px solid #cfd3d9;border-radius:4px;padding:4px 6px;}");
+    spectrumLayout->addWidget(toLabel);
+    spectrumLayout->addWidget(m_specToEdit);
+    leftLayout->addWidget(m_spectrumSection);
 
     leftLayout->addStretch();
 
@@ -197,6 +238,7 @@ StabilityTestDialog::StabilityTestDialog(QWidget* parent)
 
 
     connect(closeBtn, &QPushButton::clicked, this, &QDialog::accept);
+    connect(m_modeCombo, &QComboBox::currentTextChanged, this, &StabilityTestDialog::onTestModeChanged);
     connect(m_excCombo, &QComboBox::currentTextChanged, this, &StabilityTestDialog::onExcitationWaveChanged);
     connect(m_powerCombo, &QComboBox::currentTextChanged, this, &StabilityTestDialog::onPowerChanged);
     connect(m_pinholeCombo, &QComboBox::currentTextChanged, this, &StabilityTestDialog::onPinholeChanged);
@@ -206,6 +248,7 @@ StabilityTestDialog::StabilityTestDialog(QWidget* parent)
     connect(m_centerWaveEdit, &QLineEdit::editingFinished, this, &StabilityTestDialog::onCenterWaveEditFinished);
     connect(m_startBtn, &QPushButton::clicked, this, &StabilityTestDialog::onStartClicked);
     connect(m_stopBtn, &QPushButton::clicked, this, &StabilityTestDialog::onStopClicked);
+    onTestModeChanged(m_modeCombo ? m_modeCombo->currentText() : QString());
 
     // 子线程通过信号把数据送回主线程画图
     connect(this, &StabilityTestDialog::acqResultReady, this, [this](QVector<double> xData, QVector<double> yData, int round) {
@@ -234,6 +277,15 @@ StabilityTestDialog::StabilityTestDialog(QWidget* parent)
         if (m_main && ((round + 1) % 20 == 0)) {
             m_main->log(QString("Round %1: plotted %2 points").arg(round + 1).arg(yData.size()));
         }
+
+        // 接谱模式收尾兜底：最后一轮曲线到达UI时，确保按钮恢复
+        const bool spectrumMode = (m_modeCombo && m_modeCombo->currentText().contains("Spectrum", Qt::CaseInsensitive));
+        if (spectrumMode && m_spectrumWaveNum > 0 && (round + 1) >= m_spectrumWaveNum) {
+            m_running = false;
+            if (m_startBtn) m_startBtn->setEnabled(true);
+            if (m_stopBtn) m_stopBtn->setEnabled(false);
+            if (m_main) m_main->setCcdTempPollingEnabled(true);
+        }
     }, Qt::QueuedConnection);
 }
 
@@ -245,6 +297,17 @@ StabilityTestDialog::~StabilityTestDialog()
     }
     if (m_main) {
         m_main->setCcdTempPollingEnabled(true);
+    }
+}
+
+void StabilityTestDialog::onTestModeChanged(const QString& modeText)
+{
+    const bool spectrumMode = modeText.contains("Spectrum", Qt::CaseInsensitive);
+    if (m_stabilitySection) {
+        m_stabilitySection->setVisible(!spectrumMode);
+    }
+    if (m_spectrumSection) {
+        m_spectrumSection->setVisible(spectrumMode);
     }
 }
 
@@ -865,14 +928,404 @@ void StabilityTestDialog::initSpectrumPlot()
 
 void StabilityTestDialog::onStartClicked()
 {
+    const bool spectrumMode = (m_modeCombo && m_modeCombo->currentText().contains("Spectrum", Qt::CaseInsensitive));
     const float centerWave    = m_centerWaveEdit->text().trimmed().toFloat();
     const float expSec        = m_expTimeEdit->text().trimmed().toFloat();
     const int   avgCount      = m_avgCountEdit->text().trimmed().toInt();
     const bool  interval      = m_intervalCheck->isChecked();
     const float intervalTime  = m_intervalTimeEdit->text().trimmed().toFloat();
     const int   intervalCount = m_intervalCountEdit->text().trimmed().toInt();
+    const float spectrumFrom  = m_specFromEdit ? m_specFromEdit->text().trimmed().toFloat() : 0.0f;
+    const float spectrumTo    = m_specToEdit ? m_specToEdit->text().trimmed().toFloat() : 0.0f;
 
     if (!m_main) return;
+
+    // 接谱流程：参数传递 + 1511初始化（按旧程序 100% 对齐）
+    if (spectrumMode) {
+        if (!(spectrumTo > spectrumFrom)) {
+            m_main->log(QString("Spectrum start failed: invalid range from=%1 to=%2").arg(spectrumFrom).arg(spectrumTo));
+            return;
+        }
+        if (expSec <= 0.0f) {
+            m_main->log(QString("Spectrum start failed: invalid exp time %1s").arg(expSec));
+            return;
+        }
+        if (!m_main->m_hSpecDll || !m_main->m_hDfieldDll) {
+            m_main->log("Spectrum start failed: spectrometer/CCD DLL not loaded");
+            return;
+        }
+
+        // 参数传递：把UI参数落到接谱上下文，供后续1512循环直接使用
+        m_spectrumExcWave = m_excCombo ? m_excCombo->currentText().trimmed() : QString();
+        m_spectrumPower = m_powerCombo ? m_powerCombo->currentText().trimmed() : QString();
+        m_spectrumGrating = m_gratingCombo ? m_gratingCombo->currentText().trimmed() : QString();
+        m_spectrumFromNm = spectrumFrom;
+        m_spectrumToNm = spectrumTo;
+        m_spectrumExpSec = expSec;
+        m_spectrumAvgCount = (avgCount > 0) ? avgCount : 1;
+
+        m_main->log(QString("=== Spectrum Start: exc=%1, power=%2, grating=%3, from=%4nm, to=%5nm, exp=%6s, avg=%7 ===")
+            .arg(m_spectrumExcWave).arg(m_spectrumPower).arg(m_spectrumGrating)
+            .arg(m_spectrumFromNm).arg(m_spectrumToNm).arg(m_spectrumExpSec).arg(m_spectrumAvgCount));
+
+        typedef bool (*Fn_MoveToWave)(int, float);
+        typedef bool (*Fn_GetPixSize)(float&);
+        typedef bool (*Fn_GetDevSize)(int&, int&);
+        typedef bool (*Fn_PixelsToWaves)(int, int, int, float, int, int, int, float*);
+        typedef bool (*Fn_SetExpTime)(float);
+        typedef bool (*Fn_DataAcqOneShot)(double*, int);
+        typedef bool (*Fn_GetTurret)(int, int*);
+        typedef bool (*Fn_GetGrating)(int, int*);
+        typedef bool (*Fn_GetCorrectParams)(int, int, int, int, void*);
+        typedef bool (*Fn_GetGratingInfo)(int, int, int*, long*);
+        typedef void* (*Fn_CalWaveInitDll)(char*);
+        typedef bool (*Fn_SpectrumWave)(int, double*, int*, int&);
+        typedef bool (*Fn_SpectrumConcat)(double*, double*, int*, double*, int&);
+
+        auto fnMoveToWave = (Fn_MoveToWave)GetProcAddress(m_main->m_hSpecDll, "spec_move_to_wave");
+        auto fnGetPixSize = (Fn_GetPixSize)GetProcAddress(m_main->m_hDfieldDll, "GetPixSize");
+        auto fnGetDevSize = (Fn_GetDevSize)GetProcAddress(m_main->m_hDfieldDll, "GetDevSize");
+        auto fnPixelsToWaves = (Fn_PixelsToWaves)GetProcAddress(m_main->m_hSpecDll, "spec_pixels_to_waves");
+        auto fnSetExpTime = (Fn_SetExpTime)GetProcAddress(m_main->m_hDfieldDll, "SetExpTime");
+        auto fnDataAcqOneShot = (Fn_DataAcqOneShot)GetProcAddress(m_main->m_hDfieldDll, "DataAcqOneShot");
+        auto fnGetTurret = (Fn_GetTurret)GetProcAddress(m_main->m_hSpecDll, "spec_get_turret");
+        auto fnGetGrating = (Fn_GetGrating)GetProcAddress(m_main->m_hSpecDll, "spec_get_grating");
+        auto fnGetCorrectParams = (Fn_GetCorrectParams)GetProcAddress(m_main->m_hSpecDll, "spec_get_correct_params");
+        auto fnGetGratingInfo = (Fn_GetGratingInfo)GetProcAddress(m_main->m_hSpecDll, "spec_get_grating_info");
+
+        if (!fnMoveToWave || !fnGetPixSize || !fnGetDevSize || !fnPixelsToWaves ||
+            !fnSetExpTime || !fnDataAcqOneShot ||
+            !fnGetTurret || !fnGetGrating || !fnGetCorrectParams || !fnGetGratingInfo) {
+            m_main->log("1511 init failed: spectrometer GetProcAddress missing required function");
+            return;
+        }
+
+        HMODULE hCalWaveDll = LoadLibraryA("api.calwave_x86.dll");
+        if (!hCalWaveDll) {
+            const QString calPath = QCoreApplication::applicationDirPath() + "/api.calwave_x86.dll";
+            hCalWaveDll = LoadLibraryA(calPath.toLocal8Bit().constData());
+        }
+        if (!hCalWaveDll) {
+            m_main->log("1511 init failed: load api.calwave_x86.dll failed");
+            return;
+        }
+        auto fnCalInitDll = (Fn_CalWaveInitDll)GetProcAddress(hCalWaveDll, "InitDll");
+        auto fnSpectrumWave = (Fn_SpectrumWave)GetProcAddress(hCalWaveDll, "zl_spectrum_wave");
+        if (!fnCalInitDll || !fnSpectrumWave) {
+            m_main->log("1511 init failed: calwave GetProcAddress(InitDll/zl_spectrum_wave) failed");
+            FreeLibrary(hCalWaveDll);
+            return;
+        }
+        fnCalInitDll(nullptr);
+
+        const int specH = m_main->m_specHandle;
+        bool ret = false;
+
+        // 1511/Step1/Fun22: 初始化接谱计算上下文（from/to -> coeff[2]/coeff[3]）
+        m_spectrumCoeff = QVector<double>(4, 0.0);
+        m_spectrumWaveCenters = QVector<int>(50, 0);
+        m_spectrumCenters.clear();
+        m_spectrumWaveNum = 0;
+        m_spectrumWaveIndex = 0;
+        m_spectrumCoeff[2] = m_spectrumFromNm;
+        m_spectrumCoeff[3] = m_spectrumToNm;
+        m_main->log(QString("1511/Step1 FunNum=22 coeffInit: from=%1, to=%2")
+            .arg(m_spectrumCoeff[2]).arg(m_spectrumCoeff[3]));
+
+        // 1511/Step1/Fun23: 获取焦距（spec_get_correct_params, code=0）
+        m_spectrumTurret = 0;
+        m_spectrumGratingIndex = 0;
+        //获取转台位置
+        ret = fnGetTurret(specH, &m_spectrumTurret);
+        if (!ret) {
+            m_main->log("1511/Step1 FunNum=23 spec_get_turret => FAILED");
+            FreeLibrary(hCalWaveDll);
+            return;
+        }
+        //获取光栅位置
+        ret = fnGetGrating(specH, &m_spectrumGratingIndex);
+        if (!ret) {
+            m_main->log("1511/Step1 FunNum=23 spec_get_grating => FAILED");
+            FreeLibrary(hCalWaveDll);
+            return;
+        }
+        //利用转台位置和光栅位置,获取'焦距'
+        float foc = 0.0f;
+        ret = fnGetCorrectParams(specH, m_spectrumTurret, m_spectrumGratingIndex, 0, (void*)&foc);
+        if (!ret) {
+            m_main->log("1511/Step1 FunNum=23 spec_get_correct_params(code=0) => FAILED");
+            FreeLibrary(hCalWaveDll);
+            return;
+        }
+        m_spectrumCoeff[0] = (foc < 1.0f) ? (double)foc * 1000.0 : (double)foc;
+        m_main->log(QString("1511/Step1 FunNum=23 focus=%1 (coeff[0]=%2), turret=%3, grating=%4")
+            .arg(foc).arg(m_spectrumCoeff[0]).arg(m_spectrumTurret).arg(m_spectrumGratingIndex));
+
+        // 1511/Step1/Fun24: 获取光栅刻线（coeff[1]）
+        int groove = -1;
+        long blaze = 0;
+        ret = fnGetGratingInfo(specH, m_spectrumGratingIndex, &groove, &blaze);
+        if (!ret) {
+            m_main->log("1511/Step1 FunNum=24 spec_get_grating_info => FAILED");
+            FreeLibrary(hCalWaveDll);
+            return;
+        }
+        m_spectrumCoeff[1] = groove;
+        m_main->log(QString("1511/Step1 FunNum=24 groove=%1, blaze=%2 (coeff[1]=%3)")
+            .arg(groove).arg(blaze).arg(m_spectrumCoeff[1]));
+
+        // 1511/Step2/Fun25: 通过 zl_spectrum_wave 计算接谱中心波长序列
+        //利用焦距和刻线,计算出中心波长数组
+        int centerCount = 0;
+        ret = fnSpectrumWave(0, m_spectrumCoeff.data(), m_spectrumWaveCenters.data(), centerCount);
+        if (!ret || centerCount <= 0) {
+            m_main->log(QString("1511/Step2 FunNum=25 zl_spectrum_wave => FAILED, count=%1").arg(centerCount));
+            FreeLibrary(hCalWaveDll);
+            return;
+        }
+        m_spectrumWaveNum = centerCount;
+        m_spectrumWaveCenters.resize(centerCount);
+        m_spectrumCenters.clear();
+        m_spectrumCenters.reserve(centerCount);
+        for (int i = 0; i < centerCount; ++i) {
+            m_spectrumCenters.push_back((float)m_spectrumWaveCenters[i]);
+        }
+        m_main->log(QString("1511/Step2 FunNum=25 waveCount=%1, first=%2, last=%3")
+            .arg(m_spectrumWaveNum)
+            .arg(m_spectrumWaveCenters.isEmpty() ? 0 : m_spectrumWaveCenters.first())
+            .arg(m_spectrumWaveCenters.isEmpty() ? 0 : m_spectrumWaveCenters.last()));
+        if (m_spectrumWaveCenters.size() <= 12) {
+            QStringList lst;
+            for (int v : m_spectrumWaveCenters) lst << QString::number(v);
+            m_main->log(QString("1511/Step2 centers=[%1]").arg(lst.join(",")));
+        }
+        FreeLibrary(hCalWaveDll);
+        m_main->log("=== Spectrum Init (1511) done ===");
+
+        if (m_spectrumWaveNum <= 0) {
+            m_main->log("1512 start failed: waveCount <= 0");
+            return;
+        }
+
+        if (m_plot) {
+            m_plot->clearGraphs();
+            m_plot->replot();
+        }
+        m_main->setCcdTempPollingEnabled(false);
+        m_running = true;
+        m_startBtn->setEnabled(false);
+        m_stopBtn->setEnabled(true);
+
+        if (m_acqThread.joinable()) {
+            m_acqThread.join();
+        }
+        m_acqThread = std::thread([this, specH, fnMoveToWave, fnGetPixSize, fnGetDevSize, fnPixelsToWaves, fnSetExpTime, fnDataAcqOneShot]() {
+            typedef bool (*Fn_SpectrumConcat)(double*, double*, int*, double*, int&);
+            auto postLog = [this](const QString& msg) {
+                QTimer::singleShot(0, this, [this, msg]() {
+                    if (m_main) {
+                        m_main->log(msg);
+                    }
+                });
+            };
+
+            HMODULE hCalWaveDll = LoadLibraryA("api.calwave_x86.dll");
+            if (!hCalWaveDll) {
+                const QString calPath = QCoreApplication::applicationDirPath() + "/api.calwave_x86.dll";
+                hCalWaveDll = LoadLibraryA(calPath.toLocal8Bit().constData());
+            }
+            auto fnSpectrumConcat = hCalWaveDll
+                ? (Fn_SpectrumConcat)GetProcAddress(hCalWaveDll, "zl_spectrum_concatenate")
+                : nullptr;
+
+            if (!hCalWaveDll || !fnSpectrumConcat) {
+                postLog("1512 failed: load api.calwave_x86.dll or GetProcAddress(zl_spectrum_concatenate) failed");
+                if (hCalWaveDll) {
+                    FreeLibrary(hCalWaveDll);
+                }
+                m_running = false;
+                QTimer::singleShot(0, this, [this]() {
+                    m_startBtn->setEnabled(true);
+                    m_stopBtn->setEnabled(false);
+                    if (m_main) {
+                        m_main->setCcdTempPollingEnabled(true);
+                    }
+                });
+                return;
+            }
+
+            QVector<double> retXYData;
+            int dWaveIndex = 0;
+
+            while (m_running && dWaveIndex < m_spectrumWaveNum) {
+                m_spectrumWaveIndex = dWaveIndex;
+                const float centerWave = (float)m_spectrumWaveCenters[dWaveIndex];
+
+                // 1512/Step1/Fun26: 切换到当前中心波长
+                bool ret = fnMoveToWave(specH, centerWave);
+                if (!ret) {
+                    postLog(QString("1512/Step1 FunNum=26 spec_move_to_wave(%1) => FAILED").arg(centerWave));
+                    break;
+                }
+
+                // 1512/Step2/Fun1+2+4: 获取像元宽度、像元数，并执行一次像素转波长
+                float pixSize = 0.0f;
+                int xSize = 2048;
+                int ySize = 128;
+                ret = fnGetPixSize(pixSize);
+                if (!ret) {
+                    postLog("1512/Step2 FunNum=1 GetPixSize => FAILED");
+                    break;
+                }
+                ret = fnGetDevSize(xSize, ySize);
+                if (!ret || xSize <= 0) {
+                    postLog(QString("1512/Step2 FunNum=2 GetDevSize => FAILED x=%1 y=%2").arg(xSize).arg(ySize));
+                    break;
+                }
+
+                int pixelWidth = (int)std::lround((double)pixSize);
+                if (pixelWidth <= 0 && pixSize > 0.0f && pixSize < 1.0f) {
+                    pixelWidth = (int)std::lround((double)pixSize * 1000.0);
+                }
+                if (pixelWidth <= 0) {
+                    pixelWidth = 14;
+                }
+
+                QVector<float> xWaveStep2(xSize, 0.0f);
+                ret = fnPixelsToWaves(specH, m_spectrumTurret, m_spectrumGratingIndex, centerWave, pixelWidth, xSize, 1, xWaveStep2.data());
+                if (!ret) {
+                    postLog(QString("1512/Step2 FunNum=4 pixels_to_waves(center=%1) => FAILED").arg(centerWave));
+                    break;
+                }
+
+                // 1512/Step3/Fun27: 获取本次中心波长对应的X轴数据
+                QVector<float> xPixData(xSize, 0.0f);
+                ret = fnPixelsToWaves(specH, m_spectrumTurret, m_spectrumGratingIndex, centerWave, pixelWidth, xSize, 1, xPixData.data());
+                if (!ret) {
+                    postLog(QString("1512/Step3 FunNum=27 pixels_to_waves(center=%1) => FAILED").arg(centerWave));
+                    break;
+                }
+
+                // 1512/Step4/Fun16+13+3: 先设200ms并清缓存，再设用户积分时间
+                fnSetExpTime(200.0f);
+                QVector<double> discard(xSize, 0.0);
+                fnDataAcqOneShot(discard.data(), xSize);
+                ret = fnSetExpTime(m_spectrumExpSec * 1000.0f);
+                if (!ret) {
+                    postLog(QString("1512/Step4 FunNum=3 SetExpTime(%1ms) => FAILED").arg(m_spectrumExpSec * 1000.0f));
+                    break;
+                }
+
+                // 1512/Step5/Fun17: 按平均次数累计CCD数据
+                const int avgN = (m_spectrumAvgCount > 0) ? m_spectrumAvgCount : 1;
+                QVector<double> yPixData(xSize, 0.0);
+                for (int i = 0; i < avgN; ++i) {
+                    if (!m_running) {
+                        break;
+                    }
+                    QVector<double> tmp(xSize, 0.0);
+                    fnDataAcqOneShot(tmp.data(), xSize);
+                    if (!m_running) {
+                        break;
+                    }
+                    for (int j = 0; j < xSize; ++j) {
+                        yPixData[j] += tmp[j];
+                    }
+                }
+                if (!m_running) {
+                    break;
+                }
+                for (int j = 0; j < xSize; ++j) {
+                    yPixData[j] /= avgN;
+                }
+
+                // 1512/Step5/Fun28: 将当前段数据与历史段做拼接
+                QVector<double> xyData(xSize * 2, 0.0);
+                for (int j = 0; j < xSize; ++j) {
+                    xyData[j] = xPixData[j];
+                    xyData[xSize + j] = yPixData[j];
+                }
+
+                QVector<double> nextXY;
+                if (dWaveIndex == 0 || retXYData.isEmpty()) {
+                    QVector<double> xs;
+                    QVector<double> ys;
+                    xs.reserve(xSize);
+                    ys.reserve(xSize);
+                    for (int j = 0; j < xSize; ++j) {
+                        const double x = xPixData[j];
+                        if (x < m_spectrumFromNm || x > m_spectrumToNm) {
+                            continue;
+                        }
+                        xs.push_back(x);
+                        ys.push_back(yPixData[j]);
+                    }
+                    nextXY.reserve(xs.size() + ys.size());
+                    for (double v : xs) nextXY.push_back(v);
+                    for (double v : ys) nextXY.push_back(v);
+                }
+                else {
+                    int nSizePtr[2] = { retXYData.size() / 2, xSize };
+                    const int maxSize = nSizePtr[0] + nSizePtr[1];
+                    QVector<double> retXY(maxSize * 2, 0.0);
+                    int retXYSize = 0;
+                    ret = fnSpectrumConcat(retXYData.data(), xyData.data(), nSizePtr, retXY.data(), retXYSize);
+                    if (!ret || retXYSize <= 0) {
+                        postLog(QString("1512/Step5 FunNum=28 zl_spectrum_concatenate => FAILED, retSize=%1").arg(retXYSize));
+                        break;
+                    }
+
+                    QVector<double> xs;
+                    QVector<double> ys;
+                    xs.reserve(retXYSize);
+                    ys.reserve(retXYSize);
+                    for (int j = 0; j < retXYSize; ++j) {
+                        const double x = retXY[j];
+                        if (x < m_spectrumFromNm || x > m_spectrumToNm) {
+                            continue;
+                        }
+                        xs.push_back(x);
+                        ys.push_back(retXY[retXYSize + j]);
+                    }
+                    nextXY.reserve(xs.size() + ys.size());
+                    for (double v : xs) nextXY.push_back(v);
+                    for (double v : ys) nextXY.push_back(v);
+                }
+
+                retXYData.swap(nextXY);
+                if (retXYData.size() >= 2) {
+                    const int outSize = retXYData.size() / 2;
+                    QVector<double> outX(outSize, 0.0);
+                    QVector<double> outY(outSize, 0.0);
+                    for (int i = 0; i < outSize; ++i) {
+                        outX[i] = retXYData[i];
+                        outY[i] = retXYData[outSize + i];
+                    }
+                    emit acqResultReady(outX, outY, dWaveIndex);
+                }
+
+                postLog(QString("1512 round=%1/%2 center=%3nm points=%4")
+                    .arg(dWaveIndex + 1).arg(m_spectrumWaveNum).arg(centerWave).arg(retXYData.size() / 2));
+                ++dWaveIndex;
+            }
+
+            if (hCalWaveDll) {
+                FreeLibrary(hCalWaveDll);
+            }
+
+            m_running = false;
+            QTimer::singleShot(0, this, [this, dWaveIndex]() {
+                m_startBtn->setEnabled(true);
+                m_stopBtn->setEnabled(false);
+                if (m_main) {
+                    m_main->setCcdTempPollingEnabled(true);
+                    m_main->log(QString("=== Spectrum 1512 finished, done=%1/%2 ===").arg(dWaveIndex).arg(m_spectrumWaveNum));
+                }
+            });
+        });
+        return;
+    }
+
     if (!m_main->m_hSpecDll || !m_main->m_hDfieldDll) {
         m_main->log("Start failed: DLL not loaded");
         return;
@@ -998,6 +1451,13 @@ void StabilityTestDialog::onStartClicked()
         m_acqThread.join();
     }
     m_acqThread = std::thread([this, fnDataAcqOneShot, avgCount, interval, intervalCount, intervalTime]() {
+        auto postLog = [this](const QString& msg) {
+            QTimer::singleShot(0, this, [this, msg]() {
+                if (m_main) {
+                    m_main->log(msg);
+                }
+            });
+        };
         const int n = (avgCount > 0) ? avgCount : 1;
         int round = 0;
         QVector<double> xData(m_xPixels);
@@ -1019,7 +1479,7 @@ void StabilityTestDialog::onStartClicked()
                 for (int j = 0; j < m_xPixels; ++j)
                     sumData[j] += tmp[j];
                 if (m_main && round < 2) {
-                    m_main->log(QString("1502 round=%1 shot=%2/%3 cost=%4ms")
+                    postLog(QString("1502 round=%1 shot=%2/%3 cost=%4ms")
                         .arg(round + 1).arg(i + 1).arg(n).arg((qlonglong)shotCostMs));
                 }
             }
@@ -1030,7 +1490,7 @@ void StabilityTestDialog::onStartClicked()
             if (m_main && round < 5) {
                 const auto roundCostMs = std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::steady_clock::now() - roundBegin).count();
-                m_main->log(QString("1502 round=%1 total=%2ms (avgCount=%3)")
+                postLog(QString("1502 round=%1 total=%2ms (avgCount=%3)")
                     .arg(round + 1).arg((qlonglong)roundCostMs).arg(n));
             }
             ++round;
@@ -1067,7 +1527,18 @@ void StabilityTestDialog::onStartClicked()
 
 void StabilityTestDialog::onStopClicked()
 {
+    const bool spectrumMode = (m_modeCombo && m_modeCombo->currentText().contains("Spectrum", Qt::CaseInsensitive));
     m_running = false;
+
+    if (spectrumMode) {
+        m_startBtn->setEnabled(true);
+        m_stopBtn->setEnabled(false);
+        if (m_main) {
+            m_main->log("1515/Stop: set run flag false");
+        }
+        return;
+    }
+
     if (m_main && m_main->m_hDfieldDll) {
         typedef bool (*Fn_TerminateData)();
         auto fnTerminateData = (Fn_TerminateData)GetProcAddress(m_main->m_hDfieldDll, "TerminateData");

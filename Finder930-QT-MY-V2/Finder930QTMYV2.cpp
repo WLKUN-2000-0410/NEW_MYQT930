@@ -1,6 +1,7 @@
 ﻿#include "Finder930QTMYV2.h"
 #include "ConnectDialog.h"
 #include "StabilityTestDialog.h"
+#include "LaserTestDialog.h"
 #include <QTimer>
 #include <cmath>
 
@@ -14,6 +15,10 @@ Finder930QTMYV2::Finder930QTMYV2(QWidget* parent) : QMainWindow(parent)
     connect(ui.connectBtn, &QPushButton::clicked, this, &Finder930QTMYV2::onConnect);
     connect(ui.StableTest, &QPushButton::clicked, this, [this]() {
         StabilityTestDialog dlg(this);
+        dlg.exec();
+    });
+    connect(ui.LaserTest, &QPushButton::clicked, this, [this]() {
+        LaserTestDialog dlg(this);
         dlg.exec();
     });
 }

@@ -31,6 +31,7 @@ public:
     QTextEdit *logTextEdit;
     QPushButton *connectBtn;
     QPushButton *StableTest;
+    QPushButton *LaserTest;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -51,6 +52,9 @@ public:
         StableTest = new QPushButton(centralWidget);
         StableTest->setObjectName(QStringLiteral("StableTest"));
         StableTest->setGeometry(QRect(70, 100, 141, 61));
+        LaserTest = new QPushButton(centralWidget);
+        LaserTest->setObjectName(QStringLiteral("LaserTest"));
+        LaserTest->setGeometry(QRect(230, 100, 141, 61));
         Finder930QTMYV2Class->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(Finder930QTMYV2Class);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -73,6 +77,7 @@ public:
         Finder930QTMYV2Class->setWindowTitle(QApplication::translate("Finder930QTMYV2Class", "Finder930QTMYV2", Q_NULLPTR));
         connectBtn->setText(QApplication::translate("Finder930QTMYV2Class", "Connect", Q_NULLPTR));
         StableTest->setText(QApplication::translate("Finder930QTMYV2Class", "StableTest", Q_NULLPTR));
+        LaserTest->setText(QApplication::translate("Finder930QTMYV2Class", "LaserTest", Q_NULLPTR));
     } // retranslateUi
 
 };
