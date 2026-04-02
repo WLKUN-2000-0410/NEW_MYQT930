@@ -102,6 +102,7 @@
     <QtMoc Include="Finder930QTMYV2.h" />
     <ClCompile Include="ConnectDialog.cpp" />
     <ClCompile Include="Finder930QTMYV2.cpp" />
+    <ClCompile Include="HeatmapTestDialog.cpp" />
     <ClCompile Include="LaserTestDialog.cpp" />
     <ClCompile Include="MappingScanDialog.cpp" />
     <ClCompile Include="main.cpp" />
@@ -111,6 +112,7 @@
   <ItemGroup>
     <QtMoc Include="ConnectDialog.h" />
     <QtMoc Include="qcustomplot.h" />
+    <QtMoc Include="HeatmapTestDialog.h" />
     <QtMoc Include="LaserTestDialog.h" />
     <QtMoc Include="MappingScanDialog.h" />
     <QtMoc Include="StabilityTestDialog.h" />

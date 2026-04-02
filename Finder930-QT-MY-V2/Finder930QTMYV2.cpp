@@ -3,6 +3,7 @@
 #include "StabilityTestDialog.h"
 #include "LaserTestDialog.h"
 #include "MappingScanDialog.h"
+#include "HeatmapTestDialog.h"
 #include <QTimer>
 #include <cmath>
 
@@ -24,6 +25,10 @@ Finder930QTMYV2::Finder930QTMYV2(QWidget* parent) : QMainWindow(parent)
     });
     connect(ui.MappingScan, &QPushButton::clicked, this, [this]() {
         MappingScanDialog dlg(this);
+        dlg.exec();
+    });
+    connect(ui.HeatmapTest, &QPushButton::clicked, this, [this]() {
+        HeatmapTestDialog dlg(this);
         dlg.exec();
     });
 }

@@ -33,6 +33,7 @@ public:
     QPushButton *StableTest;
     QPushButton *LaserTest;
     QPushButton *MappingScan;
+    QPushButton *HeatmapTest;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -59,6 +60,9 @@ public:
         MappingScan = new QPushButton(centralWidget);
         MappingScan->setObjectName(QStringLiteral("MappingScan"));
         MappingScan->setGeometry(QRect(390, 100, 141, 61));
+        HeatmapTest = new QPushButton(centralWidget);
+        HeatmapTest->setObjectName(QStringLiteral("HeatmapTest"));
+        HeatmapTest->setGeometry(QRect(550, 100, 141, 61));
         Finder930QTMYV2Class->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(Finder930QTMYV2Class);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -83,6 +87,7 @@ public:
         StableTest->setText(QApplication::translate("Finder930QTMYV2Class", "StableTest", Q_NULLPTR));
         LaserTest->setText(QApplication::translate("Finder930QTMYV2Class", "LaserTest", Q_NULLPTR));
         MappingScan->setText(QApplication::translate("Finder930QTMYV2Class", "MappingScan", Q_NULLPTR));
+        HeatmapTest->setText(QApplication::translate("Finder930QTMYV2Class", "HeatmapTest", Q_NULLPTR));
     } // retranslateUi
 
 };
